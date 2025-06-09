@@ -16,3 +16,10 @@ IMPORCOMGUA busca digitalizar de extremo a extremo sus procesos, inventario, com
 | **Administrador del sistema** | Gestionar maestros y usuarios, configurar reglas de negocio, emitir reportes.         |
 | **Cobranza**            | Registrar abonos, monitorear saldos, disparar alertas de vencimiento.                       |
 
+### B.1 Diagrama de CDU de Alto nivel
+
+![alt text](img/CDU.png)
+
+### B.2 Diagrama de CDU de Alto nivel Primera descomposición
+
+![alt text](img/primera%20descomposicion.png)
