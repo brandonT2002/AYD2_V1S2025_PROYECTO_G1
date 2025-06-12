@@ -30,5 +30,10 @@ IMPORCOMGUA busca digitalizar de extremo a extremo sus procesos, inventario, com
 ## 3. Diagramas CDU Expandidos
 
 ### 3.1. Gestionar Inventario
-
-![alt text](img/gestionar_inventario.png)
+![alt text](img/CDU_EXP01.png)
+### 3.2. Gestionar datos
+![alt text](img/CDU_EXP02.png)
+### 3.3. Gestionar Ventas
+![alt text](img/CDU_EXP03.png)
+### 3.4. CDU 100 Manejar Pagos
+![alt text](img/CDU_EXP04.png)
