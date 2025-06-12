@@ -48,3 +48,23 @@ IMPORCOMGUA busca digitalizar de extremo a extremo sus procesos, inventario, com
 ![alt text](img/CDU_300.png)
 ### 3.4. CDU 100 Manejar Pagos
 ![alt text](img/CDU_400.png)
+
+## 4. Matrices de Trazabilidad
+
+### A. Stakeholders vs Requerimientos
+|Stakeholder|CUN 100|CUN 200|CUN 300|CUN 400|
+|-|-|-|-|-|
+|Administrador|✅|✅|✅|✅|
+
+### B. Stakeholders vs Casos de Uso
+|Stakeholder|CDU 100|CDU 002|CDU 003 |CDU 005|
+|-|-|-|-|-|
+|Administrador|✅|✅|✅|✅|
+
+### C. Requerimientos vs Casos de uso
+|Requerimiento|CDU 100|CDU 002|CDU 003 |CDU 005|
+|-|-|-|-|-|
+|Gestión de Inventario|✅||||
+|Gestión de Datos||✅|||
+|Gestión de Ventas|||✅|✅|
+|Manejo de Pagos|||✅|✅|
