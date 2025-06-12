@@ -23,3 +23,11 @@ IMPORCOMGUA busca digitalizar de extremo a extremo sus procesos, inventario, com
 ### B.2 Diagrama de CDU de Alto nivel Primera descomposición
 
 ![alt text](img/primera%20descomposicion.png)
+
+## 2. Drivers Arquitectónicos
+
+## 3. Diagramas CDU Expandidos
+
+### 3.1. Gestionar Inventario
+
+![alt text](img/gestionar_inventario.png)
