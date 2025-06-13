@@ -29,14 +29,149 @@ IMPORCOMGUA busca digitalizar de extremo a extremo sus procesos, inventario, com
 
 ## A. Requerimientos funcionales críticos
 
-### Gestión de Inventario (CUN 100)
- El Administrador procesa cada ingreso de mercancía (DUCA), registrando contenedor, documento aduanero y cantidad en fardos/paquetes; el sistema convierte la cantidad a unidades, actualiza el saldo por producto y conserva un rastro histórico. El mismo módulo permite registrar salidas de bodega asociadas a la venta seleccionada y, cuando es necesario, consultar el historial de ventas relacionadas, registrar devoluciones o ajustes de stock y disparar una alerta automática cuando el inventario cae por debajo del umbral mínimo configurado.
-### Gestión de Datos (CUN 200)
- El Administrador mantiene las entidades principales. Al crear Clientes se genera el código automáticamente combinando el prefijo de departamento y un correlativo; al crear Productos se fija una sola vez el número de “unidades por fardo/paquete”, valor que luego se reutiliza en inventario y ventas; al crear Vendedores se guarda un porcentaje de comisión que el sistema usará al liquidar las ventas. Cada entidad admite consultar, editar y eliminar.
-### Gestión de Ventas (CUN 300)
- El vendedor registra la venta seleccionando cliente, productos y tipo de pago. La aplicación recupera el NIT del cliente, valida la disponibilidad en inventario, calcula totales en unidades y en quetzales y deja la venta en estado “Cobro pendiente”. Puede aplicar descuentos autorizados, anular la venta y, en fase de seguimiento, consultarla mediante filtros. Cuando la venta se liquida, el sistema calcula automáticamente la comisión del vendedor y genera alertas de “crédito vencido” si el plazo pactado expira sin pago.
-### Manejo de Pagos (CUN 400)
- El Cliente rellena el formulario de pago y el Encargado de Cobranza registra abonos parciales o totales. Tras buscar la venta y mostrar su detalle, ingresa banco, número de recibo y monto; antes de confirmar el abono revisa la información de cobranza vigente y, en cualquier momento, puede consultar el saldo acumulado del cliente. El sistema actualiza el saldo residual, cambia el estado a “Parcial” o “Pagado” y, en este último caso, registra la fecha de cancelación definitiva. Cuando el saldo llega a cero, el sistema liquida la comisión correspondiente al vendedor.
+### 1. Gestión de Inventario (CUN 100)
+
+- **RF-101 Recepción de mercancía (DUCA)**
+  - El sistema debe solicitar:
+    - Número de DUCA (si ya existe, número y fecha de DUCA rectificada).
+    - Número de contenedor.
+    - Fecha de ingreso (autorrellenada, editable).
+    - Producto y cantidad en fardos/paquetes.
+  - Recuperar automáticamente las unidades por fardo desde la ficha de producto y calcular las unidades totales.
+  - Actualizar el saldo del producto y guardar el movimiento en el historial.
+
+- **RF-102 Despacho de productos**
+  - Seleccionar una venta vigente y marcar sus productos como despachados.
+  - Restar las unidades correspondientes del inventario.
+
+- **RF-103 Revisión de historial de ventas**
+  - Mostrar las ventas asociadas al cliente o al producto para ayudar a elegir el despacho.
+
+- **RF-104 Salida de bodega**
+  - Registrar la fecha de salida y el responsable; actualizar el saldo de inventario al confirmar la salida.
+
+- **RF-105 Recibir productos**
+  - Permite añadir productos debido a la recepción de los mismos.
+
+- **RF-106 Cálculo de unidades**
+  - Multiplicar la cantidad en fardos/paquetes por unidades por fardo y mostrar el resultado.
+
+- **RF-107 Actualización de inventario**
+  - Reflejar el saldo final de cada producto después de cualquier movimiento.
+
+- **RF-108 Supervisión de niveles**
+  - Mostrar el stock actual.
+
+- **RF-109 Alerta de bajo nivel**
+  - Enviar notificación al Administrador cuando el inventario de un producto sea menor al mínimo.
+
+---
+
+### 2. Gestionar datos (CUN 200)
+
+#### 2.1 Clientes
+
+- **RF-201 Registrar Cliente**
+  - Solicitar: nombre del negocio, nombre del contacto, NIT, departamento, municipio, tipo de venta.
+  - Generar automáticamente el código de cliente (prefijo de departamento + correlativo).
+
+- **RF-202 Consultar Cliente**
+  - Buscar por código de cliente o NIT para mostrar los datos del usuario.
+
+- **RF-203 Actualizar Cliente**
+  - Permitir modificar datos no clave (teléfono, dirección, observaciones).
+
+- **RF-204 Dar de baja Cliente**
+  - Marcar al cliente como inactivo y conservar su historial de ventas.
+
+#### 2.2 Productos
+
+- **RF-205 Registrar Producto**
+  - Solicitar: código, nombre, unidad de medida, unidades por fardo/paquete.
+
+- **RF-206 Consultar Producto**
+  - Buscar por código o nombre y mostrar disponibilidad actual.
+
+- **RF-207 Actualizar Producto**
+  - Permitir editar precio, nombre o unidades.
+
+- **RF-208 Retirar Producto de catálogo**
+  - Marcar el producto como no disponible para nuevas ventas.
+
+#### 2.3 Vendedores
+
+- **RF-209 Registrar Vendedor**
+  - Solicitar datos personales y porcentaje de comisión.
+
+- **RF-210 Consultar Vendedor**
+  - Mostrar los datos del vendedor con historial de ventas.
+
+- **RF-211 Actualizar Vendedor**
+  - Permitir modificar teléfono o porcentaje de comisión.
+
+- **RF-212 Dar de baja Vendedor**
+  - Marcar al vendedor como inactivo sin eliminar registros anteriores.
+
+---
+
+### 3. Gestionar Ventas (CUN 300)
+
+- **RF-301 Registrar Venta**
+  - El sistema debe solicitar:
+    - Fecha de venta (autorrellenada, editable).
+    - Cliente (Se recupera automáticamente su NIT).
+    - Productos (código o nombre + cantidad).
+    - Tipo de pago (contado/crédito) y, si es crédito, días de plazo.
+    - Vendedor.
+    - Número de envío (obligatorio).
+    - Datos de factura (número DTE, nombre y NIT de factura) opcionales.
+  - Validar disponibilidad en inventario.
+  - Calcular cantidades en unidades, precio por fardo/paquete y total en quetzales.
+  - Guardar la venta con estado inicial “Cobro pendiente” y estado “Vigente”.
+
+- **RF-302 Aplicar Descuento**
+  - Permitir aplicar un porcentaje de descuento autorizado y recalcular totales.
+
+- **RF-303 Anular Venta**
+  - Cambiar el estado a “Anulada” y devolver stock al inventario.
+
+- **RF-304 Consultar Venta**
+  - Buscar por número de envío, cliente o fecha y mostrar detalle.
+
+- **RF-305 Alerta de crédito vencido**
+  - Generar notificación si la venta a crédito supera el plazo pactado sin pago.
+
+- **RF-306 Liquidar Comisión**
+  - Una vez pagada la venta, calcular y registrar la comisión del vendedor.
+
+---
+
+### 4. Manejar Datos (CUN 400)
+
+- **RF-401 Registrar Pago**
+  - Seleccionar la venta y solicitar:
+    - Fecha de pago.
+    - Banco (Industrial, Banrural, G&T, BAM).
+    - Número de cuenta y n.º de transferencia/depósito.
+    - Número de recibo de caja.
+    - Monto de abono.
+  - Antes de confirmar, mostrar saldo pendiente.
+
+- **RF-402 Revisar Información de Cobranza**
+  - Mostrar al encargado el saldo pendiente, los días de crédito restantes y la lista de abonos anteriores.
+
+- **RF-403 Registrar Medio de Pago**
+  - Identificar si la cuenta está en estado “Pagado en su totalidad” o “Pago Parcial” si no se cubrió la totalidad del monto.
+
+- **RF-404 Actualizar Estado de Cobro**
+  - Recalcular saldo y cambiar estado a “Parcial” o “Pagado”; registrar la fecha de cancelación definitiva si el saldo llega a cero.
+
+- **RF-405 Consultar Saldo de Cliente**
+  - Permitir al encargado ver en cualquier momento el saldo de un cliente.
+
+- **RF-406 Liquidar Comisión en Pago Total**
+  - Cuando el saldo llegue a cero, se liquidará automáticamente la comisión correspondiente al vendedor.
+
 
 ## 3. Diagramas CDU Expandidos
 
