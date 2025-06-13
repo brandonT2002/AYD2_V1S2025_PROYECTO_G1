@@ -687,8 +687,8 @@ IMPORCOMGUA busca digitalizar de extremo a extremo sus procesos, inventario, com
 |RF 406|✅|
 
 ### C. Requerimientos vs Casos de uso
-|Requerimiento/CDUs|CDU 1.0|
-|:-:|:-:|
+|Requerimiento/CDUs|CDU 1.0|CDU 2.1|CDU 2.2|CDU 2.3|CDU 3.0|CDU 4.0|
+|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
 |RF 101|✅|
 |RF 102|✅|
 |RF 103|✅|
@@ -698,39 +698,30 @@ IMPORCOMGUA busca digitalizar de extremo a extremo sus procesos, inventario, com
 |RF 107|✅|
 |RF 108|✅|
 |RF 109|✅|
-
-|Requerimiento/CDUs|CDU 2.1|CDU 2.2|CDU 2.3|
-|:-:|:-:|:-:|:-:|
-|RF 201|✅|||
-|RF 202|✅|||
-|RF 203|✅|||
-|RF 204|✅|||
-|RF 205||✅||
-|RF 206||✅||
-|RF 207||✅||
-|RF 208||✅||
-|RF 209|||✅|
-|RF 210|||✅|
-|RF 211|||✅|
-|RF 212|||✅|
-
-|Requerimiento/CDUs|CDU 3.0|
-|:-:|:-:|
-|RF 301|✅|
-|RF 302|✅|
-|RF 303|✅|
-|RF 304|✅|
-|RF 305|✅|
-|RF 306|✅|
-
-|Requerimiento/CDUs|CDU 4.0|
-|:-:|:-:|
-|RF 401|✅|
-|RF 402|✅|
-|RF 403|✅|
-|RF 404|✅|
-|RF 405|✅|
-|RF 406|✅|
+|RF 201||✅|||
+|RF 202||✅|||
+|RF 203||✅|||
+|RF 204||✅|||
+|RF 205|||✅||
+|RF 206|||✅||
+|RF 207|||✅||
+|RF 208|||✅||
+|RF 209||||✅|
+|RF 210||||✅|
+|RF 211||||✅|
+|RF 212||||✅|
+|RF 301|||||✅|
+|RF 302|||||✅|
+|RF 303|||||✅|
+|RF 304|||||✅|
+|RF 305|||||✅|
+|RF 306|||||✅|
+|RF 401||||||✅|
+|RF 402||||||✅|
+|RF 403||||||✅|
+|RF 404||||||✅|
+|RF 405||||||✅|
+|RF 406||||||✅|
 
 > [!NOTE]
 >
