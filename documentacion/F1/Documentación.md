@@ -727,9 +727,23 @@ IMPORCOMGUA busca digitalizar de extremo a extremo sus procesos, inventario, com
 >
 > Los nombres de los casos de uso se encuentran en el diagrama CDU expandido.
 
-## 8. Diagrama Entidad Relación
+## 5. Identificación de estructuras arquitectónicas y selección del o los estilos arquitectónicos y la razón de su elección.
+
+Como equipo de desarrollo, decidimos implementar el estilo arquitectónico cliente-servidor porque se alinea con las necesidades funcionales y técnicas de nuestro sistema. Uno de los factores clave que nos llevó a esta elección es que los usuarios acceden al sistema desde distintos dispositivos conectados a la red —como computadoras portátiles o móviles— y necesitan una interfaz clara y accesible que les permita interactuar con los módulos del sistema, sin preocuparse por la complejidad interna del mismo.
+
+En esta arquitectura, la responsabilidad se divide claramente: el cliente se encarga de la presentación y la interacción con el usuario, mientras que el servidor concentra toda la lógica de negocio y el acceso a los datos. Esto lo reflejamos en nuestros diagramas, donde los usuarios se comunican con la capa de aplicación mediante HTTP, mientras que el servidor de aplicación se comunica con la base de datos SQL Server utilizando TCP/IP. De esta manera, conseguimos centralizar el procesamiento y mantener una estructura más controlada y segura.
+
+Además, este estilo nos permite escalar o modificar el sistema sin afectar a todos los componentes. Por ejemplo, si deseamos actualizar el módulo de “Gestión de inventario”, podemos hacerlo directamente en el servidor sin necesidad de tocar el cliente. Esta separación nos facilita el mantenimiento, la evolución del sistema y el manejo de múltiples usuarios simultáneamente.
+
+También consideramos que este enfoque permite una mejor integración con servicios externos, como APIs, lo cual es evidente en nuestra arquitectura actual. Todo esto nos lleva a concluir que el modelo cliente-servidor no solo es el más natural para la forma en que el sistema será utilizado, sino también el más robusto y escalable para el tipo de solución que estamos construyendo.
+
+## 6. Diagrama de bloques que represente la arquitectura implementada
 
 ![alt text](img/ER.png)
+
+## 8. Diagrama Entidad Relación
+
+![alt text](img/Diagrama%20de%20bloques.jpeg)
 
 ## 9. Prototipos
 
