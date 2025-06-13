@@ -601,7 +601,8 @@ IMPORCOMGUA busca digitalizar de extremo a extremo sus procesos, inventario, com
 
 ## 4. Matrices de Trazabilidad
 
-> [!NOTE] : 
+> [!NOTE]
+>
 > Los nombres de los casos de uso se encuentran en el diagrama CDU expandido.
 
 ### A. Stakeholders vs Requerimientos
@@ -731,5 +732,10 @@ IMPORCOMGUA busca digitalizar de extremo a extremo sus procesos, inventario, com
 |RF 405|✅|
 |RF 406|✅|
 
-> [!NOTE] : 
+> [!NOTE]
+>
 > Los nombres de los casos de uso se encuentran en el diagrama CDU expandido.
+
+## 8. Diagrama Entidad Relación
+
+![alt text](img/ER.png)
