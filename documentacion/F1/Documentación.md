@@ -601,22 +601,135 @@ IMPORCOMGUA busca digitalizar de extremo a extremo sus procesos, inventario, com
 
 ## 4. Matrices de Trazabilidad
 
+> [!NOTE] : 
+> Los nombres de los casos de uso se encuentran en el diagrama CDU expandido.
+
 ### A. Stakeholders vs Requerimientos
-|Stakeholder|CUN 100|CUN 200|CUN 300|CUN 400|
-|-|-|-|-|-|
-|Administrador|✅|✅|✅|✅|
+|Requerimiento|Administrador|Vendedor|Cliente|
+|:-:|:-:|:-:|:-:|
+|RF 101|✅|||
+|RF 102|✅|||
+|RF 103||✅|✅|
+|RF 104|✅|||
+|RF 105|✅|||
+|RF 106|✅|||
+|RF 107|✅|||
+|RF 108|✅|||
+|RF 109|✅|||
+|RF 201|✅||✅|
+|RF 202|✅|✅||
+|RF 203|✅|✅||
+|RF 204|✅|||
+|RF 205|✅|✅||
+|RF 206|✅|✅||
+|RF 207|✅|✅||
+|RF 208|✅|||
+|RF 209|✅|✅||
+|RF 210|✅|✅||
+|RF 211|✅|||
+|RF 212|✅|||
+|RF 301|✅|✅||
+|RF 302|✅|||
+|RF 303|✅|||
+|RF 304|✅|||
+|RF 305|✅|||
+|RF 306|✅|||
+|RF 401||✅||
+|RF 402||✅||
+|RF 403||✅||
+|RF 404||✅||
+|RF 405||✅||
+|RF 406|||✅|
 
 ### B. Stakeholders vs Casos de Uso
-|Stakeholder|CDU 100|CDU 002|CDU 003 |CDU 005|
-|-|-|-|-|-|
-|Administrador|✅|✅|✅|✅|
+|CDU/Stakeholders|Administrador|
+|:-:|:-:|
+|RF 101|✅|
+|RF 102|✅|
+|RF 103|✅|
+|RF 104|✅|
+|RF 105|✅|
+|RF 106|✅|
+|RF 107|✅|
+|RF 108|✅|
+|RF 109|✅|
+|RF 201||
+|RF 202||
+|RF 203||
+|RF 204||
+|RF 205|✅|
+|RF 206||
+|RF 207|✅|
+|RF 208|✅|
+|RF 209|✅|
+|RF 210|✅|
+|RF 211|✅|
+|RF 212|✅|
+|RF 213|✅|
+|RF 214|✅|
+|RF 215|✅|
+|RF 216|✅|
+|RF 301|✅|
+|RF 302|✅|
+|RF 303|✅|
+|RF 304|✅|
+|RF 305|✅|
+|RF 306|✅|
+|RF 307|✅|
+|RF 308|✅|
+|RF 309|✅|
+|RF 401|✅|
+|RF 402|✅|
+|RF 403|✅|
+|RF 404|✅|
+|RF 405|✅|
+|RF 406|✅|
 
 ### C. Requerimientos vs Casos de uso
-|Requerimiento|CDU 100|CDU 002|CDU 003 |CDU 005|
-|-|-|-|-|-|
-|Gestión de Inventario|✅||||
-|Gestión de Datos||✅|||
-|Gestión de Ventas|||✅|✅|
-|Manejo de Pagos|||✅|✅|
+|Requerimiento/CDUs|CDU 1.0|
+|:-:|:-:|
+|RF 101|✅|
+|RF 102|✅|
+|RF 103|✅|
+|RF 104|✅|
+|RF 105|✅|
+|RF 106|✅|
+|RF 107|✅|
+|RF 108|✅|
+|RF 109|✅|
 
+|Requerimiento/CDUs|CDU 2.1|CDU 2.2|CDU 2.3|
+|:-:|:-:|:-:|:-:|
+|RF 201|✅|||
+|RF 202|✅|||
+|RF 203|✅|||
+|RF 204|✅|||
+|RF 205||✅||
+|RF 206||✅||
+|RF 207||✅||
+|RF 208||✅||
+|RF 209|||✅|
+|RF 210|||✅|
+|RF 211|||✅|
+|RF 212|||✅|
 
+|Requerimiento/CDUs|CDU 3.0|
+|:-:|:-:|
+|RF 301|✅|
+|RF 302|✅|
+|RF 303|✅|
+|RF 304|✅|
+|RF 305|✅|
+|RF 306|✅|
+
+|Requerimiento/CDUs|CDU 4.0|
+|:-:|:-:|
+|RF 401|✅|
+|RF 402|✅|
+|RF 403|✅|
+|RF 404|✅|
+|RF 405|✅|
+|RF 406|✅|
+
+> [!NOTE] : 
+> Los nombres de los casos de uso se encuentran en el diagrama CDU expandido.
