@@ -907,6 +907,10 @@ También consideramos que este enfoque permite una mejor integración con servic
 
 ![alt text](img/ER.png)
 
+## 7. Diagrama de Despliegue
+
+![alt text](img/diagrama_despliegue.png)
+
 ## 8. Diagrama Entidad Relación
 
 ![alt text](img/Diagrama%20de%20bloques.jpeg)
