@@ -601,7 +601,8 @@ IMPORCOMGUA busca digitalizar de extremo a extremo sus procesos, inventario, com
 
 ## 4. Matrices de Trazabilidad
 
-> [!NOTE] : 
+> [!NOTE]
+>
 > Los nombres de los casos de uso se encuentran en el diagrama CDU expandido.
 
 ### A. Stakeholders vs Requerimientos
@@ -686,8 +687,8 @@ IMPORCOMGUA busca digitalizar de extremo a extremo sus procesos, inventario, com
 |RF 406|✅|
 
 ### C. Requerimientos vs Casos de uso
-|Requerimiento/CDUs|CDU 1.0|
-|:-:|:-:|
+|Requerimiento/CDUs|CDU 1.0|CDU 2.1|CDU 2.2|CDU 2.3|CDU 3.0|CDU 4.0|
+|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
 |RF 101|✅|
 |RF 102|✅|
 |RF 103|✅|
@@ -697,39 +698,110 @@ IMPORCOMGUA busca digitalizar de extremo a extremo sus procesos, inventario, com
 |RF 107|✅|
 |RF 108|✅|
 |RF 109|✅|
+|RF 201||✅|||
+|RF 202||✅|||
+|RF 203||✅|||
+|RF 204||✅|||
+|RF 205|||✅||
+|RF 206|||✅||
+|RF 207|||✅||
+|RF 208|||✅||
+|RF 209||||✅|
+|RF 210||||✅|
+|RF 211||||✅|
+|RF 212||||✅|
+|RF 301|||||✅|
+|RF 302|||||✅|
+|RF 303|||||✅|
+|RF 304|||||✅|
+|RF 305|||||✅|
+|RF 306|||||✅|
+|RF 401||||||✅|
+|RF 402||||||✅|
+|RF 403||||||✅|
+|RF 404||||||✅|
+|RF 405||||||✅|
+|RF 406||||||✅|
 
-|Requerimiento/CDUs|CDU 2.1|CDU 2.2|CDU 2.3|
-|:-:|:-:|:-:|:-:|
-|RF 201|✅|||
-|RF 202|✅|||
-|RF 203|✅|||
-|RF 204|✅|||
-|RF 205||✅||
-|RF 206||✅||
-|RF 207||✅||
-|RF 208||✅||
-|RF 209|||✅|
-|RF 210|||✅|
-|RF 211|||✅|
-|RF 212|||✅|
-
-|Requerimiento/CDUs|CDU 3.0|
-|:-:|:-:|
-|RF 301|✅|
-|RF 302|✅|
-|RF 303|✅|
-|RF 304|✅|
-|RF 305|✅|
-|RF 306|✅|
-
-|Requerimiento/CDUs|CDU 4.0|
-|:-:|:-:|
-|RF 401|✅|
-|RF 402|✅|
-|RF 403|✅|
-|RF 404|✅|
-|RF 405|✅|
-|RF 406|✅|
-
-> [!NOTE] : 
+> [!NOTE]
+>
 > Los nombres de los casos de uso se encuentran en el diagrama CDU expandido.
+
+## 5. Identificación de estructuras arquitectónicas y selección del o los estilos arquitectónicos y la razón de su elección.
+
+Como equipo de desarrollo, decidimos implementar el estilo arquitectónico cliente-servidor porque se alinea con las necesidades funcionales y técnicas de nuestro sistema. Uno de los factores clave que nos llevó a esta elección es que los usuarios acceden al sistema desde distintos dispositivos conectados a la red —como computadoras portátiles o móviles— y necesitan una interfaz clara y accesible que les permita interactuar con los módulos del sistema, sin preocuparse por la complejidad interna del mismo.
+
+En esta arquitectura, la responsabilidad se divide claramente: el cliente se encarga de la presentación y la interacción con el usuario, mientras que el servidor concentra toda la lógica de negocio y el acceso a los datos. Esto lo reflejamos en nuestros diagramas, donde los usuarios se comunican con la capa de aplicación mediante HTTP, mientras que el servidor de aplicación se comunica con la base de datos SQL Server utilizando TCP/IP. De esta manera, conseguimos centralizar el procesamiento y mantener una estructura más controlada y segura.
+
+Además, este estilo nos permite escalar o modificar el sistema sin afectar a todos los componentes. Por ejemplo, si deseamos actualizar el módulo de “Gestión de inventario”, podemos hacerlo directamente en el servidor sin necesidad de tocar el cliente. Esta separación nos facilita el mantenimiento, la evolución del sistema y el manejo de múltiples usuarios simultáneamente.
+
+También consideramos que este enfoque permite una mejor integración con servicios externos, como APIs, lo cual es evidente en nuestra arquitectura actual. Todo esto nos lleva a concluir que el modelo cliente-servidor no solo es el más natural para la forma en que el sistema será utilizado, sino también el más robusto y escalable para el tipo de solución que estamos construyendo.
+
+## 6. Diagrama de bloques que represente la arquitectura implementada
+
+![alt text](img/ER.png)
+
+## 8. Diagrama Entidad Relación
+
+![alt text](img/Diagrama%20de%20bloques.jpeg)
+
+## 9. Prototipos
+
+Los prototipos de interfaz presentados a continuación fueron diseñados aplicando principios de usabilidad y accesibilidad, con el objetivo de facilitar la interacción del usuario con las diferentes funcionalidades del sistema IMPORCOMGUA. Cada prototipo se centra en proporcionar una experiencia intuitiva y eficiente para los procesos operativos clave de la empresa.
+
+### 9.1 Clientes
+![alt text](img/Clientespng.png)
+
+**Funcionalidades principales:**
+- Validación de campos obligatorios y opcionales
+- Selección dinámica de municipios según departamento
+- Configuración de tipos de venta (Crédito/Contado/Ambas)
+
+### 9.2 Productos
+![alt text](img/Producto.png)
+
+**Funcionalidades principales:**
+- Configuración de unidades de medida (Unidad/Fardo/Paquete)
+- Definición de unidades por fardo/paquete para cálculos automáticos
+- Validación de campos obligatorios
+
+### 9.3 Vendedores
+![alt text](img/vendedor.png)
+
+**Funcionalidades principales:**
+- Registro de información personal y de contacto
+- Configuración de porcentaje de comisión personalizado
+- Validación de formato de teléfono
+
+### 9.4 Registrar Salida
+![alt text](img/salida.png)
+
+**Funcionalidades principales:**
+- Búsqueda de ventas por número de envío o cliente
+- Visualización completa de información de venta
+- Registro de fecha de salida de bodega
+
+### 9.5 Regstrar pagos
+![alt text](img/pagos.png)
+
+**Funcionalidades principales:**
+- Búsqueda de ventas por número de envío o cliente
+- Registro de pagos con múltiples bancos (Industrial/Banrural/G&T/BAM)
+
+### 9.6 Registrar Nueva venta
+![alt text](img/nueva_venta.png)
+
+**Funcionalidades principales:**
+- Selección de cliente con recuperación automática de datos fiscales
+- Configuración de términos de pago (Contado/Crédito) con días de crédito
+- Registro múltiple de productos
+- Generación automática de cantidades en unidades
+
+### 9.7 Ingresar Inventario
+![alt text](img/ingresar_inventario.png)
+
+**Funcionalidades principales:**
+- Registro automático de fecha de ingreso (modificable)
+- Selección de productos con recuperación automática de configuraciones
+- Registro de información aduanera (No. Contenedor, DUCA)
+- Campos para observaciones adicionales
