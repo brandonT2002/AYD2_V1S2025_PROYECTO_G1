@@ -730,3 +730,64 @@ IMPORCOMGUA busca digitalizar de extremo a extremo sus procesos, inventario, com
 ## 8. Diagrama Entidad Relación
 
 ![alt text](img/ER.png)
+
+## 9. Prototipos
+
+Los prototipos de interfaz presentados a continuación fueron diseñados aplicando principios de usabilidad y accesibilidad, con el objetivo de facilitar la interacción del usuario con las diferentes funcionalidades del sistema IMPORCOMGUA. Cada prototipo se centra en proporcionar una experiencia intuitiva y eficiente para los procesos operativos clave de la empresa.
+
+### 9.1 Clientes
+![alt text](img/Clientespng.png)
+
+**Funcionalidades principales:**
+- Validación de campos obligatorios y opcionales
+- Selección dinámica de municipios según departamento
+- Configuración de tipos de venta (Crédito/Contado/Ambas)
+
+### 9.2 Productos
+![alt text](img/Producto.png)
+
+**Funcionalidades principales:**
+- Configuración de unidades de medida (Unidad/Fardo/Paquete)
+- Definición de unidades por fardo/paquete para cálculos automáticos
+- Validación de campos obligatorios
+
+### 9.3 Vendedores
+![alt text](img/vendedor.png)
+
+**Funcionalidades principales:**
+- Registro de información personal y de contacto
+- Configuración de porcentaje de comisión personalizado
+- Validación de formato de teléfono
+
+### 9.4 Registrar Salida
+![alt text](img/salida.png)
+
+**Funcionalidades principales:**
+- Búsqueda de ventas por número de envío o cliente
+- Visualización completa de información de venta
+- Registro de fecha de salida de bodega
+
+### 9.5 Regstrar pagos
+![alt text](img/pagos.png)
+
+**Funcionalidades principales:**
+- Búsqueda de ventas por número de envío o cliente
+- Registro de pagos con múltiples bancos (Industrial/Banrural/G&T/BAM)
+
+### 9.6 Registrar Nueva venta
+![alt text](img/nueva_venta.png)
+
+**Funcionalidades principales:**
+- Selección de cliente con recuperación automática de datos fiscales
+- Configuración de términos de pago (Contado/Crédito) con días de crédito
+- Registro múltiple de productos
+- Generación automática de cantidades en unidades
+
+### 9.7 Ingresar Inventario
+![alt text](img/ingresar_inventario.png)
+
+**Funcionalidades principales:**
+- Registro automático de fecha de ingreso (modificable)
+- Selección de productos con recuperación automática de configuraciones
+- Registro de información aduanera (No. Contenedor, DUCA)
+- Campos para observaciones adicionales
