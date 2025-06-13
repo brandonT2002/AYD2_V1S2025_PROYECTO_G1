@@ -971,3 +971,6 @@ Los prototipos de interfaz presentados a continuación fueron diseñados aplican
 - Selección de productos con recuperación automática de configuraciones
 - Registro de información aduanera (No. Contenedor, DUCA)
 - Campos para observaciones adicionales
+
+## 10. Tablero de Kanban/Trello
+https://trello.com/invite/b/6848d8b34f62ec9b0b2df06d/ATTI486dda9bfe069d4d8850c3d784877eebF8C22A4B/kanban-template
