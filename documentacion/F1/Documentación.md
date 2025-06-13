@@ -172,6 +172,37 @@ IMPORCOMGUA busca digitalizar de extremo a extremo sus procesos, inventario, com
 - **RF-406 Liquidar Comisión en Pago Total**
   - Cuando el saldo llegue a cero, se liquidará automáticamente la comisión correspondiente al vendedor.
 
+## B. Requerimientos no funcionales
+
+### 2.1 Rendimiento y capacidad
+- Las operaciones de alta — ventas, abonos y recepciones de inventario— deben finalizar en **≤ 5 s** con hasta **200 transacciones concurrentes**.  
+- Para lograrlo se emplearán índices en las tablas principales y consultas paginadas; si el volumen crece, bastará optimizar los índices o mover la base a un servidor con más recursos, sin tocar el código.
+
+### 2.2 Escalabilidad
+- El sistema se construirá con **capas separadas (presentación, lógica y datos)** y variables de entorno para las conexiones; así, en el futuro podrá trasladarse a un servidor con mayor CPU/RAM o duplicarse en otra instancia **sin reescribir la aplicación**.  
+
+### 2.3 Disponibilidad
+- Se exige una disponibilidad práctica de **≥ 95 %** en horario laboral.  
+- Una única instancia con reinicios automáticos ante fallo.
+
+### 2.4 Seguridad y cumplimiento
+- Contraseñas almacenadas con **SHA-256**.  
+- Acceso cifrado vía **HTTPS (TLS 1.2 o superior)**.  
+- Control de acceso por roles (Administrador, Vendedor, Bodeguero, Cobranza, Cliente).  
+- Se registrará en bitácora la creación, edición o eliminación de ventas, pagos e inventario para auditoría.
+
+### 2.5 Usabilidad
+- Interfaz web **responsiva** con validación en línea para minimizar errores de captura.  
+- Usuarios operativos (bodega y cobranza) deberán dominar sus tareas habituales tras **dos sesiones de práctica** como máximo.
+
+### 2.6 Mantenibilidad
+- Repositorio Git con código comentado y un **README** de instalación.  
+- Al menos **una prueba automática** por módulo crítico (Inventario, Ventas, Pagos).  
+
+### 2.7 Portabilidad / despliegue
+- La aplicación debe poder ejecutarse localmente (ambiente de desarrollo) y, en su entrega final, **deploy** a una instancia **AWS EC2**.
+- La misma versión de código debe correr sin cambios entre ambos entornos.
+
 
 ## 3. Diagramas CDU Expandidos
 
