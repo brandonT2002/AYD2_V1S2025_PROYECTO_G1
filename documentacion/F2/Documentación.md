@@ -208,6 +208,62 @@ IMPORCOMGUA busca digitalizar de extremo a extremo sus procesos, inventario, com
 - La misma versión de código debe correr sin cambios entre ambos entornos.
 
 
+## C. Requerimientos de Restricción
+
+### R-01: Restricción Temporal
+**Descripción:** El proyecto debe completarse en el transcurso de un mes, dividido en tres fases específicas con entregables definidos.
+
+**Justificación:** La empresa IMPORCOMGUA requiere una implementación rápida debido a las ineficiencias operativas actuales que están impactando la productividad y capacidad de respuesta hacia clientes.
+
+**Impacto en la arquitectura:**
+- Necesidad de implementar una arquitectura modular que permita desarrollo incremental
+- Priorización de funcionalidades críticas para el MVP (Fase 2)
+- Selección de tecnologías maduras y bien documentadas para reducir curva de aprendizaje
+- Reutilización de componentes y patrones de diseño establecidos
+
+### R-02: Restricción de Recursos Humanos
+**Descripción:** El desarrollo debe ser realizado por un equipo de tamaño limitado (grupo de 7 personas) con roles específicos y participación validada de todos los integrantes.
+
+**Justificación:** Todos los integrantes deben estar presentes en la calificación y tener commits sustanciales a lo largo del desarrollo.
+
+**Impacto en la arquitectura:**
+- Diseño de arquitectura simple y comprensible para facilitar el trabajo colaborativo
+- Implementación de patrones de diseño conocidos para reducir complejidad
+- Documentación exhaustiva para facilitar la colaboración del equipo
+- División clara de responsabilidades entre módulos del sistema
+
+### R-03: Restricción de Plataforma Web
+**Descripción:** La solución debe ser una aplicación web que permita automatizar y optimizar los procesos clave del negocio.
+
+**Justificación:** IMPORCOMGUA requiere una solución tecnológica web accesible desde diferentes ubicaciones y dispositivos.
+
+**Impacto en la arquitectura:**
+- Implementación de protocolos web estándar (HTTP/HTTPS)
+- Consideración de navegadores web como plataforma de ejecución
+- Diseño de interfaces adaptables a diferentes dispositivos
+
+### R-04: Restricción de Despliegue en la Nube
+**Descripción:** El sistema final debe ser desplegado en un entorno en la nube, preparado para el entorno operativo de IMPORCOMGUA.
+
+**Justificación:** Necesidad de escalabilidad, disponibilidad y mantenimiento eficiente del sistema.
+
+**Impacto en la arquitectura:**
+- Arquitectura compatible con servicios de nube
+- Implementación de patrones cloud-native
+- Configuración para ambientes distribuidos
+
+### R-05: Restricción de Metodología Ágil
+**Descripción:** El desarrollo debe seguir una metodología ágil con iteraciones rápidas, validación continua y entrega incremental de funcionalidades.
+
+**Justificación:** Necesidad de gestión eficiente del tiempo, colaboración continua y alineación con prioridades del cliente.
+
+**Impacto en la arquitectura:**
+- Arquitectura modular que permita desarrollo e integración incremental
+- Diseño de componentes independientes para facilitar iteraciones
+- Implementación de interfaces bien definidas entre módulos
+
+---
+
 ## 3. Diagramas CDU Expandidos
 
 ### 3.1. CDU 100 Gestionar Inventario
