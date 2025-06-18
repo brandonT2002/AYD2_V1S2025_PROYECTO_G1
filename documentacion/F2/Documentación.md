@@ -460,7 +460,7 @@ También consideramos que este enfoque permite una mejor integración con servic
 
 ## 6. Diagrama de bloques que represente la arquitectura implementada
 
-![alt text](img/ER.png)
+![alt text](img/Diagrama%20de%20bloques.jpeg)
 
 ## 7. Diagrama de Despliegue
 
@@ -468,7 +468,7 @@ También consideramos que este enfoque permite una mejor integración con servic
 
 ## 8. Diagrama Entidad Relación
 
-![alt text](img/Diagrama%20de%20bloques.jpeg)
+![alt text](image.png)
 
 ## 9. Prototipos
 
