@@ -475,7 +475,7 @@ También consideramos que este enfoque permite una mejor integración con servic
 Los prototipos de interfaz presentados a continuación fueron diseñados aplicando principios de usabilidad y accesibilidad, con el objetivo de facilitar la interacción del usuario con las diferentes funcionalidades del sistema IMPORCOMGUA. Cada prototipo se centra en proporcionar una experiencia intuitiva y eficiente para los procesos operativos clave de la empresa.
 
 ### 9.1 Clientes
-![alt text](img/Clientespng.png)
+![alt text](img/Clientes.png)
 
 **Funcionalidades principales:**
 - Validación de campos obligatorios y opcionales
@@ -512,6 +512,11 @@ Los prototipos de interfaz presentados a continuación fueron diseñados aplican
 **Funcionalidades principales:**
 - Búsqueda de ventas por número de envío o cliente
 - Registro de pagos con múltiples bancos (Industrial/Banrural/G&T/BAM)
+- Mostrar al usuario:
+  - Días de créditos restantes
+  - Total a pagar
+  - El monto ya pagado
+  - El saldo pendiente a pagar
 
 ### 9.6 Registrar Nueva venta
 ![alt text](img/nueva_venta.png)
@@ -522,7 +527,7 @@ Los prototipos de interfaz presentados a continuación fueron diseñados aplican
 - Registro múltiple de productos
 - Generación automática de cantidades en unidades
 
-### 9.7 Ingresar Inventario
+### 9.7 Recepción de Mercancía
 ![alt text](img/ingresar_inventario.png)
 
 **Funcionalidades principales:**
