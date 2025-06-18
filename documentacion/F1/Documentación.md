@@ -211,7 +211,7 @@ IMPORCOMGUA busca digitalizar de extremo a extremo sus procesos, inventario, com
 ## 3. Diagramas CDU Expandidos
 
 ### 3.1. Gestionar Inventario
-![alt text](img/CDU_100.png)
+![alt text](image-3.png)
 
 #### 3.1.1. Descripción de casos de uso de CDU 100 Gestionar Inventario
 | **Nombre**                     | **RF101 Gestionar recepción de mercancía**         |
@@ -339,8 +339,8 @@ IMPORCOMGUA busca digitalizar de extremo a extremo sus procesos, inventario, com
 | **Mejoras**                    | Implementar un sistema de notificación más avanzado con diferentes canales. |
 
 ### 3.2. Gestionar datos
-![alt text](img/CDU_200.png)
 
+![alt text](image-5.png)
 #### 3.2.1. Descripción de casos de uso de CDU 200 Gestionar Datos
 | **Nombre**                     | **RF201 Gestionar Entidades**              |
 |---------------------------------|--------------------------------------------|
