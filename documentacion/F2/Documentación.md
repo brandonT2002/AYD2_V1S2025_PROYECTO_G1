@@ -66,9 +66,6 @@ IMPORCOMGUA busca digitalizar de extremo a extremo sus procesos, inventario, com
 - **RF-108 Supervisión de niveles**
   - Mostrar el stock actual.
 
-- **RF-109 Alerta de bajo nivel**
-  - Enviar notificación al Administrador cuando el inventario de un producto sea menor al mínimo.
-
 ---
 
 ### 2. Gestionar datos (CUN 200)
@@ -136,16 +133,10 @@ IMPORCOMGUA busca digitalizar de extremo a extremo sus procesos, inventario, com
 - **RF-302 Aplicar Descuento**
   - Permitir aplicar un porcentaje de descuento autorizado y recalcular totales.
 
-- **RF-303 Anular Venta**
-  - Cambiar el estado a “Anulada” y devolver stock al inventario.
-
 - **RF-304 Consultar Venta**
   - Buscar por número de envío, cliente o fecha y mostrar detalle.
 
-- **RF-305 Alerta de crédito vencido**
-  - Generar notificación si la venta a crédito supera el plazo pactado sin pago.
-
-- **RF-306 Liquidar Comisión**
+- **RF-305 Liquidar Comisión**
   - Una vez pagada la venta, calcular y registrar la comisión del vendedor.
 
 ---
