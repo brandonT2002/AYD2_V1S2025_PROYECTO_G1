@@ -9,7 +9,7 @@ const InputField = ({ name, label, icon, register, className, ...rest }) => {
     };
 
     return (
-        <div>
+        <div className="w-full">
             {label && (
                 <Label htmlFor={name} className={className}>
                     {label}
