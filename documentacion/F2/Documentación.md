@@ -12,11 +12,11 @@ IMPORCOMGUA busca digitalizar de extremo a extremo sus procesos, inventario, com
 
 ### B.1 Diagrama de CDU de Alto nivel
 
-![alt text](image.png)
+![alt text](img/image.png)
 
 ### B.2 Diagrama de CDU Primera descomposición
 
-![alt text](image-2.png)
+![alt text](img/image-2.png)
 
 ### B. 4 Identificación de Stakeholders
 
@@ -65,9 +65,6 @@ IMPORCOMGUA busca digitalizar de extremo a extremo sus procesos, inventario, com
 
 - **RF-108 Supervisión de niveles**
   - Mostrar el stock actual.
-
-- **RF-109 Alerta de bajo nivel**
-  - Enviar notificación al Administrador cuando el inventario de un producto sea menor al mínimo.
 
 ---
 
@@ -136,16 +133,10 @@ IMPORCOMGUA busca digitalizar de extremo a extremo sus procesos, inventario, com
 - **RF-302 Aplicar Descuento**
   - Permitir aplicar un porcentaje de descuento autorizado y recalcular totales.
 
-- **RF-303 Anular Venta**
-  - Cambiar el estado a “Anulada” y devolver stock al inventario.
-
 - **RF-304 Consultar Venta**
   - Buscar por número de envío, cliente o fecha y mostrar detalle.
 
-- **RF-305 Alerta de crédito vencido**
-  - Generar notificación si la venta a crédito supera el plazo pactado sin pago.
-
-- **RF-306 Liquidar Comisión**
+- **RF-305 Liquidar Comisión**
   - Una vez pagada la venta, calcular y registrar la comisión del vendedor.
 
 ---
@@ -208,10 +199,66 @@ IMPORCOMGUA busca digitalizar de extremo a extremo sus procesos, inventario, com
 - La misma versión de código debe correr sin cambios entre ambos entornos.
 
 
+## C. Requerimientos de Restricción
+
+### R-01: Restricción Temporal
+**Descripción:** El proyecto debe completarse en el transcurso de un mes, dividido en tres fases específicas con entregables definidos.
+
+**Justificación:** La empresa IMPORCOMGUA requiere una implementación rápida debido a las ineficiencias operativas actuales que están impactando la productividad y capacidad de respuesta hacia clientes.
+
+**Impacto en la arquitectura:**
+- Necesidad de implementar una arquitectura modular que permita desarrollo incremental
+- Priorización de funcionalidades críticas para el MVP (Fase 2)
+- Selección de tecnologías maduras y bien documentadas para reducir curva de aprendizaje
+- Reutilización de componentes y patrones de diseño establecidos
+
+### R-02: Restricción de Recursos Humanos
+**Descripción:** El desarrollo debe ser realizado por un equipo de tamaño limitado (grupo de 7 personas) con roles específicos y participación validada de todos los integrantes.
+
+**Justificación:** Todos los integrantes deben estar presentes en la calificación y tener commits sustanciales a lo largo del desarrollo.
+
+**Impacto en la arquitectura:**
+- Diseño de arquitectura simple y comprensible para facilitar el trabajo colaborativo
+- Implementación de patrones de diseño conocidos para reducir complejidad
+- Documentación exhaustiva para facilitar la colaboración del equipo
+- División clara de responsabilidades entre módulos del sistema
+
+### R-03: Restricción de Plataforma Web
+**Descripción:** La solución debe ser una aplicación web que permita automatizar y optimizar los procesos clave del negocio.
+
+**Justificación:** IMPORCOMGUA requiere una solución tecnológica web accesible desde diferentes ubicaciones y dispositivos.
+
+**Impacto en la arquitectura:**
+- Implementación de protocolos web estándar (HTTP/HTTPS)
+- Consideración de navegadores web como plataforma de ejecución
+- Diseño de interfaces adaptables a diferentes dispositivos
+
+### R-04: Restricción de Despliegue en la Nube
+**Descripción:** El sistema final debe ser desplegado en un entorno en la nube, preparado para el entorno operativo de IMPORCOMGUA.
+
+**Justificación:** Necesidad de escalabilidad, disponibilidad y mantenimiento eficiente del sistema.
+
+**Impacto en la arquitectura:**
+- Arquitectura compatible con servicios de nube
+- Implementación de patrones cloud-native
+- Configuración para ambientes distribuidos
+
+### R-05: Restricción de Metodología Ágil
+**Descripción:** El desarrollo debe seguir una metodología ágil con iteraciones rápidas, validación continua y entrega incremental de funcionalidades.
+
+**Justificación:** Necesidad de gestión eficiente del tiempo, colaboración continua y alineación con prioridades del cliente.
+
+**Impacto en la arquitectura:**
+- Arquitectura modular que permita desarrollo e integración incremental
+- Diseño de componentes independientes para facilitar iteraciones
+- Implementación de interfaces bien definidas entre módulos
+
+---
+
 ## 3. Diagramas CDU Expandidos
 
 ### 3.1. CDU 100 Gestionar Inventario
-![alt text](image-3.png)
+![alt text](img/image-3.png)
 
 #### 3.1.1 Descripción de CDU 100 Gestionar Inventario
 | **Campo**                  | **Descripción**                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
@@ -227,7 +274,7 @@ IMPORCOMGUA busca digitalizar de extremo a extremo sus procesos, inventario, com
 
 ### 3.2. CDU 200 Gestionar Datos
 
-![alt text](image-5.png)
+![alt text](img/image-5.png)
 
 #### 3.2.1 Descripción de CDU 200 Gestionar Datos
 
@@ -403,17 +450,23 @@ IMPORCOMGUA busca digitalizar de extremo a extremo sus procesos, inventario, com
 
 ## 5. Identificación de estructuras arquitectónicas y selección del o los estilos arquitectónicos y la razón de su elección.
 
-Como equipo de desarrollo, decidimos implementar el estilo arquitectónico cliente-servidor porque se alinea con las necesidades funcionales y técnicas de nuestro sistema. Uno de los factores clave que nos llevó a esta elección es que los usuarios acceden al sistema desde distintos dispositivos conectados a la red —como computadoras portátiles o móviles— y necesitan una interfaz clara y accesible que les permita interactuar con los módulos del sistema, sin preocuparse por la complejidad interna del mismo.
+**ARQUITECTURA EN CAPAS (REACT + FLASK + MYSQL)**
 
-En esta arquitectura, la responsabilidad se divide claramente: el cliente se encarga de la presentación y la interacción con el usuario, mientras que el servidor concentra toda la lógica de negocio y el acceso a los datos. Esto lo reflejamos en nuestros diagramas, donde los usuarios se comunican con la capa de aplicación mediante HTTP, mientras que el servidor de aplicación se comunica con la base de datos SQL Server utilizando TCP/IP. De esta manera, conseguimos centralizar el procesamiento y mantener una estructura más controlada y segura.
+**1. Capa de Presentación** – Frontend (React.js)
 
-Además, este estilo nos permite escalar o modificar el sistema sin afectar a todos los componentes. Por ejemplo, si deseamos actualizar el módulo de “Gestión de inventario”, podemos hacerlo directamente en el servidor sin necesidad de tocar el cliente. Esta separación nos facilita el mantenimiento, la evolución del sistema y el manejo de múltiples usuarios simultáneamente.
+El motivo de esta selección responde a la neesidad de mostrar una interfaz web responsiva, amigable y rápida, donde sea posible validar entradas del usuario antes de enviarlas al backend, así como consumir APIs RESTful expuestas por Flask, manejar autenticación y sesiones.
 
-También consideramos que este enfoque permite una mejor integración con servicios externos, como APIs, lo cual es evidente en nuestra arquitectura actual. Todo esto nos lleva a concluir que el modelo cliente-servidor no solo es el más natural para la forma en que el sistema será utilizado, sino también el más robusto y escalable para el tipo de solución que estamos construyendo.
+**2. Capa de Lógica de Negocio** – Backend (Python + Flask)
+
+El motivo de esta selección responde a la necesidad de procesar toda la lógica del negocio: ventas, inventario, pagos, comisiones, control de usuarios, así como validar reglas antes de interactuar con la base de datos, gestionar sesiones y control de acceso; y exponer APIs REST para el frontend.
+
+**3. Capa de Persistencia** – Base de Datos (MySQL)
+
+El motivo de esta selección responde a la necesidad de almacenar y consultar toda la información del sistema (clientes, ventas, inventario, pagos, historial), relacionar correctamente las entidades con claves foráneas, garantizar integridad referencial, optimizar consultas con índices y vistas.
 
 ## 6. Diagrama de bloques que represente la arquitectura implementada
 
-![alt text](img/ER.png)
+![alt text](img/Diagrama%20de%20bloques.jpeg)
 
 ## 7. Diagrama de Despliegue
 
@@ -421,14 +474,14 @@ También consideramos que este enfoque permite una mejor integración con servic
 
 ## 8. Diagrama Entidad Relación
 
-![alt text](img/Diagrama%20de%20bloques.jpeg)
+![alt text](image.png)
 
 ## 9. Prototipos
 
 Los prototipos de interfaz presentados a continuación fueron diseñados aplicando principios de usabilidad y accesibilidad, con el objetivo de facilitar la interacción del usuario con las diferentes funcionalidades del sistema IMPORCOMGUA. Cada prototipo se centra en proporcionar una experiencia intuitiva y eficiente para los procesos operativos clave de la empresa.
 
 ### 9.1 Clientes
-![alt text](img/Clientespng.png)
+![alt text](img/Clientes.png)
 
 **Funcionalidades principales:**
 - Validación de campos obligatorios y opcionales
@@ -465,6 +518,11 @@ Los prototipos de interfaz presentados a continuación fueron diseñados aplican
 **Funcionalidades principales:**
 - Búsqueda de ventas por número de envío o cliente
 - Registro de pagos con múltiples bancos (Industrial/Banrural/G&T/BAM)
+- Mostrar al usuario:
+  - Días de créditos restantes
+  - Total a pagar
+  - El monto ya pagado
+  - El saldo pendiente a pagar
 
 ### 9.6 Registrar Nueva venta
 ![alt text](img/nueva_venta.png)
@@ -475,7 +533,7 @@ Los prototipos de interfaz presentados a continuación fueron diseñados aplican
 - Registro múltiple de productos
 - Generación automática de cantidades en unidades
 
-### 9.7 Ingresar Inventario
+### 9.7 Recepción de Mercancía
 ![alt text](img/ingresar_inventario.png)
 
 **Funcionalidades principales:**
