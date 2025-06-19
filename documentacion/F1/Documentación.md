@@ -486,3 +486,12 @@ Los prototipos de interfaz presentados a continuación fueron diseñados aplican
 
 ## 10. Tablero de Kanban/Trello
 https://trello.com/invite/b/6848d8b34f62ec9b0b2df06d/ATTI486dda9bfe069d4d8850c3d784877eebF8C22A4B/kanban-template
+
+## 11. Elección de Frameworks
+
+| Framework      | Uso                                                                                           | Razón de Elección                                                                                   |
+|----------------|------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------|
+| **Flask**      | Backend                                                                                       | Sencillo, flexible y fácil de usar para crear APIs rápidas y eficientes sin la necesidad de complejidad. |
+| **Vite-React** | Frontend                                                                                      | Optimiza tiempos de carga y ofrece recarga en caliente, acelerando el desarrollo en **React**.         |
+| **Tailwind CSS** | Diseño de interfaz de usuario                                                                  | Permite construir interfaces modernas, personalizadas y responsivas rápidamente sin escribir CSS complejo.   |
+| **Node.js**    | Backend (intermediario fronted)                                                                  | Potente para aplicaciones en tiempo real y con alta concurrencia, ideal para manejar múltiples conexiones simultáneas. |
