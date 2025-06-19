@@ -450,13 +450,19 @@ IMPORCOMGUA busca digitalizar de extremo a extremo sus procesos, inventario, com
 
 ## 5. Identificación de estructuras arquitectónicas y selección del o los estilos arquitectónicos y la razón de su elección.
 
-Como equipo de desarrollo, decidimos implementar el estilo arquitectónico cliente-servidor porque se alinea con las necesidades funcionales y técnicas de nuestro sistema. Uno de los factores clave que nos llevó a esta elección es que los usuarios acceden al sistema desde distintos dispositivos conectados a la red —como computadoras portátiles o móviles— y necesitan una interfaz clara y accesible que les permita interactuar con los módulos del sistema, sin preocuparse por la complejidad interna del mismo.
+**ARQUITECTURA EN CAPAS (REACT + FLASK + MYSQL)**
 
-En esta arquitectura, la responsabilidad se divide claramente: el cliente se encarga de la presentación y la interacción con el usuario, mientras que el servidor concentra toda la lógica de negocio y el acceso a los datos. Esto lo reflejamos en nuestros diagramas, donde los usuarios se comunican con la capa de aplicación mediante HTTP, mientras que el servidor de aplicación se comunica con la base de datos SQL Server utilizando TCP/IP. De esta manera, conseguimos centralizar el procesamiento y mantener una estructura más controlada y segura.
+**1. Capa de Presentación** – Frontend (React.js)
 
-Además, este estilo nos permite escalar o modificar el sistema sin afectar a todos los componentes. Por ejemplo, si deseamos actualizar el módulo de “Gestión de inventario”, podemos hacerlo directamente en el servidor sin necesidad de tocar el cliente. Esta separación nos facilita el mantenimiento, la evolución del sistema y el manejo de múltiples usuarios simultáneamente.
+El motivo de esta selección responde a la neesidad de mostrar una interfaz web responsiva, amigable y rápida, donde sea posible validar entradas del usuario antes de enviarlas al backend, así como consumir APIs RESTful expuestas por Flask, manejar autenticación y sesiones.
 
-También consideramos que este enfoque permite una mejor integración con servicios externos, como APIs, lo cual es evidente en nuestra arquitectura actual. Todo esto nos lleva a concluir que el modelo cliente-servidor no solo es el más natural para la forma en que el sistema será utilizado, sino también el más robusto y escalable para el tipo de solución que estamos construyendo.
+**2. Capa de Lógica de Negocio** – Backend (Python + Flask)
+
+El motivo de esta selección responde a la necesidad de procesar toda la lógica del negocio: ventas, inventario, pagos, comisiones, control de usuarios, así como validar reglas antes de interactuar con la base de datos, gestionar sesiones y control de acceso; y exponer APIs REST para el frontend.
+
+**3. Capa de Persistencia** – Base de Datos (MySQL)
+
+El motivo de esta selección responde a la necesidad de almacenar y consultar toda la información del sistema (clientes, ventas, inventario, pagos, historial), relacionar correctamente las entidades con claves foráneas, garantizar integridad referencial, optimizar consultas con índices y vistas.
 
 ## 6. Diagrama de bloques que represente la arquitectura implementada
 
