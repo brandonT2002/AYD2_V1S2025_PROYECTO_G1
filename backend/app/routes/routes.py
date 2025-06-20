@@ -9,7 +9,7 @@ api_bp = Blueprint('api_bp', __name__, url_prefix='/api/')
 GestionesClientes = ClientesController()
 GestionesVentas = VentasController()
 GestionesPagos = PagosController()
-GestionesProductos = ProductoController()
+
 GestionesSalidas = SalidaController()
 
 # Rutas compatibles con el frontend actual
