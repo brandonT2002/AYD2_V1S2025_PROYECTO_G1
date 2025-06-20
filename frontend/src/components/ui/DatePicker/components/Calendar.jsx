@@ -13,8 +13,8 @@ const Calendar = ({
     onSelect,
 }) => (
     <div
-        className="bg-panel-dark border-2 border-gray-600 text-gray-300
-               -mt-[19rem] rounded-lg p-4 absolute z-10"
+        className="bg-panel-dark border-2 border-gray-400 
+               -mt-[19rem] rounded-lg p-4 absolute z-10 bg-white text-text-base"
         style={{ width: "17rem" }}
     >
         {/* Selección de mes y año */}
@@ -22,7 +22,7 @@ const Calendar = ({
             <select
                 value={month}
                 onChange={(e) => setMonth(+e.target.value)}
-                className="bg-panel-hover-dark text-white p-1 rounded"
+                className="bg-panel-hover-dark p-1 rounded text-text-base"
             >
                 {MONTH_NAMES.map((m, i) => (
                     <option key={i} value={i}>
@@ -34,7 +34,7 @@ const Calendar = ({
             <select
                 value={year}
                 onChange={(e) => setYear(+e.target.value)}
-                className="bg-panel-hover-dark text-white p-1 rounded"
+                className="bg-panel-hover-dark p-1 rounded text-text-base"
             >
                 {YEARS.map((yr) => (
                     <option key={yr} value={yr}>

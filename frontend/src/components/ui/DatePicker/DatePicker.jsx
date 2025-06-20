@@ -4,7 +4,7 @@ import { useDatePicker } from "./hooks";
 import { Calendar } from "./components";
 import ReactDOM from "react-dom";
 
-const DatePicker = ({ label = "Fecha de Nacimiento", onDateChange }) => {
+const DatePicker = ({ label = "Fecha de Nacimiento", isRequired , onDateChange }) => {
     const inputRef = useRef(null);
     const dp = useDatePicker();
 
@@ -22,7 +22,9 @@ const DatePicker = ({ label = "Fecha de Nacimiento", onDateChange }) => {
 
     return (
         <div className="relative w-full" ref={dp.pickerRef}>
-            <label className="mb-2 text-gray-300 block">{label}</label>
+            <label className="mb-2 text-text-base font-bold block">
+                {label} {isRequired && <span className="text-text-red">*</span>}
+            </label>
 
             {/* input */}
             <div className="relative">
@@ -41,8 +43,8 @@ const DatePicker = ({ label = "Fecha de Nacimiento", onDateChange }) => {
                     defaultValue={dp.format(dp.selected)}
                     onClick={() => dp.setShow(!dp.show)}
                     className="w-full pl-10 pr-4 py-3 rounded-lg
-                     bg-panel-dark text-gray-300
-                     focus:outline-none focus:shadow-outline"
+                     bg-panel-dark text-text-base
+                     focus:outline-none focus:shadow-outline border-2 border-[#dadada]"
                 />
             </div>
 
