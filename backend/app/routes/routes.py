@@ -3,18 +3,20 @@ from app.controllers.salida_controller import SalidaController
 from app.controllers.Clientes import ClientesController
 from app.controllers.Ventas import VentasController 
 from app.controllers.PagosController import PagosController
-from app.controllers.producto_controller import ProductoController
 
 api_bp = Blueprint('api_bp', __name__, url_prefix='/api/')
+
 GestionesClientes = ClientesController()
 GestionesVentas = VentasController()
 GestionesPagos = PagosController()
-GestionesProductos = ProductoController()
 
-# Rutas para insertar cliente
+# Rutas compatibles con el frontend actual
+api_bp.route('/clientes', methods=['GET'])(GestionesClientes.listar_clientes)
+api_bp.route('/clientes', methods=['POST'])(GestionesClientes.insert_cliente)
+
+# Rutas originales del proyecto
 api_bp.route('/InsertarCliente', methods=['POST'])(GestionesClientes.insert_cliente)
 api_bp.route('/GetCliente/<int:cliente_id>', methods=['GET'])(GestionesClientes.get_cliente)
-api_bp.route('/raiz', methods=['GET'])(GestionesClientes.raiz)
 api_bp.route('/raiz', methods=['GET'])(GestionesClientes.raiz)
 # Rutas para manejar Ventas
 api_bp.route('/InsertarVenta', methods=['POST'])(GestionesVentas.create_venta)
@@ -25,9 +27,3 @@ api_bp.route('/EliminarVenta/<int:venta_id>', methods=['DELETE'])(GestionesVenta
 api_bp.route('/InsertarPago', methods=['POST'])(GestionesPagos.create_pago)
 api_bp.route('/GetPago/<int:venta_id>', methods=['GET'])(GestionesPagos.get_pago)
 api_bp.route('/ActualizarPago/<int:venta_id>', methods=['PUT'])(GestionesPagos.update_pago)
-# Rutas para manejar Productos
-api_bp.route('/InsertarProducto', methods=['POST'])(GestionesProductos.create_producto)
-api_bp.route('/GetProducto/<int:producto_id>', methods=['GET'])(GestionesProductos.get_producto)
-api_bp.route('/ActualizarProducto/<int:producto_id>', methods=['PUT'])(GestionesProductos.update_producto)
-api_bp.route('/EliminarProducto/<int:producto_id>', methods=['DELETE'])(GestionesProductos.delete_producto)
-api_bp.route('/GetAllProductos', methods=['GET'])(GestionesProductos.get_all_productos)
