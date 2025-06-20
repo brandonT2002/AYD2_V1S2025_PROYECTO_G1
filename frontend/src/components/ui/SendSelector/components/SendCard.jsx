@@ -16,6 +16,7 @@ export const SendCard = ({ envio }) => {
         fechasalidaBodega,
         diasCredito,
         nitFactura,
+        total,
         estado = "Vigente",
     } = envio;
 
@@ -120,7 +121,7 @@ export const SendCard = ({ envio }) => {
                             selected ? "text-blue-600" : "text-gray-900"
                         }`}
                     >
-                        Q {Number(fechaventa).toFixed(2)}
+                        Q {Number(total).toFixed(2)}
                     </div>
                     <div className="flex items-center space-x-1 text-sm text-gray-600 ">
                             <FaRegCalendar className="h-4 w-4" />

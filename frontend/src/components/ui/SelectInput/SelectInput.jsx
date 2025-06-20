@@ -2,7 +2,7 @@ import { Label } from "../InputField/components";
 
 const SelectInput = ({ name, label, className, isRequired, options = [], icon: Icon, ...rest }) => {
     const baseClass = `w-full pr-12 py-2.5 bg-panel-dark text- rounded-sm 
-    focus:border-blue-500 focus:ring-1 focus:ring-blue-50/10 focus:outline-none border-2 border-border-second`;
+    focus:border-blue-500 focus:ring-1 focus:ring-blue-50/10 focus:outline-none border-1 border-border-second`;
 
     return (
         <div className="w-full">
