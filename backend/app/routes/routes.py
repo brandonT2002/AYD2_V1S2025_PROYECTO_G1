@@ -1,4 +1,4 @@
-from flask import Blueprint
+from flask import Blueprint, jsonify
 from app.controllers.salida_controller import SalidaController
 from app.controllers.Clientes import ClientesController
 from app.controllers.Ventas import VentasController 
@@ -9,6 +9,8 @@ api_bp = Blueprint('api_bp', __name__, url_prefix='/api/')
 GestionesClientes = ClientesController()
 GestionesVentas = VentasController()
 GestionesPagos = PagosController()
+GestionesProductos = ProductoController()
+GestionesSalidas = SalidaController()
 
 # Rutas compatibles con el frontend actual
 api_bp.route('/clientes', methods=['GET'])(GestionesClientes.get_all)
@@ -31,3 +33,8 @@ api_bp.route('/EliminarVenta/<int:venta_id>', methods=['DELETE'])(GestionesVenta
 api_bp.route('/InsertarPago', methods=['POST'])(GestionesPagos.create_pago)
 api_bp.route('/GetPago/<int:venta_id>', methods=['GET'])(GestionesPagos.get_pago)
 api_bp.route('/ActualizarPago/<int:venta_id>', methods=['PUT'])(GestionesPagos.update_pago)
+
+# Rutas para manejar Salidas
+api_bp.route('/buscar-ventas', methods=['POST'])(GestionesSalidas.buscar_ventas)
+api_bp.route('/obtener-detalle-venta/<int:venta_id>', methods=['GET'])(GestionesSalidas.obtener_detalle_venta)
+api_bp.route('/registrar-salida', methods=['POST'])(GestionesSalidas.registrar_salida)
