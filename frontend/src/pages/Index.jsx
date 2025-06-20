@@ -4,43 +4,24 @@ import {
     SelectInput,
     TitlePanel,
     IconButton,
-    DatePicker,
-    TableComponent,
 } from "../components/ui";
-import { Panel, PanelSecundary } from "../components/layout";
+import { Panel } from "../components/layout";
 import { RiInputMethodFill } from "react-icons/ri";
 import { useSelectInput } from "../components/ui/SelectInput";
 import { ButtonVariant, ButtonSize } from "../components/ui/Button/config";
-import { LuPackageSearch } from "react-icons/lu";
 
 import { SendSelectorDemo } from "../components/ui/SendSelector/index";
 import { CgMenuGridR } from "react-icons/cg";
 import { ImSearch } from "react-icons/im";
 import { FiPackage } from "react-icons/fi";
 
-import {
-    SendSelectorProvider,
-    SendCard,
-    SelectedInfo,
-    useSendSelectorContext,
-} from "../components/ui/SendSelector/index";
+import { useSendSelectorContext } from "../components/ui/SendSelector/index";
+import SimplePicker from "../components/ui/DatePicker/SimplePicker";
 
 function IndexPage() {
     const genero = useSelectInput("");
     const handleSearch = () => console.log("Search action triggered");
-    const columns = [
-        { header: "Nombre", key: "nombre" },
-        { header: "Edad", key: "edad" },
-        { header: "País", key: "país" },
-    ];
-
-    const data = [
-        { nombre: "Ana", edad: 25, país: "Guatemala" },
-        { nombre: "Luis", edad: 30, país: "México" },
-        { nombre: "Luis", edad: 30, país: "México" },
-        { nombre: "Luis", edad: 30, país: "México" },
-        { nombre: "Luis", edad: 30, país: "México" },
-    ];
+    // const { selectedEnvio } = useSendSelectorContext();
 
     const defaultEnvios = [
         {
@@ -56,6 +37,18 @@ function IndexPage() {
             fechasalidaBodega: "10-06-2025",
             diasCredito: "0",
             nitFactura: "1234567-8",
+            total: 1250.0,
+            productos: [
+                {
+                    producto: "Producto A",
+                    cantidad: 10,
+                    precioUnitario: 125.0,
+                    cantidadUnidades: 100,
+                    precioFardo: 1250.0,
+                    subtotal: 1250.0,
+                    observaciones: "Entrega inmediata",
+                },
+            ],
         },
         {
             id: 2,
@@ -70,6 +63,27 @@ function IndexPage() {
             fechasalidaBodega: "11-06-2025",
             diasCredito: "15",
             nitFactura: "9876543-2",
+            total: 2250.0,
+            productos: [
+                {
+                    producto: "Producto A",
+                    cantidad: 10,
+                    precioUnitario: 125.0,
+                    cantidadUnidades: 100,
+                    precioFardo: 1250.0,
+                    subtotal: 1250.0,
+                    observaciones: "Entrega inmediata",
+                },
+                {
+                    producto: "Producto B",
+                    cantidad: 5,
+                    precioUnitario: 200.0,
+                    cantidadUnidades: 50,
+                    precioFardo: 1000.0,
+                    subtotal: 1000.0,
+                    observaciones: "Entrega programada",
+                },
+            ],
         },
         {
             id: 3,
@@ -84,8 +98,21 @@ function IndexPage() {
             fechasalidaBodega: "12-06-2025",
             diasCredito: "0",
             nitFactura: "1928374-5",
+            total: 1500.0,
+            productos: [
+                {
+                    producto: "Producto C",
+                    cantidad: 20,
+                    precioUnitario: 75.0,
+                    cantidadUnidades: 200,
+                    precioFardo: 1500.0,
+                    subtotal: 1500.0,
+                    observaciones: "Entrega inmediata",
+                },
+            ],
         },
     ];
+
 
     return (
         <div className="flex flex-col bg-gray-100 gap-3">
@@ -124,28 +151,20 @@ function IndexPage() {
                     </div>
                 </div>
             </Panel>
-            <Panel className="relative overflow-visible">
+            <Panel className="overflow-visible">
                 <TitlePanel>Resultados de Búsqueda</TitlePanel>
                 <div>
                     <SendSelectorDemo envios={defaultEnvios} />
                 </div>
 
-                <PanelSecundary>
-                    <div className="flex items-center gap-2 mb-4 border-b-2 border-gray-400 pb-2 text-text-second">
-                        <LuPackageSearch size={20} />
-                        <span className="font-bold">Productos</span>
-                    </div>
-                    <TableComponent
-                        data={data}
-                        columns={columns}
-                        maxHeight="210px"
-                    />
-                </PanelSecundary>
-
-                <div className="relative flex flex-col gap-1 w-full overflow-visible pt-2 pb-4">
-                    <DatePicker
+                <div className="flex flex-col">
+                    <SimplePicker
+                        id="fechaNacimiento"
+                        name="fecha_nacimiento"
+                        label="Fecha de Salida"
                         onDateChange={(date) => console.log(date)}
                         isRequired={true}
+                        position="top"
                     />
                 </div>
                 <div className="flex justify-end gap-4">

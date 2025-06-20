@@ -8,7 +8,7 @@ import {
 } from "../components/ui";
 import { ButtonVariant, ButtonSize } from "../components/ui/Button/config";
 
-import { Panel} from "../components/layout";
+import { Panel } from "../components/layout";
 
 import { CgMenuGridR } from "react-icons/cg";
 import { PiListNumbersDuotone } from "react-icons/pi";
@@ -39,6 +39,7 @@ function Inventory() {
                         label="Fecha de Recepción"
                         isRequired={true}
                         onDateChange={(date) => console.log(date)}
+                        position="top"
                     />
                 </div>
                 <div className="flex gap-3">
