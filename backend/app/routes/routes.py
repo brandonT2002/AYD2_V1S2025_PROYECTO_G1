@@ -10,6 +10,7 @@ GestionesClientes = ClientesController()
 GestionesVentas = VentasController()
 GestionesPagos = PagosController()
 GestionesProductos = ProductoController()
+GestionesSalidas = SalidaController()
 
 # Rutas para insertar cliente
 api_bp.route('/InsertarCliente', methods=['POST'])(GestionesClientes.insert_cliente)
@@ -31,3 +32,8 @@ api_bp.route('/GetProducto/<int:producto_id>', methods=['GET'])(GestionesProduct
 api_bp.route('/ActualizarProducto/<int:producto_id>', methods=['PUT'])(GestionesProductos.update_producto)
 api_bp.route('/EliminarProducto/<int:producto_id>', methods=['DELETE'])(GestionesProductos.delete_producto)
 api_bp.route('/GetAllProductos', methods=['GET'])(GestionesProductos.get_all_productos)
+
+# Rutas para manejar Salidas
+api_bp.route('/buscar-ventas', methods=['POST'])(GestionesSalidas.buscar_ventas)
+api_bp.route('/obtener-detalle-venta/<int:venta_id>', methods=['GET'])(GestionesSalidas.obtener_detalle_venta)
+api_bp.route('/registrar-salida', methods=['POST'])(GestionesSalidas.registrar_salida)
