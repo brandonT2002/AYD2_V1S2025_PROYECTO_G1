@@ -2,6 +2,7 @@ import IndexPage from "./pages/Index";
 import { Navbar } from "./components/layout";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Inventory from "./pages/Inventory";
+import ClientePage from "./components/Clientes/ClientePage"; // ✅ Ruta corregida
 
 function App() {
     return (
@@ -14,6 +15,7 @@ function App() {
                         element={<IndexPage />}
                     />
                     <Route path="/inventario" element={<Inventory />} />
+                    <Route path="/mantenimiento/clientes" element={<ClientePage />} /> {/* ✅ Nueva vista */}
                 </Routes>
             </main>
         </Router>
