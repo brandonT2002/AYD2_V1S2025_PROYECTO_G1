@@ -1,6 +1,14 @@
 import { Label, BaseInput } from "./components";
 
-const InputField = ({ name, label, icon, register, className, ...rest }) => {
+const InputField = ({
+    name,
+    label,
+    icon,
+    isRequired,
+    register,
+    className,
+    ...rest
+}) => {
     const inputProps = {
         id: name,
         ...(register ? register(name, { required: true }) : {}),
@@ -9,9 +17,13 @@ const InputField = ({ name, label, icon, register, className, ...rest }) => {
     };
 
     return (
-        <div>
+        <div className="w-full">
             {label && (
-                <Label htmlFor={name} className={className}>
+                <Label
+                    htmlFor={name}
+                    className={className}
+                    isRequired={isRequired}
+                >
                     {label}
                 </Label>
             )}
