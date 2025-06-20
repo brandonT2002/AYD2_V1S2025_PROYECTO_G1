@@ -1,6 +1,8 @@
 import { SendSelectorProvider } from "../context/SendSelectorContext";
 import { SendCard } from "./SendCard";
 import { SelectedInfo } from "./SelectInfo";
+import { LuPackageSearch } from "react-icons/lu";
+
 
 export const SendSelectorDemo = ({
     envios = defaultEnvios,

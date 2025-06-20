@@ -11,8 +11,8 @@ const BaseInput = ({
         )}
         <input
             {...inputProps}
-            className={`w-full ${leftPadding} pr-12 py-2 bg-panel-dark rounded-sm
-                focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none border-[2px] border-border-second
+            className={`w-full ${leftPadding} pr-3 py-2 bg-panel-dark rounded-sm
+                focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none border-[1.5px] border-border-second
                 ${className}`}
         />
         {children}
