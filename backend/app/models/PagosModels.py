@@ -1,3 +1,4 @@
+from flask import jsonify
 from app.models.base_model import BaseModel
 
 class PagosModels(BaseModel):
@@ -12,11 +13,40 @@ class PagosModels(BaseModel):
         return self.execute_single_query(query, (pago_id,))
     
     def create_pago(self, data):    
-        """Crea un nuevo pago"""
-        query = f"INSERT INTO {self.table_name} (fecha, cliente_id, monto, metodo_pago, observaciones) VALUES (%s, %s, %s, %s, %s)"
-        # Asegurarse de que los campos en 'data' coincidan con los de la tabla 'pagos'
-        id = self.returning_id(query, (data['fecha'], data['cliente_id'], data['monto'], data['metodo_pago'], data['observaciones']))
-        return "Pago creado con éxito", id
+        """
+        Crea un nuevo pago
+
+        INSERT INTO imporcomgua.pagos (venta_id, fecha_pago, banco, numero_cuenta, numero_transaccion, recibo_caja, monto_abono)
+        VALUES
+        (1, '2024-06-10', 'Banrural', '0123456789', 'TRX-999', 'RC-0001', 362.50);
+        """
+
+        query = f"""
+            INSERT INTO {self.table_name} 
+            (venta_id, fecha_pago, banco, numero_cuenta, numero_transaccion, recibo_caja, monto_abono) 
+            VALUES (%s, %s, %s, %s, %s, %s, %s)
+        """
+        self.execute_query(query, (
+            data['venta_id'],
+            data['fecha_pago'],
+            data['banco'],
+            data['numero_cuenta'],
+            data['numero_transaccion'],
+            data['recibo_caja'],
+            data['monto_abono']
+        ))
+
+        # Retornar solo lo necesario
+        return jsonify({
+            "status": "success",
+            "mensaje": "Pago creado con éxito",
+            "pago": {
+                "venta_id": data['venta_id'],
+                "fecha_pago": data['fecha_pago'],
+                "banco": data['banco'],
+                "monto_abono": data['monto_abono']
+            }
+        })
     
     def update_pago(self, pago_id, data):
         """Actualiza un pago existente"""
