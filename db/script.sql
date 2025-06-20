@@ -134,7 +134,7 @@ CREATE TABLE IF NOT EXISTS `imporcomgua`.`ventas` (
   `dias_credito` INT UNSIGNED NOT NULL,  -- Cambié a UNSIGNED para que coincida con la tabla `clientes`
   `vendedor_id` INT UNSIGNED NOT NULL,  -- Cambié a UNSIGNED para que coincida con la tabla Vendedores
   `estado_cobro` ENUM('Pendiente', 'Parcial', 'Pagado') NULL DEFAULT 'Pendiente',
-  `estado_venta` ENUM('Vigente', 'Anulada') NULL DEFAULT 'Vigente',
+  `estado_venta` ENUM('Vigente', 'Anulada') DEFAULT 'Vigente', -- aqui iba un null por si acaso 
   `dte_numero` VARCHAR(30) NULL DEFAULT NULL,
   `dte_nombre` VARCHAR(100) NULL DEFAULT NULL,
   `dte_nit` VARCHAR(20) NULL DEFAULT NULL,
@@ -209,31 +209,3 @@ DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_unicode_ci;
 
 
-DELIMITER //
-
-CREATE TRIGGER after_envio_insert
-AFTER INSERT ON ventas
-FOR EACH ROW
-BEGIN
-  UPDATE ventas
-  SET numero_envio = CONCAT('E', NEW.id)
-  WHERE id = NEW.id;
-END;
-//
-
-DELIMITER ;
-
-
-DELIMITER //
-
-CREATE TRIGGER after_cliente_insert
-AFTER INSERT ON clientes
-FOR EACH ROW
-BEGIN
-  UPDATE clientes
-  SET codigo_cliente = CONCAT(NEW.departamento, NEW.id)
-  WHERE id = NEW.id;
-END;
-//
-
-DELIMITER ;

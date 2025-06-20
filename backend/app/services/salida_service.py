@@ -1,6 +1,6 @@
 from app.services.base_service import BaseService
 from app.models.venta_model import VentaModel
-from app.models.Cliente import Cliente 
+from app.models.Cliente import Cliente
 from datetime import datetime
 
 class SalidaService(BaseService):
