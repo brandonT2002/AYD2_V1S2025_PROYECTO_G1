@@ -2,18 +2,24 @@ from flask import Blueprint
 from app.controllers.salida_controller import SalidaController
 from app.controllers.Clientes import ClientesController
 from app.controllers.Ventas import VentasController 
+from app.controllers.PagosController import PagosController
 
 api_bp = Blueprint('api_bp', __name__, url_prefix='/api/')
 GestionesClientes = ClientesController()
 GestionesVentas = VentasController()
+GestionesPagos = PagosController()
 
 # Rutas para insertar cliente
 api_bp.route('/InsertarCliente', methods=['POST'])(GestionesClientes.insert_cliente)
 api_bp.route('/GetCliente/<int:cliente_id>', methods=['GET'])(GestionesClientes.get_cliente)
+api_bp.route('/raiz', methods=['GET'])(GestionesClientes.raiz)
 api_bp.route('/raiz', methods=['GET'])(GestionesClientes.raiz)
 # Rutas para manejar Ventas
 api_bp.route('/InsertarVenta', methods=['POST'])(GestionesVentas.create_venta)
 api_bp.route('/GetVenta/<int:venta_id>', methods=['GET'])(GestionesVentas.get_venta)
 api_bp.route('/ActualizarVenta/<int:venta_id>', methods=['PUT'])(GestionesVentas.update_venta)
 api_bp.route('/EliminarVenta/<int:venta_id>', methods=['DELETE'])(GestionesVentas.delete_venta)
-
+# Rutas para manejar Pagos
+api_bp.route('/InsertarPago', methods=['POST'])(GestionesPagos.create_pago)
+api_bp.route('/GetPago/<int:venta_id>', methods=['GET'])(GestionesPagos.get_pago)
+api_bp.route('/ActualizarPago/<int:venta_id>', methods=['PUT'])(GestionesPagos.update_pago)
