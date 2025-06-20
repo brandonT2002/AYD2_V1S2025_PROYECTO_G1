@@ -11,18 +11,22 @@ GestionesVentas = VentasController()
 GestionesPagos = PagosController()
 
 # Rutas compatibles con el frontend actual
-api_bp.route('/clientes', methods=['GET'])(GestionesClientes.listar_clientes)
+api_bp.route('/clientes', methods=['GET'])(GestionesClientes.get_all)
 api_bp.route('/clientes', methods=['POST'])(GestionesClientes.insert_cliente)
+api_bp.route('/clientes/<int:cliente_id>', methods=['PUT'])(GestionesClientes.update_cliente)
+api_bp.route('/clientes/<int:cliente_id>', methods=['DELETE'])(GestionesClientes.delete_cliente)
 
 # Rutas originales del proyecto
 api_bp.route('/InsertarCliente', methods=['POST'])(GestionesClientes.insert_cliente)
 api_bp.route('/GetCliente/<int:cliente_id>', methods=['GET'])(GestionesClientes.get_cliente)
 api_bp.route('/raiz', methods=['GET'])(GestionesClientes.raiz)
+
 # Rutas para manejar Ventas
 api_bp.route('/InsertarVenta', methods=['POST'])(GestionesVentas.create_venta)
 api_bp.route('/GetVenta/<int:venta_id>', methods=['GET'])(GestionesVentas.get_venta)
 api_bp.route('/ActualizarVenta/<int:venta_id>', methods=['PUT'])(GestionesVentas.update_venta)
 api_bp.route('/EliminarVenta/<int:venta_id>', methods=['DELETE'])(GestionesVentas.delete_venta)
+
 # Rutas para manejar Pagos
 api_bp.route('/InsertarPago', methods=['POST'])(GestionesPagos.create_pago)
 api_bp.route('/GetPago/<int:venta_id>', methods=['GET'])(GestionesPagos.get_pago)
