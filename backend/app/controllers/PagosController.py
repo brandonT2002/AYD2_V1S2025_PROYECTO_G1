@@ -14,7 +14,8 @@ class PagosController:
             return jsonify({"error": "Datos del pago son requeridos"}), 400    
         try:
             pago = self.pagos_service.create_pago(data)
-            return jsonify(pago), 201
+            # print("data", data)
+            return pago, 201
         except Exception as e:
             return jsonify({"error": str(e)}), 500
         

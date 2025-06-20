@@ -1,4 +1,4 @@
-from flask import Blueprint
+from flask import Blueprint, jsonify
 from app.controllers.salida_controller import SalidaController
 from app.controllers.Clientes import ClientesController
 from app.controllers.Ventas import VentasController 
