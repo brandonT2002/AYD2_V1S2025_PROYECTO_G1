@@ -15,15 +15,13 @@ import { CgMenuGridR } from "react-icons/cg";
 import { ImSearch } from "react-icons/im";
 import { FiPackage } from "react-icons/fi";
 
-import {
-    useSendSelectorContext,
-} from "../components/ui/SendSelector/index";
+import { useSendSelectorContext } from "../components/ui/SendSelector/index";
 import SimplePicker from "../components/ui/DatePicker/SimplePicker";
 
 function IndexPage() {
     const genero = useSelectInput("");
     const handleSearch = () => console.log("Search action triggered");
-    const { selectedEnvio } = useSendSelectorContext();
+    // const { selectedEnvio } = useSendSelectorContext();
 
     const defaultEnvios = [
         {
@@ -115,8 +113,6 @@ function IndexPage() {
         },
     ];
 
-    console.log("Envío seleccionado:", selectedEnvio);
-    console.log("ID:", selectedEnvio?.id);
 
     return (
         <div className="flex flex-col bg-gray-100 gap-3">
