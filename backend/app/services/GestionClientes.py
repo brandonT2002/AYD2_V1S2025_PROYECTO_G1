@@ -1,21 +1,23 @@
-from app.services.base_service import BaseService
-from app.models.Cliente import Cliente 
-from datetime import datetime
+from app.models.Cliente import Cliente
 
-class Clientes(BaseService):
-    """Servicio para manejar la lógica de clientes"""
-
-    def setup(self):
+class ClienteService:
+    def __init__(self):
         self.Cliente = Cliente()
 
-    def insert_cliente(self, nombre, email):
-        """Inserta un nuevo cliente en la base de datos"""
-        return self.Cliente.create_cliente(nombre, email)
+    def create_cliente(self, *args):
+        return self.Cliente.create_cliente(*args)
 
     def get_cliente_by_id(self, cliente_id):
-        """Obtiene un cliente por su ID"""
         return self.Cliente.get_cliente_by_id(cliente_id)
 
     def get_all(self):
-        """Obtiene todos los clientes"""
         return self.Cliente.get_all()
+
+    def update_cliente(self, cliente_id, data):
+        return self.Cliente.update_cliente(cliente_id, data)
+
+    def delete_cliente(self, cliente_id):
+        return self.Cliente.delete_cliente(cliente_id)
+
+    def raiz(self):
+        return self.Cliente.raiz()
