@@ -1,76 +1,125 @@
-import { Title, InputField, SelectField, SearchButton } from "../components/ui";
-import { Panel } from "../components/layout";
-import { RiBox3Fill, RiBox3Line, RiFileSearchLine, RiInputMethodFill, RiSearch2Line, RiSwordLine, RiWordpressLine } from "react-icons/ri";
+import {
+    Title,
+    InputField,
+    SelectInput,
+    TitlePanel,
+    IconButton,
+    DatePicker,
+} from "../components/ui";
+import { ButtonVariant, ButtonSize } from "../components/ui/Button/config";
 
+import { Panel} from "../components/layout";
+
+import { CgMenuGridR } from "react-icons/cg";
+import { PiListNumbersDuotone } from "react-icons/pi";
+import { FiPackage } from "react-icons/fi";
+import { FiEdit } from "react-icons/fi";
+import { PiPencilLineLight } from "react-icons/pi";
 function PaymentPage() {
+    const handleSearch = () => console.log("Search action triggered");
     return (
-        <div className="flex flex-col bg-gray-100">
-            <br></br>
-            <Title>Registrar Pagos</Title>
-            <br></br>
+        <div className="flex flex-col bg-gray-100 gap-3">
+            <Title>Registro de Pagos</Title>
             <Panel>
-                <p><strong>Buscar Venta</strong></p>
-                <br></br>
-                <div className="flex items-end gap-6">
-                <div className="w-1/3">
-                <SelectField
-                name="filtro_busqueda"
-                label="Buscar Por"
-                options={[
-                    { value: "numero_envio", label: "Número de Envío" },
-                    { value: "nombre_cliente", label: "Nombre de Cliente" },
-                ]}
-                />
+                <div className="flex gap-3">
+                    <SelectInput
+                        name="producto"
+                        label="Producto"
+                        options={[
+                            { value: "1", label: "Producto A" },
+                            { value: "2", label: "Producto B" },
+                            { value: "3", label: "Producto C" },
+                        ]}
+                        className={"text-text-base font-semibold"}
+                        isRequired={true}
+                        icon={CgMenuGridR}
+                    />
+                    <DatePicker
+                        label="Fecha de Recepción"
+                        isRequired={true}
+                        onDateChange={(date) => console.log(date)}
+                    />
                 </div>
-                <div className="w-1/2">
-                <InputField
-                    name="termino_busqueda"
-                    label="Término de Búsqueda"
-                    placeholder="Escribe tu término de búsqueda"
-                    defaultValue=""
-                    icon={RiFileSearchLine}
-                />
+                <div className="flex gap-3">
+                    <InputField
+                        name="cantidad"
+                        label="Cantidad en fardos/paquetes"
+                        type="number"
+                        placeholder="Ingrese cantidad"
+                        className={"text-text-base font-semibold"}
+                        isRequired={true}
+                        icon={PiListNumbersDuotone}
+                    />
+                    <InputField
+                        name="unidades"
+                        label="Unidades por fardo/paquete"
+                        placeholder="Ingrese unidades"
+                        className={"text-text-base font-semibold"}
+                        isRequired={true}
+                        icon={FiPackage}
+                    />
+                    <InputField
+                        name="unidadesTotales"
+                        label="Unidades Totales"
+                        placeholder="Ingrese unidades totales"
+                        className={"text-text-base font-semibold"}
+                        isRequired={false}
+                        icon={PiPencilLineLight}
+                    />
                 </div>
-                <div className="w-1/6">
-                <SearchButton/>
+                <div className="flex gap-3">
+                    <InputField
+                        name="noContenedor"
+                        label="Número de Contenedor"
+                        placeholder="Ingrese número de contenedor"
+                        className={"text-text-base font-semibold"}
+                        isRequired={true}
+                        icon={FiEdit}
+                    />
                 </div>
+                <div className="flex gap-3">
+                    <InputField
+                        name="noDuca"
+                        label="Número de DUCA"
+                        placeholder="Ingrese número de DUCA"
+                        className={"text-text-base font-semibold"}
+                        isRequired={true}
+                        icon={FiPackage}
+                    />
+                    <DatePicker
+                        label="Fecha de DUCA"
+                        isRequired={true}
+                        onDateChange={(date) => console.log(date)}
+                    />
+                    <InputField
+                        name="noDucaRec"
+                        label="Número de DUCA rectificada"
+                        placeholder="Ingrese número de DUCA rectificada"
+                        className={"text-text-base font-semibold"}
+                        icon={FiPackage}
+                    />
+                    <DatePicker
+                        label="Fecha de DUCA rectificada"
+                        onDateChange={(date) => console.log(date)}
+                    />
+                </div>
+                <div className="flex justify-end gap-4">
+                    <IconButton
+                        variant={ButtonVariant.SECONDARY}
+                        onClick={handleSearch}
+                        size={ButtonSize.MD}
+                    >
+                        Cancelar
+                    </IconButton>
+                    <IconButton
+                        variant={ButtonVariant.PRIMARY}
+                        onClick={handleSearch}
+                        size={ButtonSize.MD}
+                    >
+                        Guardar
+                    </IconButton>
                 </div>
             </Panel>
-            <br></br>
-            <Panel>
-            <p><strong>Resultados de Búsqueda</strong> (1 encontrado)</p>
-            <div className="flex items-end gap-6">
-            <div className="w-1/3">
-            <br></br>
-                <InputField
-                    name="test"
-                    label="Test"
-                    placeholder="Escribe acá"
-                    defaultValue=""
-                    className={"font-bold"}
-                    icon={RiInputMethodFill}
-                />
-                </div>
-                </div>
-            </Panel>
-            <br></br>
-            <Panel>
-                <strong>Información General</strong>
-                <div className="flex items-end gap-6 bg-gray-100">
-                <div className="w-1/3">
-                <br></br>
-                <InputField
-                    name="test"
-                    label="Test"
-                    placeholder="Escribe acá"
-                    defaultValue=""
-                    className={"font-bold"}
-                    icon={RiInputMethodFill}
-                />
-                </div>
-                </div>
-            </Panel>
-            
         </div>
     );
 }
