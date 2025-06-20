@@ -3,6 +3,7 @@ import { Navbar } from "./components/layout";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Inventory from "./pages/Inventory";
 import AgregarProducto from "./pages/AgregarProducto";
+import ClientePage from "./components/Clientes/ClientePage"; // ✅ Ruta corregida
 
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
                         path="/mantenimiento/agregar-producto" 
                         element={<AgregarProducto />} 
                     />
+                    <Route path="/mantenimiento/clientes" element={<ClientePage />} /> {/* ✅ Nueva vista */}
                 </Routes>
             </main>
         </Router>
