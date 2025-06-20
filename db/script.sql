@@ -9,7 +9,7 @@ USE `imporcomgua` ;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `imporcomgua`.`clientes` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,  -- Asegúrate de que sea INT UNSIGNED
-  `codigo_cliente` CHAR(4) NOT NULL,
+  `codigo_cliente` CHAR(10),
   `nombre_negocio` VARCHAR(100) NOT NULL,
   `nombre_contacto` VARCHAR(100) NOT NULL,
   `departamento` CHAR(2) NOT NULL,
@@ -126,7 +126,7 @@ COLLATE = utf8mb4_unicode_ci;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `imporcomgua`.`ventas` (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,  -- Cambié a BIGINT UNSIGNED
-  `numero_envio` VARCHAR(45) NOT NULL,
+  `numero_envio` VARCHAR(45),
   `fecha_venta` DATE NOT NULL,
   `fecha_salida_bodega` DATE NULL DEFAULT NULL,
   `cliente_id` INT UNSIGNED NOT NULL,  -- Cambié a UNSIGNED para que coincida con la tabla clientes
@@ -134,7 +134,7 @@ CREATE TABLE IF NOT EXISTS `imporcomgua`.`ventas` (
   `dias_credito` INT UNSIGNED NOT NULL,  -- Cambié a UNSIGNED para que coincida con la tabla `clientes`
   `vendedor_id` INT UNSIGNED NOT NULL,  -- Cambié a UNSIGNED para que coincida con la tabla Vendedores
   `estado_cobro` ENUM('Pendiente', 'Parcial', 'Pagado') NULL DEFAULT 'Pendiente',
-  `estado_venta` ENUM('Vigente', 'Anulada') NULL DEFAULT 'Vigente',
+  `estado_venta` ENUM('Vigente', 'Anulada') DEFAULT 'Vigente', -- aqui iba un null por si acaso 
   `dte_numero` VARCHAR(30) NULL DEFAULT NULL,
   `dte_nombre` VARCHAR(100) NULL DEFAULT NULL,
   `dte_nit` VARCHAR(20) NULL DEFAULT NULL,

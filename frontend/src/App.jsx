@@ -1,4 +1,5 @@
 import IndexPage from "./pages/Index";
+import PaymentPage from "./pages/Pagos";
 import { Navbar } from "./components/layout";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Inventory from "./pages/Inventory";
@@ -12,6 +13,10 @@ function App() {
                     <Route
                         path="/mantenimiento/productos"
                         element={<IndexPage />}
+                    />
+                    <Route
+                        path="/cobranzas"
+                        element={<PaymentPage />}
                     />
                     <Route path="/inventario" element={<Inventory />} />
                 </Routes>
