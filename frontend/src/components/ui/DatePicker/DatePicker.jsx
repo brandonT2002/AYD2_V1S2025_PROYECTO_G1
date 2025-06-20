@@ -22,7 +22,7 @@ const DatePicker = ({ label = "Fecha de Nacimiento", isRequired , onDateChange }
 
     return (
         <div className="relative w-full" ref={dp.pickerRef}>
-            <label className="mb-2 text-text-base font-bold block">
+            <label className="text-text-base font-bold block mb-1">
                 {label} {isRequired && <span className="text-text-red">*</span>}
             </label>
 
@@ -42,7 +42,7 @@ const DatePicker = ({ label = "Fecha de Nacimiento", isRequired , onDateChange }
                     placeholder="YYYY-MM-DD"
                     defaultValue={dp.format(dp.selected)}
                     onClick={() => dp.setShow(!dp.show)}
-                    className="w-full pl-10 pr-4 py-3 rounded-lg
+                    className="w-full pl-10 pr-4 py-2 rounded-sm
                      bg-panel-dark text-text-base
                      focus:outline-none focus:shadow-outline border-2 border-[#dadada]"
                 />
