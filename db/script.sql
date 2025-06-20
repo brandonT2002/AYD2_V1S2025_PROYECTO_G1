@@ -9,7 +9,7 @@ USE `imporcomgua` ;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `imporcomgua`.`clientes` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,  -- Asegúrate de que sea INT UNSIGNED
-  `codigo_cliente` CHAR(4) NOT NULL,
+  `codigo_cliente` CHAR(10),
   `nombre_negocio` VARCHAR(100) NOT NULL,
   `nombre_contacto` VARCHAR(100) NOT NULL,
   `departamento` CHAR(2) NOT NULL,
@@ -126,7 +126,7 @@ COLLATE = utf8mb4_unicode_ci;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `imporcomgua`.`ventas` (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,  -- Cambié a BIGINT UNSIGNED
-  `numero_envio` VARCHAR(45) NOT NULL,
+  `numero_envio` VARCHAR(45),
   `fecha_venta` DATE NOT NULL,
   `fecha_salida_bodega` DATE NULL DEFAULT NULL,
   `cliente_id` INT UNSIGNED NOT NULL,  -- Cambié a UNSIGNED para que coincida con la tabla clientes
@@ -209,3 +209,31 @@ DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_unicode_ci;
 
 
+DELIMITER //
+
+CREATE TRIGGER after_envio_insert
+AFTER INSERT ON ventas
+FOR EACH ROW
+BEGIN
+  UPDATE ventas
+  SET numero_envio = CONCAT('E', NEW.id)
+  WHERE id = NEW.id;
+END;
+//
+
+DELIMITER ;
+
+
+DELIMITER //
+
+CREATE TRIGGER after_cliente_insert
+AFTER INSERT ON clientes
+FOR EACH ROW
+BEGIN
+  UPDATE clientes
+  SET codigo_cliente = CONCAT(NEW.departamento, NEW.id)
+  WHERE id = NEW.id;
+END;
+//
+
+DELIMITER ;
