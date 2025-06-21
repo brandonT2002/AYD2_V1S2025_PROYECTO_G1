@@ -65,7 +65,7 @@ class VentasController:
         except Exception as e:
             return jsonify({"error": str(e)}), 500
     
-    def insert_producto_venta(self, venta_id, producto_id, observaciones, cantidad_unidades):
+    def insert_productos_venta(self, venta_id, producto_id, observaciones, cantidad_unidades):
         """Inserta un producto en una venta"""
         query = f"INSERT INTO venta_detalle (ventas_id, producto_id, observaciones, cantidad_unidades) VALUES (%s, %s, %s, %s)"
         self.execute_query(query, (venta_id, producto_id, observaciones, cantidad_unidades))

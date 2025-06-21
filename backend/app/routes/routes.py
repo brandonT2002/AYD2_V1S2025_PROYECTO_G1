@@ -4,6 +4,7 @@ from app.controllers.Clientes import ClientesController
 from app.controllers.Ventas import VentasController 
 from app.controllers.PagosController import PagosController
 from app.controllers.producto_controller import ProductoController
+from app.controllers.Vendedores import VendedoresController
 
 api_bp = Blueprint('api_bp', __name__, url_prefix='/api/')
 
@@ -12,6 +13,7 @@ GestionesVentas = VentasController()
 GestionesPagos = PagosController()
 GestionesProductos = ProductoController()
 GestionesSalidas = SalidaController()
+GestionesVendedores = VendedoresController()
 
 # Rutas compatibles con el frontend actual
 api_bp.route('/clientes', methods=['GET'])(GestionesClientes.get_all)
@@ -42,9 +44,18 @@ api_bp.route('/buscar-ventas', methods=['POST'])(GestionesSalidas.buscar_ventas)
 api_bp.route('/obtener-detalle-venta/<int:venta_id>', methods=['GET'])(GestionesSalidas.obtener_detalle_venta)
 api_bp.route('/registrar-salida', methods=['POST'])(GestionesSalidas.registrar_salida)
 
-
+# CRUD de Productos
 api_bp.route('/InsertarProducto', methods=['POST'])(GestionesProductos.create_producto)
 api_bp.route('/GetProducto/<int:producto_id>', methods=['GET'])(GestionesProductos.get_producto)
 api_bp.route('/ActualizarProducto/<int:producto_id>', methods=['PUT'])(GestionesProductos.update_producto)
 api_bp.route('/EliminarProducto/<int:producto_id>', methods=['DELETE'])(GestionesProductos.delete_producto)
 api_bp.route('/GetAllProductos', methods=['GET'])(GestionesProductos.get_all_productos)
+
+# Rutas para manejar Vendedores
+api_bp.route('/InsertarVendedor', methods=['POST'])(GestionesVendedores.create_vendedor)
+api_bp.route('/GetVendedor/<int:vendedor_id>', methods=['GET'])(GestionesVendedores.get_vendedor)
+api_bp.route('/GetAllVendedores', methods=['GET'])(GestionesVendedores.get_all_vendedores)
+api_bp.route('/ActualizarVendedor/<int:vendedor_id>', methods=['PUT'])(GestionesVendedores.update_vendedor)
+api_bp.route('/EliminarVendedor/<int:vendedor_id>', methods=['DELETE'])(GestionesVendedores.delete_vendedor)
+# Rutas para manejar el Dashboard
+
