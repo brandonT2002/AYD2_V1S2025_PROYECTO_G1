@@ -18,7 +18,7 @@ function App() {
                     />
                     <Route path="/inventario" element={<Inventory />} />
                     <Route 
-                        path="/mantenimiento/agregar-producto" 
+                        path="/mantenimiento/productos" 
                         element={<AgregarProducto />} 
                     />
                     <Route path="/mantenimiento/clientes" element={<ClientePage />} />
