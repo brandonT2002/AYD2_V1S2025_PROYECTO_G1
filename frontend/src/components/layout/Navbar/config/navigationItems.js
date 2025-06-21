@@ -9,8 +9,8 @@ export const navigationItems = [
                 to: "/mantenimiento/productos",
             },
             {
-                label: "Proveedores",
-                to: "/mantenimiento/proveedores",
+                label: "Vendedores",
+                to: "/mantenimiento/vendedores",
             },
             {
                 label: "Clientes",

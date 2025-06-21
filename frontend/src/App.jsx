@@ -4,6 +4,8 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Inventory from "./pages/Inventory";
 import AgregarProducto from "./pages/AgregarProducto";
 import ClientePage from "./components/Clientes/ClientePage";
+import Vendedores from "./pages/Vendedores";
+
 
 
 function App() {
@@ -22,6 +24,8 @@ function App() {
                         element={<AgregarProducto />} 
                     />
                     <Route path="/mantenimiento/clientes" element={<ClientePage />} />
+                    <Route path="/mantenimiento/vendedores" element={<Vendedores />} />
+
                 </Routes>
             </main>
         </Router>
