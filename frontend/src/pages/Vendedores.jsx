@@ -1,4 +1,6 @@
-import { useState } from "react";
+
+import { useState, useEffect } from "react";
+import axios from "axios";
 import { FiUser, FiPhone, FiMapPin, FiPercent } from "react-icons/fi";
 import { RiEdit2Fill, RiDeleteBin5Fill } from "react-icons/ri";
 import { ImSearch } from "react-icons/im";
@@ -6,63 +8,86 @@ import { ImSearch } from "react-icons/im";
 export default function Vendedores() {
   const [form, setForm] = useState({
     id: null,
-    nombres: "",
-    apellidos: "",
+    nombre: "",
+    apellido: "",
     telefono: "",
     direccion: "",
     comision: ""
   });
 
-  const [vendedores, setVendedores] = useState([
-    {
-      id: 1,
-      nombres: "Carlos",
-      apellidos: "Méndez",
-      telefono: "5555-1234",
-      direccion: "Guatemala Centro",
-      comision: "10%"
-    }
-  ]);
-
+  const [vendedores, setVendedores] = useState([]);
   const [busqueda, setBusqueda] = useState("");
+
+  useEffect(() => {
+    fetchVendedores();
+  }, []);
+
+  const fetchVendedores = async () => {
+    try {
+      const res = await axios.get("http://127.0.0.1:5000/api/GetAllVendedores");
+      const transformados = res.data.map((v) => ({
+        ...v,
+        comision: v.Comision || "0%"
+      }));
+      setVendedores(transformados);
+    } catch (error) {
+      console.error("Error cargando vendedores:", error);
+    }
+  };
 
   const handleChange = (e) =>
     setForm({ ...form, [e.target.name]: e.target.value });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (form.id) {
-      setVendedores((prev) =>
-        prev.map((v) => (v.id === form.id ? { ...form } : v))
-      );
-    } else {
-      const nuevo = {
-        ...form,
-        id: vendedores.length > 0 ? vendedores[vendedores.length - 1].id + 1 : 1
-      };
-      setVendedores((prev) => [...prev, nuevo]);
+
+    const payload = {
+      nombre: form.nombre,
+      apellido: form.apellido,
+      telefono: form.telefono,
+      direccion: form.direccion,
+      comision: `${form.comision}%`
+    };
+
+    try {
+      if (form.id) {
+        await axios.put(
+          `http://127.0.0.1:5000/api/ActualizarVendedor/${form.id}`,
+          payload
+        );
+      } else {
+        await axios.post("http://127.0.0.1:5000/api/InsertarVendedor", payload);
+      }
+      fetchVendedores();
+      setForm({ id: null, nombre: "", apellido: "", telefono: "", direccion: "", comision: "" });
+    } catch (error) {
+      console.error("Error al guardar:", error);
     }
-    setForm({
-      id: null,
-      nombres: "",
-      apellidos: "",
-      telefono: "",
-      direccion: "",
-      comision: ""
-    });
   };
 
-  const handleDelete = (id) => {
+  const handleDelete = async (id) => {
     if (!confirm("¿Estás seguro de eliminar este vendedor?")) return;
-    setVendedores((prev) => prev.filter((v) => v.id !== id));
+    try {
+      await axios.delete(`http://127.0.0.1:5000/api/EliminarVendedor/${id}`);
+      fetchVendedores();
+    } catch (error) {
+      console.error("Error al eliminar:", error);
+    }
   };
 
   const handleEdit = (vendedor) => {
-    setForm({ ...vendedor });
+    setForm({
+      id: vendedor.id,
+      nombre: vendedor.nombre,
+      apellido: vendedor.apellido,
+      telefono: vendedor.telefono,
+      direccion: vendedor.direccion,
+      comision: vendedor.Comision ? vendedor.Comision.replace('%', '') : ""
+    });
   };
 
   const vendedoresFiltrados = vendedores.filter((v) =>
-    `${v.nombres} ${v.apellidos}`.toLowerCase().includes(busqueda.toLowerCase())
+    `${v.nombre} ${v.apellido}`.toLowerCase().includes(busqueda.toLowerCase())
   );
 
   return (
@@ -77,8 +102,8 @@ export default function Vendedores() {
           <div className="flex items-center border rounded-md px-2">
             <FiUser className="text-gray-500 mr-2" />
             <input
-              name="nombres"
-              value={form.nombres}
+              name="nombre"
+              value={form.nombre}
               onChange={handleChange}
               placeholder="Placeholder"
               className="w-full p-2 outline-none"
@@ -92,8 +117,8 @@ export default function Vendedores() {
           <div className="flex items-center border rounded-md px-2">
             <FiUser className="text-gray-500 mr-2" />
             <input
-              name="apellidos"
-              value={form.apellidos}
+              name="apellido"
+              value={form.apellido}
               onChange={handleChange}
               placeholder="Placeholder"
               className="w-full p-2 outline-none"
@@ -137,6 +162,7 @@ export default function Vendedores() {
             <FiPercent className="text-gray-500 mr-2" />
             <input
               name="comision"
+              type="number"
               value={form.comision}
               onChange={handleChange}
               placeholder="Placeholder"
@@ -153,8 +179,8 @@ export default function Vendedores() {
             onClick={() =>
               setForm({
                 id: null,
-                nombres: "",
-                apellidos: "",
+                nombre: "",
+                apellido: "",
                 telefono: "",
                 direccion: "",
                 comision: ""
@@ -181,7 +207,7 @@ export default function Vendedores() {
           <ImSearch className="text-gray-500 mr-2" />
           <input
             type="text"
-            placeholder="Placeholder"
+            placeholder="Buscar..."
             className="w-full p-2 outline-none"
             value={busqueda}
             onChange={(e) => setBusqueda(e.target.value)}
@@ -195,7 +221,7 @@ export default function Vendedores() {
               className="bg-white border rounded-md p-4 shadow-sm"
             >
               <h3 className="font-bold text-lg">
-                {v.nombres} {v.apellidos}
+                {v.nombre} {v.apellido}
               </h3>
               <span className="inline-block bg-gray-200 text-xs font-bold px-2 py-1 rounded mt-1 mb-2">
                 {String(v.id).padStart(5, "0")}
