@@ -81,4 +81,5 @@ class InventarioController:
             return jsonify({'success': True, 'inventario_id': inventario_id})
         except Exception as e:
             return jsonify({'error': str(e)}), 500
-        
+    
+    

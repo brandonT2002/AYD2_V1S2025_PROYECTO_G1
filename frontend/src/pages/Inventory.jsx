@@ -15,9 +15,34 @@ import { PiListNumbersDuotone } from "react-icons/pi";
 import { FiPackage } from "react-icons/fi";
 import { FiEdit } from "react-icons/fi";
 import { PiPencilLineLight } from "react-icons/pi";
+import { useEffect, useState } from "react";
+import { requestGetProductos } from "../services/inventario";
 
 function Inventory() {
     const handleSearch = () => console.log("Search action triggered");
+    const [products, setProducts] = useState([
+        { value: "0", label: "Cargando..." },
+    ]);
+
+    const getProducts = async () => {
+        try {
+            const response = await requestGetProductos();
+            console.log("Productos obtenidos:", response.data);
+            const productOptions = response.data.map((product) => ({
+                value: product.id,
+                label: product.nombre,
+            }));
+            console.log("Opciones de productos:", productOptions);
+            setProducts(productOptions);
+        } catch (error) {
+            console.error("Error fetching products:", error);
+        }
+    };
+
+    useEffect(() => {
+        getProducts();
+    }, []);
+
     return (
         <div className="flex flex-col bg-gray-100 gap-3">
             <Title>Recepción de Mercancía</Title>
@@ -26,11 +51,7 @@ function Inventory() {
                     <SelectInput
                         name="producto"
                         label="Producto"
-                        options={[
-                            { value: "1", label: "Producto A" },
-                            { value: "2", label: "Producto B" },
-                            { value: "3", label: "Producto C" },
-                        ]}
+                        options={products}
                         className={"text-text-base font-semibold"}
                         isRequired={true}
                         icon={CgMenuGridR}

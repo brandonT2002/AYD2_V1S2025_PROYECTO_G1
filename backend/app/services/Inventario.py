@@ -26,3 +26,7 @@ class InventarioService(BaseService):
     def actualizar_stock_inventario(self, producto_id, total):
         """Actualiza el stock de un producto en inventario"""
         self.inventario_model.update_stock_intentario(producto_id, total)
+
+    def actualizar_stock_inventario_venta(self, venta_id):
+        """Actualiza el stock de inventario al registrar una salida"""
+        self.inventario_model.update_stock_inventario_venta(venta_id)

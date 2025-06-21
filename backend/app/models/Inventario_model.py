@@ -58,7 +58,6 @@ class InventarioModel(BaseModel):
             VALUES (%s, %s, %s, %s, %s)
         """
         return self.returning_id(query, (tipo, cantidad_fardos, unidades_totales,  producto_id, duca_id))
-         
     
     def update_created_at(self, inventario_id, fecha):
         """Actualiza el campo created_at de un movimiento de inventario"""
@@ -78,4 +77,22 @@ class InventarioModel(BaseModel):
             WHERE productos_id = %s
         """
         self.execute_query(query, (total, product_id))
+        return
+    
+    def update_stock_inventario_venta(self, venta_id):
+        query = """
+            UPDATE inventario_movimientos im
+            JOIN detalle_venta dv ON im.productos_id = dv.producto_id
+            SET im.unidades_totales = im.unidades_totales - dv.cantidad
+            WHERE dv.venta_id = %s
+        """
+        # actualizar la tabla inventario_movimientos restando las unidades vendidas
+        query = """
+            UPDATE inventario in
+            JOIN detalle_venta dv ON in.productos_id = dv.producto_id
+            SET in.stock_unidades = in.stock_unidades - dv.cantidad
+            WHERE dv.venta_id = %s
+        """
+
+        self.execute_query(query, (venta_id, venta_id))
         return
