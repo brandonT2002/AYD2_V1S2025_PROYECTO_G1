@@ -26,3 +26,4 @@ class ProductoService(BaseService):
     def get_all_productos(self):
         """Obtiene todos los productos"""
         return self.producto_model.get_all_productos()
+

@@ -3,13 +3,14 @@ from app.controllers.salida_controller import SalidaController
 from app.controllers.Clientes import ClientesController
 from app.controllers.Ventas import VentasController 
 from app.controllers.PagosController import PagosController
+from app.controllers.producto_controller import ProductoController
 
 api_bp = Blueprint('api_bp', __name__, url_prefix='/api/')
 
 GestionesClientes = ClientesController()
 GestionesVentas = VentasController()
 GestionesPagos = PagosController()
-
+GestionesProductos = ProductoController()
 GestionesSalidas = SalidaController()
 
 # Rutas compatibles con el frontend actual
@@ -38,3 +39,12 @@ api_bp.route('/ActualizarPago/<int:venta_id>', methods=['PUT'])(GestionesPagos.u
 api_bp.route('/buscar-ventas', methods=['POST'])(GestionesSalidas.buscar_ventas)
 api_bp.route('/obtener-detalle-venta/<int:venta_id>', methods=['GET'])(GestionesSalidas.obtener_detalle_venta)
 api_bp.route('/registrar-salida', methods=['POST'])(GestionesSalidas.registrar_salida)
+
+
+api_bp.route('/InsertarProducto', methods=['POST'])(GestionesProductos.create_producto)
+api_bp.route('/GetProducto/<int:producto_id>', methods=['GET'])(GestionesProductos.get_producto)
+api_bp.route('/ActualizarProducto/<int:producto_id>', methods=['PUT'])(GestionesProductos.update_producto)
+api_bp.route('/EliminarProducto/<int:producto_id>', methods=['DELETE'])(GestionesProductos.delete_producto)
+api_bp.route('/GetAllProductos', methods=['GET'])(GestionesProductos.get_all_productos)
+
+

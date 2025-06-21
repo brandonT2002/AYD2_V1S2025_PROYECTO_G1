@@ -1,6 +1,7 @@
 from flask import request, jsonify
 from app.services.producto_service import ProductoService
 
+
 class ProductoController:
     """Controlador para manejar los productos"""
     
@@ -14,7 +15,7 @@ class ProductoController:
             return jsonify({"error": "Datos del producto son requeridos"}), 400    
         try:
             producto = self.producto_service.create(data)
-            return jsonify(producto), 201
+            return jsonify(producto), 200
         except Exception as e:
             return jsonify({"error": str(e)}), 500
     
@@ -56,7 +57,6 @@ class ProductoController:
             return jsonify({"message": "Producto eliminado exitosamente"}), 200
         except Exception as e:
             return jsonify({"error": str(e)}), 500
-    
     def get_all_productos(self):
         """Obtiene todos los productos"""
         try:
