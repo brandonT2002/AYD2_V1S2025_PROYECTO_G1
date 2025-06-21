@@ -1,0 +1,45 @@
+import IndexPage from "./pages/Index";
+import { Navbar } from "./components/layout";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Inventory from "./pages/Inventory";
+import AgregarProducto from "./pages/AgregarProducto";
+import ClientePage from "./components/Clientes/ClientePage";
+import Vendedores from "./pages/Vendedores";
+import PaymentPage from "./pages/Pagos";
+import VentaPage from "./pages/Ventas";
+
+
+
+function App() {
+    return (
+        <Router>
+            <Navbar logoTitle="IMPORCOMGUA" />
+            <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-4 py-2">
+                <Routes>
+                    <Route
+                        path="/bodega"
+                        element={<IndexPage />}
+                    />
+                    <Route
+                        path="/cobranzas"
+                        element={<PaymentPage />}
+                    />
+                    <Route
+                        path="/ventas"
+                        element={<VentaPage />}
+                    />
+                    <Route path="/inventario" element={<Inventory />} />
+                    <Route 
+                        path="/mantenimiento/productos" 
+                        element={<AgregarProducto />} 
+                    />
+                    <Route path="/mantenimiento/clientes" element={<ClientePage />} />
+                    <Route path="/mantenimiento/vendedores" element={<Vendedores />} />
+
+                </Routes>
+            </main>
+        </Router>
+    );
+}
+
+export default App;
