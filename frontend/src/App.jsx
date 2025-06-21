@@ -11,7 +11,7 @@ function App() {
             <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-4 py-2">
                 <Routes>
                     <Route
-                        path="/mantenimiento/productos"
+                        path="/bodega"
                         element={<IndexPage />}
                     />
                     <Route path="/inventario" element={<Inventory />} />
