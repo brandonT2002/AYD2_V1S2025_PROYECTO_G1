@@ -1,4 +1,8 @@
 import { useState } from "react";
+import { FiPackage, FiBox, FiHash } from "react-icons/fi";
+import { MdNumbers } from "react-icons/md";
+import { RiEdit2Fill, RiDeleteBin5Fill } from "react-icons/ri";
+import { ImSearch } from "react-icons/im";
 
 export default function AgregarProducto() {
   const [form, setForm] = useState({
@@ -33,14 +37,11 @@ export default function AgregarProducto() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     if (form.id) {
-      // Editar producto existente
       setProductos((prev) =>
         prev.map((p) => (p.id === form.id ? { ...form } : p))
       );
     } else {
-      // Agregar nuevo producto
       const nuevo = {
         ...form,
         id: productos.length > 0 ? productos[productos.length - 1].id + 1 : 1
@@ -72,50 +73,89 @@ export default function AgregarProducto() {
   );
 
   return (
-    <div className="p-6 space-y-6">
-      <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-4 bg-gray-50 p-6 rounded-xl border">
-        <input
-          name="codigo_producto"
-          value={form.codigo_producto}
-          onChange={handleChange}
-          placeholder="Código del producto"
-          className="col-span-1 border p-2 rounded-md"
-          required
-        />
-        <input
-          name="nombre"
-          value={form.nombre}
-          onChange={handleChange}
-          placeholder="Nombre del producto"
-          className="col-span-1 border p-2 rounded-md"
-          required
-        />
-        <select
-          name="unidad_medida"
-          value={form.unidad_medida}
-          onChange={handleChange}
-          className="col-span-1 border p-2 rounded-md"
-          required
-        >
-          <option value="">Unidad de medida</option>
-          <option value="Unidad">Unidad</option>
-          <option value="Caja">Caja</option>
-          <option value="Litro">Litro</option>
-        </select>
-        <input
-          name="unidades_por_paquete"
-          type="number"
-          value={form.unidades_por_paquete}
-          onChange={handleChange}
-          placeholder="Unidades por fardo/paquete"
-          className="col-span-1 border p-2 rounded-md"
-          required
-        />
+    <div className="p-6 space-y-6 bg-gray-100">
+      <h2 className="text-2xl font-bold mb-2">Nuevo Producto</h2>
+      <form
+        onSubmit={handleSubmit}
+        className="grid grid-cols-2 gap-4 bg-white p-6 rounded-xl border"
+      >
+        <div className="relative">
+          <label className="text-sm font-semibold block mb-1">
+            Código de Producto *
+          </label>
+          <div className="flex items-center border rounded-md px-2">
+            <FiHash className="text-gray-500 mr-2" />
+            <input
+              name="codigo_producto"
+              value={form.codigo_producto}
+              onChange={handleChange}
+              placeholder="Placeholder"
+              className="w-full p-2 outline-none"
+              required
+            />
+          </div>
+        </div>
 
-        <div className="col-span-2 flex justify-end space-x-4">
+        <div className="relative">
+          <label className="text-sm font-semibold block mb-1">
+            Nombre del Producto *
+          </label>
+          <div className="flex items-center border rounded-md px-2">
+            <FiBox className="text-gray-500 mr-2" />
+            <input
+              name="nombre"
+              value={form.nombre}
+              onChange={handleChange}
+              placeholder="Placeholder"
+              className="w-full p-2 outline-none"
+              required
+            />
+          </div>
+        </div>
+
+        <div className="relative">
+          <label className="text-sm font-semibold block mb-1">
+            Unidad de medida *
+          </label>
+          <div className="flex items-center border rounded-md px-2">
+            <FiPackage className="text-gray-500 mr-2" />
+            <select
+              name="unidad_medida"
+              value={form.unidad_medida}
+              onChange={handleChange}
+              className="w-full p-2 outline-none"
+              required
+            >
+              <option value="">Opción</option>
+              <option value="Unidad">Unidad</option>
+              <option value="Caja">Caja</option>
+              <option value="Litro">Litro</option>
+            </select>
+          </div>
+        </div>
+
+        <div className="relative">
+          <label className="text-sm font-semibold block mb-1">
+            Unidades por fardo/paquete *
+          </label>
+          <div className="flex items-center border rounded-md px-2">
+            <MdNumbers className="text-gray-500 mr-2" />
+            <input
+              type="number"
+              name="unidades_por_paquete"
+              value={form.unidades_por_paquete}
+              onChange={handleChange}
+              placeholder="Placeholder"
+              className="w-full p-2 outline-none"
+              required
+            />
+          </div>
+        </div>
+
+        <div className="col-span-2 flex justify-end gap-2 mt-2">
           <button
             type="reset"
-            className="btn-secondary border p-2 rounded-md"
+            className="px-4 py-2 rounded border"
             onClick={() =>
               setForm({
                 id: null,
@@ -130,47 +170,63 @@ export default function AgregarProducto() {
           </button>
           <button
             type="submit"
-            className="btn-primary border p-2 rounded-md bg-blue-600 text-white"
+            className="px-4 py-2 rounded text-white bg-blue-600"
           >
             Guardar
           </button>
         </div>
       </form>
 
-      <div className="bg-white p-4 rounded-md shadow">
-        <h2 className="text-xl font-bold mb-2">Productos</h2>
-        <div className="flex items-center gap-2">
+      <h2 className="text-2xl font-bold">Productos</h2>
+      <div className="bg-white p-4 rounded-md border">
+        <label className="text-sm font-semibold block mb-1">
+          Buscar Producto
+        </label>
+        <div className="flex items-center border rounded-md px-2 mb-4">
+          <ImSearch className="text-gray-500 mr-2" />
           <input
             type="text"
-            placeholder="Buscar producto"
-            className="border rounded-md p-2 w-full"
+            placeholder="Placeholder"
+            className="w-full p-2 outline-none"
             value={busqueda}
             onChange={(e) => setBusqueda(e.target.value)}
           />
-          <button className="bg-blue-600 text-white px-4 py-2 rounded-md">🔍 Buscar</button>
         </div>
-      </div>
 
-      <section className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {productosFiltrados.map((p) => (
-          <article key={p.id} className="border rounded-lg p-4 shadow-sm bg-white">
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="text-lg font-bold">{p.nombre}</h3>
-                <span className="text-xs bg-gray-100 px-2 py-1 rounded-full inline-block mt-1 font-semibold">
-                  {p.codigo_producto}
-                </span>
-              </div>
-              <div className="flex items-center gap-2">
-                <button onClick={() => handleEdit(p)} className="text-blue-600 hover:text-blue-800">✏️</button>
-                <button onClick={() => handleDelete(p.id)} className="text-red-500 hover:text-red-700">🗑️</button>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+          {productosFiltrados.map((p) => (
+            <div
+              key={p.id}
+              className="bg-white border rounded-md p-4 shadow-sm"
+            >
+              <h3 className="font-bold text-lg">{p.nombre}</h3>
+              <span className="inline-block bg-gray-200 text-xs font-bold px-2 py-1 rounded mt-1 mb-2">
+                {p.codigo_producto}
+              </span>
+              <p className="text-sm">
+                <strong>Unidad de medida:</strong> {p.unidad_medida}
+              </p>
+              <p className="text-sm">
+                <strong>Unidades por fardo/paquete:</strong> {p.unidades_por_paquete}
+              </p>
+              <div className="flex gap-2 mt-3">
+                <button
+                  onClick={() => handleEdit(p)}
+                  className="text-blue-600"
+                >
+                  <RiEdit2Fill size={18} />
+                </button>
+                <button
+                  onClick={() => handleDelete(p.id)}
+                  className="text-red-600"
+                >
+                  <RiDeleteBin5Fill size={18} />
+                </button>
               </div>
             </div>
-            <p><strong>Unidad de medida:</strong> {p.unidad_medida}</p>
-            <p><strong>Unidades por fardo/paquete:</strong> {p.unidades_por_paquete}</p>
-          </article>
-        ))}
-      </section>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }

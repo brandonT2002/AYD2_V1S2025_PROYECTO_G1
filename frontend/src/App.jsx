@@ -21,7 +21,7 @@ function App() {
                         path="/mantenimiento/agregar-producto" 
                         element={<AgregarProducto />} 
                     />
-                    <Route path="/mantenimiento/clientes" element={<ClientePage />} /> {/* ✅ Nueva vista */}
+                    <Route path="/mantenimiento/clientes" element={<ClientePage />} />
                 </Routes>
             </main>
         </Router>
