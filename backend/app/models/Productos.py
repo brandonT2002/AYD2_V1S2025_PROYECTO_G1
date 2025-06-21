@@ -24,6 +24,9 @@ class Producto(BaseModel):
                 data['unidades_por_fardo']
             ))
 
+            query = "INSERT INTO inventario (stock_unidades, productos_id) VALUES (0, %s)"
+            self.execute_query(query, (producto_id,))
+
             return {"message": "Producto creado con éxito", "id": producto_id, "codigo": data['codigo']}
 
         except Exception as e:

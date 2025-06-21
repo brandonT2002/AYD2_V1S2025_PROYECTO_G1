@@ -20,3 +20,22 @@ class Ventas(BaseService):
         """Actualiza una venta existente"""
         return self.venta_model.update_venta(venta_id, data)
     
+    def delete_venta(self, venta_id):
+        """Elimina una venta por su ID"""
+        return self.venta_model.delete_venta(venta_id)
+    
+    def insert_producto_venta(self, data):
+        """Inserta un producto en una venta"""
+
+        venta_id = data['venta_id']
+        producto_id = data['producto_id']
+        observaciones = data['observaciones']
+        cantidad_unidades = data['cantidad_unidades']
+
+        return self.venta_model.insert_producto_venta(venta_id, producto_id, observaciones, cantidad_unidades)
+    
+    def delete_producto_venta(self, detalle_venta_id):
+        """Elimina un producto de una venta"""
+        return self.venta_model.delete_producto_venta(detalle_venta_id)
+
+        
