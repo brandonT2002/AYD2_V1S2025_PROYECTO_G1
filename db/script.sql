@@ -82,7 +82,7 @@ CREATE TABLE IF NOT EXISTS `imporcomgua`.`inventario_movimientos` (
   `tipo` ENUM('Ingreso', 'Despacho', 'Salida', 'Recepcion') NOT NULL,
   `cantidad_fardos` INT UNSIGNED NOT NULL,
   `unidades_totales` INT UNSIGNED NOT NULL,
-  `salida_bodega` DATE NOT NULL,
+  `salida_bodega` DATE,
   `comentario` TEXT NULL DEFAULT NULL,
   `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `productos_id` INT UNSIGNED NOT NULL,

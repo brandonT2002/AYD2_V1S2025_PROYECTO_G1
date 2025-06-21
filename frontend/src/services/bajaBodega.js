@@ -5,3 +5,5 @@ export const requestBuscarVentas = (data) =>
 
 export const requestRegistrarSalida = (data) =>
     axios.post("/api/registrar-salida", data);
+
+export const requestNuevaVenta = (data) => axios.post("/api/InsertarVenta", data);
