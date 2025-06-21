@@ -8,6 +8,7 @@ const DatePicker = ({
     label = "Fecha de Nacimiento",
     isRequired,
     onDateChange,
+    register,
     position = "bottom",
 }) => {
     const inputRef = useRef(null);
@@ -20,7 +21,9 @@ const DatePicker = ({
         handle: (day) => {
             const newDate = new Date(dp.year, dp.month, day);
             dp.setSelected(newDate);
-            inputRef.current.value = dp.format(newDate);
+            if (inputRef.current) {
+                inputRef.current.value = dp.format(newDate);
+            }
             dp.setShow(false);
             onDateChange?.(dp.format(newDate));
         },
@@ -29,39 +32,41 @@ const DatePicker = ({
     // Efecto para manejar clics fuera del calendario
     useEffect(() => {
         const handleClickOutside = (event) => {
-            // Si el calendario está visible y el clic fue fuera del calendario y del input
-            if (
-                dp.show &&
-                calendarRef.current &&
-                !calendarRef.current.contains(event.target) &&
-                !inputRef.current.contains(event.target)
-            ) {
+            // Verificar si los refs están disponibles y el calendario está visible
+            if (!dp.show || !calendarRef.current || !inputRef.current) {
+                return;
+            }
+
+            // Verificar si el clic fue fuera del calendario y del input
+            const clickedCalendar = calendarRef.current.contains(event.target);
+            const clickedInput = inputRef.current.contains(event.target);
+            const clickedIcon = event.target.closest(
+                ".calendar-icon-container"
+            );
+
+            if (!clickedCalendar && !clickedInput && !clickedIcon) {
                 dp.setShow(false);
             }
         };
 
-        // Agregar el event listener cuando el componente se monta
         document.addEventListener("mousedown", handleClickOutside);
-
-        // Limpiar el event listener cuando el componente se desmonta
         return () => {
             document.removeEventListener("mousedown", handleClickOutside);
         };
-    }, [dp.show]); // Solo se vuelve a ejecutar cuando dp.show cambia
+    }, [dp.show]);
 
     // Efecto para posicionar el calendario
     useEffect(() => {
         if (dp.show && calendarRef.current && inputRef.current) {
             const inputRect = inputRef.current.getBoundingClientRect();
             const calendarEl = calendarRef.current;
-            let bodyScrollTop =
+            const bodyScrollTop =
                 document.documentElement.scrollTop || document.body.scrollTop;
-
             const bodyScrollLeft =
                 document.documentElement.scrollLeft || document.body.scrollLeft;
 
-            let top = 0;
-            let left = inputRect.left + bodyScrollLeft;
+            let top,
+                left = inputRect.left + bodyScrollLeft;
 
             if (position === "top") {
                 top =
@@ -73,12 +78,12 @@ const DatePicker = ({
                 top = inputRect.bottom + bodyScrollTop + 10;
             }
 
+            // Ajustar posición horizontal si es necesario
             const viewportWidth = window.innerWidth;
             if (left + calendarEl.offsetWidth > viewportWidth) {
                 left = viewportWidth - calendarEl.offsetWidth - 10;
-                if (left < 0) left = 10;
             }
-            if (left < 0) left = 10;
+            left = Math.max(left, 10); // Asegurar que no sea negativo
 
             calendarEl.style.position = "absolute";
             calendarEl.style.top = `${top}px`;
@@ -90,11 +95,11 @@ const DatePicker = ({
     return (
         <div className="relative w-full" ref={pickerContainerRef}>
             <label className="text-text-base font-bold block mb-1">
-                {label} {isRequired && <span className="text-text-red"></span>}
+                {label} {isRequired && <span className="text-text-red">*</span>}
             </label>
             <div className="relative">
                 <div
-                    className="absolute top-1 left-0 px-3 py-2 cursor-pointer text-gray-400"
+                    className="calendar-icon-container absolute top-1 left-0 px-3 py-2 cursor-pointer text-gray-400"
                     onClick={() => dp.setShow(!dp.show)}
                 >
                     <LuCalendarDays size={18} />
@@ -102,6 +107,7 @@ const DatePicker = ({
                 <input
                     type="text"
                     ref={inputRef}
+                    {...(register ? register("date") : {})}
                     readOnly
                     placeholder="YYYY-MM-DD"
                     defaultValue={dp.format(dp.selected)}
@@ -113,18 +119,31 @@ const DatePicker = ({
             </div>
             {dp.show &&
                 ReactDOM.createPortal(
-                    <div ref={calendarRef} className="absolute z-1000">
-                        <Calendar
-                            month={dp.month}
-                            setMonth={dp.setMonth}
-                            year={dp.year}
-                            setYear={dp.setYear}
-                            blankDays={dp.blankDays}
-                            noOfDays={dp.noOfDays}
-                            selected={dp.selected}
-                            onSelect={handleSelect}
+                    <>
+                        {/* 1️⃣ Overlay a pantalla completa */}
+                        <div
+                            className="fixed inset-0 z-[999]"
+                            onClick={() => dp.setShow(false)}
                         />
-                    </div>,
+
+                        {/* 2️⃣ Calendario */}
+                        <div
+                            ref={calendarRef}
+                            className="absolute z-[1000] bg-white shadow-lg rounded-md"
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            <Calendar
+                                month={dp.month}
+                                setMonth={dp.setMonth}
+                                year={dp.year}
+                                setYear={dp.setYear}
+                                blankDays={dp.blankDays}
+                                noOfDays={dp.noOfDays}
+                                selected={dp.selected}
+                                onSelect={handleSelect}
+                            />
+                        </div>
+                    </>,
                     document.body
                 )}
         </div>

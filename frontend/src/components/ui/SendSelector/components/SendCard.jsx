@@ -2,28 +2,34 @@ import { FiPackage } from "react-icons/fi";
 import { FaRegUserCircle, FaRegCalendar } from "react-icons/fa";
 import { useSendSelectorContext } from "../context/SendSelectorContext";
 
-export const SendCard = ({ envio }) => {
+export const SendCard = ({ envio, onSelect }) => {
     const {
         id,
-        num_env,
-        cliente,
-        vendedor,
-        facturaDTE,
-        fechaventa,
-        nitCliente,
-        tipoPago,
-        nombreFactura,
-        fechasalidaBodega,
-        diasCredito,
-        nitFactura,
-        total,
-        estado = "Vigente",
+        numero_envio,
+        nombre_negocio,
+        vendedor_nombre,
+        vendedor_apellido,
+        dte_numero,
+        fecha_venta,
+        dte_nit,
+        tipo_pago,
+        dte_nombre,
+        fecha_salida_bodega,
+        dias_credito,
+        total_quetzales,
+        estado_venta = "Vigente",
+        estado_cobro,
+        nombre_contacto,
     } = envio;
 
     const { selectEnvio, isSelected } = useSendSelectorContext();
     const selected = isSelected(id);
 
-    const handleClick = () => selectEnvio(envio);
+    const handleClick = () => {
+        selectEnvio(envio);
+        if (onSelect) onSelect(id);
+    };
+
     const handleKeyDown = (e) => {
         if (e.key === "Enter" || e.key === " ") {
             e.preventDefault();
@@ -87,17 +93,17 @@ export const SendCard = ({ envio }) => {
                                     selected ? "text-blue-900" : "text-gray-900"
                                 }`}
                             >
-                                {num_env}
+                                {numero_envio}
                             </span>
                             <span
                                 className={`
                   inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium
                   ${
-                      estado === "Vigente"
+                      estado_venta === "Vigente"
                           ? selected
                               ? "bg-green-200 text-green-800"
                               : "bg-green-100 text-green-700"
-                          : estado === "Pendiente"
+                          : estado_venta === "Pendiente"
                           ? selected
                               ? "bg-yellow-200 text-yellow-800"
                               : "bg-yellow-100 text-yellow-700"
@@ -105,13 +111,15 @@ export const SendCard = ({ envio }) => {
                   }
                 `}
                             >
-                                {estado}
+                                {estado_venta}
                             </span>
                         </div>
 
                         <div className="flex items-center space-x-1 text-sm text-gray-600">
                             <FaRegUserCircle className="h-4 w-4" />
-                            <span>{cliente}</span>
+                            <span>
+                                {nombre_negocio} - {nombre_contacto}
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -121,12 +129,14 @@ export const SendCard = ({ envio }) => {
                             selected ? "text-blue-600" : "text-gray-900"
                         }`}
                     >
-                        Q {Number(total).toFixed(2)}
+                        Q {Number(total_quetzales).toFixed(2)}
                     </div>
-                    <div className="flex items-center space-x-1 text-sm text-gray-600 ">
-                            <FaRegCalendar className="h-4 w-4" />
-                            <span>{fechaventa}</span>
-                        </div>
+                    <div className="flex items-center space-x-1 text-sm text-gray-600">
+                        <FaRegCalendar className="h-4 w-4" />
+                        <span>
+                            {new Date(fecha_venta).toLocaleDateString()}
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>

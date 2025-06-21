@@ -13,25 +13,25 @@ export const SelectedInfo = ({
     const [columns, setColumns] = useState([]);
     const [data, setData] = useState([]);
 
-    const formatDataToTable = (data) => {
+    const formatDataToTable = (productos) => {
         const columns = [
-            { header: "Producto", key: "producto" },
-            { header: "Cantidad", key: "cantidad" },
-            { header: "Precio Unitario", key: "precioUnitario" },
-            { header: "Cantidad Unidades", key: "cantidadUnidades" },
-            { header: "Precio por Fardo/Paquete", key: "precioFardo" },
-            { header: "Subtotal", key: "subtotal" },
+            { header: "Código", key: "codigo" },
+            { header: "Producto", key: "nombre" },
+            { header: "Precio Unitario", key: "precio_unidad" },
+            { header: "Unidad de Medida", key: "unidad_medida" },
+            { header: "Unidades por Fardo", key: "unidades_por_fardo" },
             { header: "Observaciones", key: "observaciones" },
         ];
-        const dataTable = data.map((item) => ({
-            producto: item.producto,
-            cantidad: item.cantidad,
-            precioUnitario: item.precioUnitario.toFixed(2),
-            cantidadUnidades: item.cantidadUnidades,
-            precioFardo: item.precioFardo.toFixed(2),
-            subtotal: item.subtotal.toFixed(2),
-            observaciones: item.observaciones,
+
+        const dataTable = productos.map((producto) => ({
+            codigo: producto.codigo,
+            nombre: producto.nombre,
+            precio_unidad: `Q ${producto.precio_unidad}`,
+            unidad_medida: producto.unidad_medida,
+            unidades_por_fardo: producto.unidades_por_fardo,
+            observaciones: producto.observaciones || "Sin observaciones",
         }));
+
         setColumns(columns);
         setData(dataTable);
     };
@@ -43,7 +43,7 @@ export const SelectedInfo = ({
             setColumns([]);
             setData([]);
         }
-    }, [selectedEnvio]); // Add selectedEnvio as dependency
+    }, [selectedEnvio]);
 
     if (!selectedEnvio) {
         return (
@@ -57,52 +57,66 @@ export const SelectedInfo = ({
         <div className="p-4 bg-[#eef0f4] rounded-lg">
             <div className="flex items-center gap-2 mb-4 border-b-2 border-gray-400 pb-2 text-text-second">
                 <RiInformation2Line size={20} />
-                <span className="font-bold">Informacion General</span>
+                <span className="font-bold">Información General</span>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                 <div className="space-y-2 text-sm">
                     <InfoItem
                         label="Número de Envío"
                         isBlue={true}
-                        value={selectedEnvio.num_env}
+                        value={selectedEnvio.numero_envio}
                     />
-                    <InfoItem label="Cliente" value={selectedEnvio.cliente} />
-                    <InfoItem label="Vendedor" value={selectedEnvio.vendedor} />
                     <InfoItem
-                        label="Número de factura DTE"
-                        value={selectedEnvio.fechaDTE}
+                        label="Cliente"
+                        value={selectedEnvio.nombre_negocio}
+                    />
+                    <InfoItem
+                        label="Contacto"
+                        value={selectedEnvio.nombre_contacto}
+                    />
+                    <InfoItem
+                        label="Vendedor"
+                        value={`${selectedEnvio.vendedor_nombre} ${selectedEnvio.vendedor_apellido}`}
                     />
                 </div>
                 <div className="space-y-2">
                     <InfoItem
-                        label="Fecha de venta"
-                        value={`Q ${selectedEnvio.fechaventa}`}
+                        label="Número de factura DTE"
+                        value={selectedEnvio.dte_numero}
                     />
                     <InfoItem
-                        label="Nit del Cliente"
-                        value={selectedEnvio.nitCliente}
+                        label="Fecha de venta"
+                        value={new Date(
+                            selectedEnvio.fecha_venta
+                        ).toLocaleDateString()}
                     />
                     <InfoItem
                         label="Tipo Pago"
-                        value={selectedEnvio.tipoPago}
+                        value={selectedEnvio.tipo_pago}
                     />
                     <InfoItem
-                        label="Nombre Factura"
-                        value={selectedEnvio.nombreFactura}
+                        label="Estado de Cobro"
+                        value={selectedEnvio.estado_cobro}
                     />
                 </div>
                 <div className="space-y-2">
                     <InfoItem
                         label="Fecha de salida de bodega"
-                        value={`Q ${selectedEnvio.fechasalidaBodega}`}
+                        value={new Date(
+                            selectedEnvio.fecha_salida_bodega
+                        ).toLocaleDateString()}
                     />
                     <InfoItem
                         label="Días de Crédito"
-                        value={selectedEnvio.diasCredito}
+                        value={selectedEnvio.dias_credito}
                     />
                     <InfoItem
-                        label="Nit Factura"
-                        value={selectedEnvio.nitFactura}
+                        label="NIT Factura"
+                        value={selectedEnvio.dte_nit}
+                    />
+                    <InfoItem
+                        label="Estado de Venta"
+                        value={selectedEnvio.estado_venta}
                     />
                 </div>
             </div>
@@ -118,9 +132,11 @@ export const SelectedInfo = ({
                 />
             </div>
             <div className="flex justify-end pt-3 gap-2 items-center">
-                <span className="text-base text-text-second font-bold">Total</span>
+                <span className="text-base text-text-second font-bold">
+                    Total
+                </span>
                 <span className="font-bold text-text-base text-xl">
-                    Q {selectedEnvio.total.toFixed(2)}
+                    Q {selectedEnvio.total_quetzales}
                 </span>
             </div>
         </div>
