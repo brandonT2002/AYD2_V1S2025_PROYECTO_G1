@@ -64,7 +64,24 @@ class VentasController:
             return jsonify(ventas), 200
         except Exception as e:
             return jsonify({"error": str(e)}), 500
+    
+    def insert_productos_venta(self):
+        """Inserta productos en una venta"""
+        data = request.json
 
+        try:
+            result = self.ventas_service.insert_producto_venta(data)
+            return jsonify(result), 200
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+
+    def delete_producto_venta(self, detalle_venta_id):
+        """Elimina un producto de una venta"""
+        try:
+            result = self.ventas_service.delete_producto_venta(detalle_venta_id)
+            return jsonify(result), 200
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
 
 
     
