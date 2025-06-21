@@ -3,7 +3,7 @@ import { Navbar } from "./components/layout";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Inventory from "./pages/Inventory";
 import AgregarProducto from "./pages/AgregarProducto";
-import ClientePage from "./components/Clientes/ClientePage"; // ✅ Ruta corregida
+import ClientePage from "./components/Clientes/ClientePage";
 
 
 function App() {
