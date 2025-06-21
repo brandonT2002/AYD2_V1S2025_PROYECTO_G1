@@ -6,6 +6,7 @@ import AgregarProducto from "./pages/AgregarProducto";
 import ClientePage from "./components/Clientes/ClientePage";
 import Vendedores from "./pages/Vendedores";
 import PaymentPage from "./pages/Pagos";
+import VentaPage from "./pages/Ventas";
 
 
 
@@ -22,6 +23,10 @@ function App() {
                     <Route
                         path="/cobranzas"
                         element={<PaymentPage />}
+                    />
+                    <Route
+                        path="/ventas"
+                        element={<VentaPage />}
                     />
                     <Route path="/inventario" element={<Inventory />} />
                     <Route 
