@@ -27,26 +27,68 @@ import {
     requestBuscarVentas,
     requestRegistrarSalida,
 } from "../services/bajaBodega";
+import { requestInsertarPago } from "../services/pagos";
 
-function PagosPage() {
-    const banco = useSelectInput("");
+function PagosPage() {    const banco = useSelectInput("");
     const criterio = useSelectInput("");
     const [sells, setSells] = useState([]);
-    const [selectedId, setSelectedId] = useState(null);
-    const { register, handleSubmit, reset } = useForm();
+    let selectedId = 0; // Para pruebas, establecer un ID de venta fijo
+    
+    // Formulario para búsqueda de ventas
+    const { register: registerSearch, handleSubmit: handleSubmitSearch, reset: resetSearch } = useForm();
+    
+    // Formulario para registro de pagos
+    const { register: registerPayment, handleSubmit: handleSubmitPayment, reset: resetPayment } = useForm();
 
-    const searchSells = async (formData) => {
+    // Log para mostrar el estado actual de las variables importantes
+    console.log("Estado actual de variables:");
+    console.log("- selectedId:", selectedId);
+    console.log("- banco.value:", banco.value);
+    console.log("- criterio.value:", criterio.value);
+    console.log("- sells.length:", sells.length);    const searchSells = async (formData) => {
+        console.log("=== BÚSQUEDA DE VENTAS ===");
+        console.log("Datos de búsqueda:", formData);
         try {
             const response = await requestBuscarVentas(formData);
+            console.log("Respuesta de búsqueda:", response.data);
             setSells(response.data.data);
+            console.log("Ventas encontradas:", response.data.data.length);
         } catch (error) {
             console.error("Error buscando ventas:", error);
         }
-    };
+    };const handlePay = async (datoPago) => {
+        console.log("=== INICIANDO PROCESO DE PAGO ===");
+        console.log("1. Datos del formulario recibidos:", datoPago);
+        console.log("2. ID de venta seleccionada:", selectedId);
+        console.log("3. Valor del banco seleccionado:", banco.value);
+       
+        
+        try {
 
-    const handlePay = () => {
-        console.log("Pago registrado");
-        // Aquí deberías enviar los datos del formulario de pago al backend
+
+            // Preparar los datos del pago
+            const paymentData = {
+                ...datoPago
+            };
+
+            console.log("4. Datos finales a enviar al endpoint:");
+            console.log(JSON.stringify(paymentData, null, 2));
+            console.log("5. URL del endpoint: http://localhost:5000/api/InsertarPago");
+            
+            const response = await requestInsertarPago(paymentData);
+            console.log("6. Respuesta del servidor:", response);
+              if (response.status === 200 || response.status === 201) {
+                console.log("✅ PAGO REGISTRADO EXITOSAMENTE");
+                alert("Pago registrado exitosamente");
+                resetPayment(); // Limpiar el formulario de pago
+                // Opcional: refrescar la lista de ventas
+                // await searchSells({ criterio: criterio.value, valor: "" });
+            }
+        } catch (error) {
+            console.error("❌ ERROR registrando pago:", error);
+            console.error("Detalles del error:", error.response?.data || error.message);
+            alert("Error al registrar el pago. Por favor intente nuevamente.");
+        }
     };
 
     const columns = [
@@ -60,15 +102,7 @@ function PagosPage() {
     ];
 
     const data = [
-        {
-            producto: "Filtro de aire",
-            cantidad: 12,
-            precio_unitario: "Q2.00",
-            cantidad_unidades: 4,
-            precio_paquete: "Q8.00",
-            subtotal: "Q8.00",
-            observaciones: "-",
-        },
+        
     ];
 
     return (
@@ -77,10 +111,9 @@ function PagosPage() {
                 <Title>Registrar Pagos</Title>
 
                 <Panel>
-                    <TitlePanel>Buscar Venta</TitlePanel>
-                    <form
+                    <TitlePanel>Buscar Venta</TitlePanel>                    <form
                         className="flex gap-3 w-full justify-between"
-                        onSubmit={handleSubmit(searchSells)}
+                        onSubmit={handleSubmitSearch(searchSells)}
                     >
                         <SelectInput
                             name="criterio"
@@ -95,7 +128,7 @@ function PagosPage() {
                                 },
                             ]}
                             {...criterio.bind}
-                            register={register}
+                            register={registerSearch}
                         />
                         <InputField
                             name="valor"
@@ -103,7 +136,7 @@ function PagosPage() {
                             placeholder="Ingrese término"
                             className="text-text-second font-bold"
                             icon={FiPackage}
-                            register={register}
+                            register={registerSearch}
                         />
                         <div className="flex items-end mb-1">
                             <IconButton
@@ -119,10 +152,12 @@ function PagosPage() {
                 </Panel>
 
                 <Panel className="overflow-visible">
-                    <TitlePanel>Resultados de Búsqueda</TitlePanel>
-                    <SendSelectorDemo
+                    <TitlePanel>Resultados de Búsqueda</TitlePanel>                    <SendSelectorDemo
                         envios={sells}
-                        onSelectChange={(id) => setSelectedId(id)}
+                        onSelectChange={(id) => {
+                            console.log("=== VENTA SELECCIONADA ===");
+                            console.log("ID de venta seleccionada:", id);
+                        }}
                     />
                 </Panel>
 
@@ -132,65 +167,93 @@ function PagosPage() {
                         <span className="font-bold">Productos</span>
                     </div>
                     <TableComponent data={data} columns={columns} maxHeight="210px" />
-                </PanelSecundary>
-                <Panel>           
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 px-4">
-                    <InputField
-                        name="numeroRecibo"
-                        label="Número de Recibo de Caja"
-                        placeholder="Número de recibo"
-                        className="text-text-second font-semibold"
-                        icon={FiHash}
-                        register={register}
-                    />
-                    <InputField
-                        name="fechaPago"
-                        label="Fecha de Pago"
-                        placeholder="Fecha"
-                        className="text-text-second font-semibold"
-                        icon={FiCalendar}
-                        register={register}
-                    />
-                    <SelectInput
-                        name="banco"
-                        label="Banco"
-                        icon={CgMenuGridR}
-                        className="text-text-second font-semibold"
-                        options={[
-                            { value: "banrural", label: "Banrural" },
-                            { value: "bi", label: "Banco Industrial" },
-                            { value: "promerica", label: "Promerica" },
-                            { value: "bac", label: "BAC" },
-                        ]}
-                        {...banco.bind}
-                        register={register}
-                    />
-                    <InputField
-                        name="numeroCuenta"
-                        label="Número de Cuenta"
-                        placeholder="Número de Cuenta"
-                        className="text-text-second font-semibold"
-                        icon={FiHash}
-                        register={register}
-                    />
-                    <InputField
-                        name="numeroTransferencia"
-                        label="No. de Transferencia o Depósito"
-                        placeholder="Número de Transferencia"
-                        className="text-text-second font-semibold"
-                        icon={FiHash}
-                        register={register}
-                    />
-                    <InputField
-                        name="montoAbono"
-                        label="Monto de Abono"
-                        placeholder="Monto"
-                        className="text-text-second font-semibold"
-                        icon={FiDollarSign}
-                        register={register}
-                    />
-                </div>
-                </Panel>         
+                </PanelSecundary>                <Panel>
+                    <form onSubmit={handleSubmitPayment(handlePay)}>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 px-4 mb-4">
+                            <InputField
+                                name="recibo_caja"
+                                label="Número de Recibo de Caja"
+                                placeholder="Número de recibo"
+                                className="text-text-second font-semibold"
+                                icon={FiHash}
+                                register={registerPayment}
+                                required
+                            />
+                            <InputField
+                                name="fecha_pago"
+                                label="Fecha de Pago"
+                                type="date"
+                                className="text-text-second font-semibold"
+                                icon={FiCalendar}
+                                register={registerPayment}
+                                required
+                            />
+                            <SelectInput
+                                name="banco"
+                                label="Banco"
+                                icon={CgMenuGridR}
+                                className="text-text-second font-semibold"
+                                options={[
+                                    { value: "Banrural", label: "Banrural" },
+                                    { value: "BAM", label: "BAM" },
+                                    { value: "G&T", label: "G&T" },
+                                    { value: "Industrial", label: "Bnaco Industrial" },
+                                ]}
+                                {...banco.bind}
+                                register={registerPayment}
+                                required
+                            />
+                            <InputField
+                                name="numero_cuenta"
+                                label="Número de Cuenta"
+                                placeholder="Número de Cuenta"
+                                className="text-text-second font-semibold"
+                                icon={FiHash}
+                                register={registerPayment}
+                                required
+                            />
+                            <InputField
+                                name="numero_transaccion"
+                                label="No. de Transferencia o Depósito"
+                                placeholder="Número de Transferencia"
+                                className="text-text-second font-semibold"
+                                icon={FiHash}
+                                register={registerPayment}
+                                required
+                            />
+                            <InputField
+                                name="monto_abono"
+                                label="Monto de Abono"
+                                placeholder="Monto"
+                                type="number"
+                                step="0.01"
+                                className="text-text-second font-semibold"
+                                icon={FiDollarSign}
+                                register={registerPayment}
+                                required
+                            />
+                            <InputField
+                                name="venta_id"
+                                label="ID de Venta"
+                                placeholder="ID de Venta"
+                                className="text-text-second font-semibold"
+                                icon={FiHash}
+                                register={registerPayment}
+                                required
+                            />
+                        </div>
+                        
+                        <div className="flex justify-end gap-4 px-4">
+                            <IconButton
+                                type="submit"
+                                variant={ButtonVariant.PRIMARY}
+                                size={ButtonSize.MD}
+                            >
+                                Pagar
+                            </IconButton>
+                        </div>
+                    </form>
+                </Panel>
                 <PanelSecundary>
                     <div className="grid grid-cols-4 gap-4 mb-4 border-b-2 border-gray-400 pb-2 text-text-second">
                         <div className="flex flex-col items-start gap-1">
@@ -221,21 +284,7 @@ function PagosPage() {
                             </div>
                             <span className="text-sm text-gray-500">Q 300.00</span>
                         </div>
-                    </div>
-                </PanelSecundary>
-
-                <Panel>
-                    <div className="flex justify-end gap-4">
-                        <IconButton
-                            type="button"
-                            variant={ButtonVariant.PRIMARY}
-                            onClick={handlePay}
-                            size={ButtonSize.MD}
-                        >
-                            Pagar
-                        </IconButton>
-                    </div>
-                </Panel>
+                    </div>                </PanelSecundary>
             </div>
         </SendSelectorProvider>
     );
