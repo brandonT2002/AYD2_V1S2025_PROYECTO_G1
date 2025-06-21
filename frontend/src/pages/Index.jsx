@@ -4,7 +4,10 @@ import {
     SelectInput,
     TitlePanel,
     IconButton,
+    DatePicker,
 } from "../components/ui";
+import { SendSelectorProvider } from "../components/ui/SendSelector/context/SendSelectorContext";
+//"../context/SendSelectorContext";
 import { Panel } from "../components/layout";
 import { RiInputMethodFill } from "react-icons/ri";
 import { useSelectInput } from "../components/ui/SelectInput";
@@ -15,176 +18,154 @@ import { CgMenuGridR } from "react-icons/cg";
 import { ImSearch } from "react-icons/im";
 import { FiPackage } from "react-icons/fi";
 
-import { useSendSelectorContext } from "../components/ui/SendSelector/index";
 import SimplePicker from "../components/ui/DatePicker/SimplePicker";
+import {
+    requestBuscarVentas,
+    requestRegistrarSalida,
+} from "../services/bajaBodega";
+
+import { set, useForm } from "react-hook-form";
+import { data } from "react-router-dom";
+import { useState } from "react";
 
 function IndexPage() {
     const genero = useSelectInput("");
     const handleSearch = () => console.log("Search action triggered");
-    // const { selectedEnvio } = useSendSelectorContext();
+    const { register, handleSubmit, reset } = useForm();
+    const [date, setDate] = useState("");
+    //otro userform para el formulario de registro de salida
+    const { register: registerExitForm, handleSubmit: handleSubmitExit } =
+        useForm();
+    const [sells, setSells] = useState([]);
 
-    const defaultEnvios = [
-        {
-            id: 1,
-            num_env: "ENV2025001",
-            cliente: "María González",
-            vendedor: "ds5",
-            fechaDTE: "09-06-2025",
-            fechaventa: "1250.00",
-            nitCliente: "1234567-8",
-            tipoPago: "Contado",
-            nombreFactura: "María G.",
-            fechasalidaBodega: "10-06-2025",
-            diasCredito: "0",
-            nitFactura: "1234567-8",
-            total: 1250.0,
-            productos: [
-                {
-                    producto: "Producto A",
-                    cantidad: 10,
-                    precioUnitario: 125.0,
-                    cantidadUnidades: 100,
-                    precioFardo: 1250.0,
-                    subtotal: 1250.0,
-                    observaciones: "Entrega inmediata",
-                },
-            ],
-        },
-        {
-            id: 2,
-            num_env: "ENV2025002",
-            cliente: "Carlos Mendoza",
-            vendedor: "sd",
-            fechaDTE: "10-06-2025",
-            fechaventa: "10-06-2025",
-            nitCliente: "9876543-2",
-            tipoPago: "Crédito",
-            nombreFactura: "Carlos M.",
-            fechasalidaBodega: "11-06-2025",
-            diasCredito: "15",
-            nitFactura: "9876543-2",
-            total: 2250.0,
-            productos: [
-                {
-                    producto: "Producto A",
-                    cantidad: 10,
-                    precioUnitario: 125.0,
-                    cantidadUnidades: 100,
-                    precioFardo: 1250.0,
-                    subtotal: 1250.0,
-                    observaciones: "Entrega inmediata",
-                },
-                {
-                    producto: "Producto B",
-                    cantidad: 5,
-                    precioUnitario: 200.0,
-                    cantidadUnidades: 50,
-                    precioFardo: 1000.0,
-                    subtotal: 1000.0,
-                    observaciones: "Entrega programada",
-                },
-            ],
-        },
-        {
-            id: 3,
-            num_env: "ENV2025003",
-            cliente: "Ana Rodríguez",
-            vendedor: "z2025",
-            fechaDTE: "11-06-2025",
-            fechaventa: "1500.00",
-            nitCliente: "1928374-5",
-            tipoPago: "Contado",
-            nombreFactura: "Ana R.",
-            fechasalidaBodega: "12-06-2025",
-            diasCredito: "0",
-            nitFactura: "1928374-5",
-            total: 1500.0,
-            productos: [
-                {
-                    producto: "Producto C",
-                    cantidad: 20,
-                    precioUnitario: 75.0,
-                    cantidadUnidades: 200,
-                    precioFardo: 1500.0,
-                    subtotal: 1500.0,
-                    observaciones: "Entrega inmediata",
-                },
-            ],
-        },
-    ];
+    const [selectedId, setSelectedId] = useState(null);
 
+    const searchSells = async (searchTerm) => {
+        try {
+            const response = await requestBuscarVentas(searchTerm);
+            console.log("Ventas encontradas:", response.data.data);
+            setSells(response.data.data);
+        } catch (error) {
+            console.error("Error al buscar ventas:", error);
+        }
+    };
+
+    const registerExit = async (data) => {
+        if (!selectedId) {
+            console.error("No se ha seleccionado un envío");
+            return;
+        }
+
+        const exitData = {
+            venta_id: selectedId,
+            fecha_salida: date,
+        };
+
+        try {
+            console.log("Datos de salida registrados:", exitData);
+            const response = await requestRegistrarSalida(exitData);
+            console.log("Respuesta del servidor:", response.data);
+            reset();
+            setSelectedId(null);
+            setDate("");
+            setSells([]);
+        } catch (error) {
+            console.error("Error al registrar la salida:", error);
+        }
+    };
 
     return (
-        <div className="flex flex-col bg-gray-100 gap-3">
-            <Title>Registrar Salida</Title>
-            <Panel>
-                <TitlePanel>Buscar Venta</TitlePanel>
-                <div className="flex gap-3 w-full justify-between">
-                    <SelectInput
-                        name="genero"
-                        label="Buscar Por"
-                        icon={CgMenuGridR}
-                        className={"text-text-second font-semibold"}
-                        options={[
-                            { value: "0", label: "Número de envío" },
-                            { value: "1", label: "Nombre de cliente" },
-                        ]}
-                        {...genero.bind}
-                    />
-                    <InputField
-                        name="username"
-                        label="Termino de Búsqueda"
-                        placeholder="Ingrese término"
-                        className={"text-text-second font-bold"}
-                        icon={FiPackage}
-                    />
+        <SendSelectorProvider>
+            <div className="flex flex-col bg-gray-100 gap-3">
+                <Title>Registrar Salida</Title>
+                <Panel>
+                    <TitlePanel>Buscar Venta</TitlePanel>
+                    <form
+                        className="flex gap-3 w-full justify-between"
+                        onSubmit={handleSubmit((data) => searchSells(data))}
+                    >
+                        <SelectInput
+                            name="criterio"
+                            label="Buscar Por"
+                            icon={CgMenuGridR}
+                            register={register}
+                            className={"text-text-second font-semibold"}
+                            options={[
+                                { value: "envio", label: "Número de envío" },
+                                {
+                                    value: "cliente",
+                                    label: "Nombre de cliente",
+                                },
+                            ]}
+                            {...genero.bind}
+                        />
+                        <InputField
+                            name="valor"
+                            label="Termino de Búsqueda"
+                            register={register}
+                            placeholder="Ingrese término"
+                            className={"text-text-second font-bold"}
+                            icon={FiPackage}
+                        />
 
-                    <div className="flex items-end mb-1">
-                        <IconButton
-                            icon={ImSearch}
-                            variant={ButtonVariant.PRIMARY}
-                            onClick={handleSearch}
-                            size={ButtonSize.MD}
-                        >
-                            Buscar
-                        </IconButton>
+                        <div className="flex items-end mb-1">
+                            <IconButton
+                                type="submit"
+                                icon={ImSearch}
+                                variant={ButtonVariant.PRIMARY}
+                                onClick={handleSearch}
+                                size={ButtonSize.MD}
+                            >
+                                Buscar
+                            </IconButton>
+                        </div>
+                    </form>
+                </Panel>
+                <Panel className="overflow-visible">
+                    <TitlePanel>Resultados de Búsqueda</TitlePanel>
+                    <div>
+                        <SendSelectorDemo
+                            envios={sells}
+                            onSelectChange={(id) => setSelectedId(id)}
+                        />
                     </div>
-                </div>
-            </Panel>
-            <Panel className="overflow-visible">
-                <TitlePanel>Resultados de Búsqueda</TitlePanel>
-                <div>
-                    <SendSelectorDemo envios={defaultEnvios} />
-                </div>
-
-                <div className="flex flex-col">
-                    <SimplePicker
-                        id="fechaNacimiento"
-                        name="fecha_nacimiento"
-                        label="Fecha de Salida"
-                        onDateChange={(date) => console.log(date)}
-                        isRequired={true}
-                        position="top"
-                    />
-                </div>
-                <div className="flex justify-end gap-4">
-                    <IconButton
-                        variant={ButtonVariant.SECONDARY}
-                        onClick={handleSearch}
-                        size={ButtonSize.MD}
+                </Panel>
+                <Panel>
+                    <form
+                        className="flex flex-col gap-4"
+                        onSubmit={handleSubmitExit(registerExit)}
                     >
-                        Cancelar
-                    </IconButton>
-                    <IconButton
-                        variant={ButtonVariant.PRIMARY}
-                        onClick={handleSearch}
-                        size={ButtonSize.MD}
-                    >
-                        Guardar
-                    </IconButton>
-                </div>
-            </Panel>
-        </div>
+                        <div className="flex flex-col">
+                            <DatePicker
+                                id="fechaNacimiento"
+                                name="fecha_nacimiento"
+                                label="Fecha de Salida"
+                                register={registerExitForm}
+                                onDateChange={(date) => setDate(date)}
+                                isRequired={true}
+                            />
+                        </div>
+                        <div className="flex justify-end gap-4">
+                            <IconButton
+                                variant={ButtonVariant.SECONDARY}
+                                onClick={handleSearch}
+                                size={ButtonSize.MD}
+                            >
+                                Cancelar
+                            </IconButton>
+                            <IconButton
+                                type="submit"
+                                variant={ButtonVariant.PRIMARY}
+                                onClick={handleSearch}
+                                size={ButtonSize.MD}
+                            >
+                                Guardar
+                            </IconButton>
+                        </div>
+                    </form>
+                </Panel>
+            </div>
+        </SendSelectorProvider>
     );
 }
 
