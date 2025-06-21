@@ -5,3 +5,6 @@ export const requestInsertarInventario = (data) =>
 
 export const requestGetProductos = () =>
     axios.get("/api/GetAllProductos");
+
+export const requestGetProductosById = (id) =>
+    axios.get(`/api/GetProducto/${id}`);

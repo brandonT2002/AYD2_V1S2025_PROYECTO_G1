@@ -10,40 +10,73 @@ import {
 import { ButtonVariant, ButtonSize } from "../components/ui/Button/config";
 
 import { Panel } from "../components/layout";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { CgMenuGridR } from "react-icons/cg";
 import { PiListNumbersDuotone } from "react-icons/pi";
-import { FiPackage } from "react-icons/fi";
-import { FiEdit } from "react-icons/fi";
+import { FiPackage, FiEdit } from "react-icons/fi";
 import { PiPencilLineLight } from "react-icons/pi";
-import { useEffect, useState } from "react";
-import { requestGetProductos } from "../services/inventario";
+import {
+    requestGetProductos,
+    requestInsertarInventario,
+} from "../services/inventario";
 
 import { set, useForm } from "react-hook-form";
 
 function Inventory() {
     const handleSearch = () => console.log("Search action triggered");
-    const { register, handleSubmit, reset, setValue } = useForm(); // <--- Get setValue from useForm
+    const { register, handleSubmit, reset } = useForm();
+
     const [dateDuca, setDateDuca] = useState("");
     const [dateDucaRectificada, setDateDucaRectificada] = useState("");
     const [dateRecepcion, setDateRecepcion] = useState("");
+    const [unidadesTotales, setUnidadesTotales] = useState("");
+    const [value, setValue] = useState("");
 
-    const ingresarInventario = async (data) => {
-        //usar los useState para las fechas
-        data.fechaDuca = dateDuca;
-        data.fechaDucaRectificada = dateDucaRectificada;
-        data.fechaRecepcion = dateRecepcion;
+    const [products, setProducts] = useState([
+        { value: "0", label: "Cargando..." },
+    ]);
+    const [productsData, setProductsData] = useState([]);
 
-        console.log("Datos del inventario:", data);
+    const getProducts = async () => {
+        try {
+            const response = await requestGetProductos();
+            const productOptions = response.data.map((product) => ({
+                value: product.id,
+                label: product.nombre,
+            }));
+            setProducts(productOptions);
+            setProductsData(response.data);
+        } catch (error) {
+            console.error("Error fetching products:", error);
+        }
     };
 
-    const productos = [
-        { value: "producto1", label: "Producto 1" },
-        { value: "producto2", label: "Producto 2" },
-        { value: "producto3", label: "Producto 3" },
-        { value: "producto4", label: "Producto 4" },
-        { value: "producto5", label: "Producto 5" },
-    ];
+    useEffect(() => {
+        getProducts();
+    }, []);
+
+    const calcularUnidadesTotales = (cantidadFardos, unidadesPorFardo) => {
+        const cantidad = parseInt(cantidadFardos, 10);
+        const unidades = parseInt(unidadesPorFardo, 10);
+        if (isNaN(cantidad) || isNaN(unidades)) {
+            return "";
+        }
+        setUnidadesTotales(cantidad * unidades);
+    };
+
+    const ingresarInventario = async (data) => {
+        // Usar los useState para las fechas
+        data.fecha_ingreso = dateRecepcion;
+        data.fecha = dateDuca;
+        data.fecha_duca_rectificada = dateDucaRectificada;
+        console.log("Datos del inventario:", data);
+        try {
+            const response = await requestInsertarInventario(data);
+            console.log("Inventario ingresado:", response.data);
+        } catch (error) {
+            console.error("Error al ingresar inventario:", error);
+        }
+    };
 
     return (
         <div className="flex flex-col bg-gray-100 gap-3">
@@ -55,17 +88,34 @@ function Inventory() {
                 >
                     <div className="flex gap-3">
                         <SelectInput
-                            name="producto"
+                            name="producto_id"
                             label="Producto"
-                            options={productos}
+                            options={products}
                             register={register}
                             className={"text-text-base font-semibold"}
                             isRequired={true}
                             icon={CgMenuGridR}
+                            onChange={(e) => {
+                                const selectedId = parseInt(e.target.value, 10);
+                                const selectedProduct = productsData.find(
+                                    (p) => p.id === selectedId
+                                );
+                                if (selectedProduct) {
+                                    setValue(
+                                        selectedProduct.unidades_por_fardo
+                                    );
+                                    calcularUnidadesTotales(
+                                        document.querySelector(
+                                            'input[name="cantidad_fardos"]'
+                                        ).value,
+                                        selectedProduct.unidades_por_fardo
+                                    );
+                                }
+                            }}
                         />
                         <DatePicker
                             id="fechaRecepcion"
-                            name={"fechaRecepcion"}
+                            name="fecha_ingreso"
                             label="Fecha de Recepción"
                             onDateChange={(date) => setDateRecepcion(date)}
                             position="top"
@@ -76,13 +126,16 @@ function Inventory() {
                     </div>
                     <div className="flex gap-3">
                         <InputField
-                            name="cantidad"
+                            name="cantidad_fardos"
                             label="Cantidad en fardos/paquetes"
                             type="number"
                             placeholder="Ingrese cantidad"
                             className={"text-text-base font-semibold"}
                             isRequired={true}
                             register={register}
+                            onChange={(e) =>
+                                calcularUnidadesTotales(e.target.value, value)
+                            }
                             icon={PiListNumbersDuotone}
                         />
                         <InputField
@@ -91,22 +144,24 @@ function Inventory() {
                             placeholder="Ingrese unidades"
                             className={"text-text-base font-semibold"}
                             isRequired={true}
+                            defaultValue={value}
                             register={register}
                             icon={FiPackage}
                         />
                         <InputField
-                            name="unidadesTotales"
+                            name="unidades_totales"
                             label="Unidades Totales"
                             placeholder="Ingrese unidades totales"
                             className={"text-text-base font-semibold"}
                             isRequired={false}
+                            defaultValue={unidadesTotales}
                             register={register}
                             icon={PiPencilLineLight}
                         />
                     </div>
                     <div className="flex gap-3">
                         <InputField
-                            name="noContenedor"
+                            name="numero_contendor"
                             label="Número de Contenedor"
                             placeholder="Ingrese número de contenedor"
                             className={"text-text-base font-semibold"}
@@ -117,7 +172,7 @@ function Inventory() {
                     </div>
                     <div className="flex gap-3">
                         <InputField
-                            name="noDuca"
+                            name="numero_duca"
                             label="Número de DUCA"
                             placeholder="Ingrese número de DUCA"
                             className={"text-text-base font-semibold"}
@@ -126,14 +181,14 @@ function Inventory() {
                         />
                         <DatePicker
                             label="Fecha de DUCA"
-                            name="fechaDuca"
+                            name="fecha"
                             isRequired={true}
                             onDateChange={(date) => setDateDuca(date)}
                             register={register}
                             setValue={setValue}
                         />
                         <InputField
-                            name="noDucaRec"
+                            name="numero_duca_rectificada"
                             label="Número de DUCA rectificada"
                             placeholder="Ingrese número de DUCA rectificada"
                             className={"text-text-base font-semibold"}
@@ -142,7 +197,7 @@ function Inventory() {
                         />
                         <DatePicker
                             label="Fecha de DUCA rectificada"
-                            name="fechaDucaRectificada"
+                            name="fecha_duca_rectificada"
                             onDateChange={(date) =>
                                 setDateDucaRectificada(date)
                             }
