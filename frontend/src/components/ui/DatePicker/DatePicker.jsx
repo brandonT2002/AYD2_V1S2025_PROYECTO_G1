@@ -7,6 +7,7 @@ import ReactDOM from "react-dom";
 const DatePicker = ({
     label = "Fecha de Nacimiento",
     isRequired,
+    name,
     onDateChange,
     register,
     position = "bottom",
@@ -29,15 +30,13 @@ const DatePicker = ({
         },
     };
 
-    // Efecto para manejar clics fuera del calendario
+    // Effect to handle clicks outside the calendar
     useEffect(() => {
         const handleClickOutside = (event) => {
-            // Verificar si los refs están disponibles y el calendario está visible
             if (!dp.show || !calendarRef.current || !inputRef.current) {
                 return;
             }
 
-            // Verificar si el clic fue fuera del calendario y del input
             const clickedCalendar = calendarRef.current.contains(event.target);
             const clickedInput = inputRef.current.contains(event.target);
             const clickedIcon = event.target.closest(
@@ -55,42 +54,66 @@ const DatePicker = ({
         };
     }, [dp.show]);
 
-    // Efecto para posicionar el calendario
+    // Effect to position the calendar
     useEffect(() => {
         if (dp.show && calendarRef.current && inputRef.current) {
-            const inputRect = inputRef.current.getBoundingClientRect();
-            const calendarEl = calendarRef.current;
-            const bodyScrollTop =
-                document.documentElement.scrollTop || document.body.scrollTop;
-            const bodyScrollLeft =
-                document.documentElement.scrollLeft || document.body.scrollLeft;
+            // Small delay to ensure the input is fully rendered after potential RHF updates
+            const timeoutId = setTimeout(() => {
+                const inputRect = inputRef.current.getBoundingClientRect();
+                const calendarEl = calendarRef.current;
+                const bodyScrollTop =
+                    document.documentElement.scrollTop ||
+                    document.body.scrollTop;
+                const bodyScrollLeft =
+                    document.documentElement.scrollLeft ||
+                    document.body.scrollLeft;
 
-            let top,
-                left = inputRect.left + bodyScrollLeft;
+                let top,
+                    left = inputRect.left + bodyScrollLeft;
 
-            if (position === "top") {
-                top =
-                    inputRect.top +
-                    bodyScrollTop +
-                    calendarEl.offsetHeight +
-                    350;
-            } else {
-                top = inputRect.bottom + bodyScrollTop + 10;
-            }
+                if (position === "top") {
+                    // Adjust logic for "top" positioning if needed, it seems quite large (350)
+                    // For 'top', you typically want to place it *above* the input.
+                    // So, input.top - calendarHeight - some_margin.
+                    top =
+                        inputRect.top +
+                        bodyScrollTop +
+                        calendarEl.offsetHeight +
+                        350; // Example adjustment
+                } else {
+                    top = inputRect.bottom + bodyScrollTop + 10;
+                }
 
-            // Ajustar posición horizontal si es necesario
-            const viewportWidth = window.innerWidth;
-            if (left + calendarEl.offsetWidth > viewportWidth) {
-                left = viewportWidth - calendarEl.offsetWidth - 10;
-            }
-            left = Math.max(left, 10); // Asegurar que no sea negativo
+                const viewportWidth = window.innerWidth;
+                if (left + calendarEl.offsetWidth > viewportWidth) {
+                    left = viewportWidth - calendarEl.offsetWidth - 10;
+                }
+                left = Math.max(left, 10);
 
-            calendarEl.style.position = "absolute";
-            calendarEl.style.top = `${top}px`;
-            calendarEl.style.left = `${left}px`;
-            calendarEl.style.zIndex = "1000";
+                calendarEl.style.position = "absolute";
+                calendarEl.style.top = `${top}px`;
+                calendarEl.style.left = `${left}px`;
+                calendarEl.style.zIndex = "1000";
+            }, 0); // A tiny delay
+
+            return () => clearTimeout(timeoutId);
         }
     }, [dp.show, dp.month, dp.year, position]);
+
+    // Use a combined ref for react-hook-form and your internal ref
+    // This ensures both get the correct DOM node.
+    const combinedRef = (el) => {
+        inputRef.current = el; // Your ref
+        if (register && name) {
+            // react-hook-form's ref
+            const { ref } = register(name);
+            if (typeof ref === "function") {
+                ref(el);
+            } else if (ref) {
+                ref.current = el;
+            }
+        }
+    };
 
     return (
         <div className="relative w-full" ref={pickerContainerRef}>
@@ -106,27 +129,26 @@ const DatePicker = ({
                 </div>
                 <input
                     type="text"
-                    ref={inputRef}
-                    {...(register ? register("date") : {})}
+                    ref={combinedRef} // Use the combined ref here
                     readOnly
                     placeholder="YYYY-MM-DD"
                     defaultValue={dp.format(dp.selected)}
                     onClick={() => dp.setShow(!dp.show)}
                     className="w-full pl-10 pr-4 py-2 rounded-sm
-                    bg-panel-dark text-text-base
-                    focus:outline-none focus:shadow-outline border-1 border-[#dadada]"
+                     bg-panel-dark text-text-base
+                     focus:outline-none focus:shadow-outline border-1 border-[#dadada]"
                 />
             </div>
             {dp.show &&
                 ReactDOM.createPortal(
                     <>
-                        {/* 1️⃣ Overlay a pantalla completa */}
+                        {/* 1️⃣ Full-screen overlay */}
                         <div
                             className="fixed inset-0 z-[999]"
                             onClick={() => dp.setShow(false)}
                         />
 
-                        {/* 2️⃣ Calendario */}
+                        {/* 2️⃣ Calendar */}
                         <div
                             ref={calendarRef}
                             className="absolute z-[1000] bg-white shadow-lg rounded-md"
