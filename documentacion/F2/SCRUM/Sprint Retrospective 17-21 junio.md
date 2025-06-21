@@ -8,34 +8,34 @@
 
 ---
 
-## 🎯 Objetivos del Sprint
+## Objetivos del Sprint
 
 ### Objetivo Principal
 Completar la **Fase 2** del proyecto IMPORCOMGUA, implementando las funcionalidades core del sistema (inventario, gestión de datos, ventas y pagos) con arquitectura en capas usando React + Flask + MySQL.
 
 ### Objetivos Específicos Alcanzados
-- ✅ Corrección y refinamiento de documentación de Fase 1
-- ✅ Implementación de arquitectura en capas definida
-- ✅ Desarrollo de componentes de frontend en React
-- ✅ Creación de APIs backend en Flask
-- ✅ Diseño e implementación de base de datos MySQL
-- ✅ Integración entre frontend y backend
-- ✅ Implementación de funcionalidades críticas por módulo
+- Corrección y refinamiento de documentación de Fase 1
+- Implementación de arquitectura en capas definida
+- Desarrollo de componentes de frontend en React
+- Creación de APIs backend en Flask
+- Diseño e implementación de base de datos MySQL
+- Integración entre frontend y backend
+- Implementación de funcionalidades críticas por módulo
 
 ---
 
-## 📊 Métricas del Sprint
+## Métricas del Sprint
 
 ### Distribución de Tareas por Integrante
 | Integrante | Módulo Asignado | RFs Implementados | Estado |
 |------------|-----------------|-------------------|---------|
-| **Joab** | Gestión de Inventario | RF 101-104 | ✅ Completado |
-| **Sebastián** | Gestión de Clientes | RF 205-207 | ✅ Completado |
-| **Luis René** | Gestión de Productos | RF 207, 209, 213 | ✅ Completado |
-| **Daniel** | Gestión de Ventas | RF 301-303 | ✅ Completado |
-| **Brandon** | Gestión de Vendedores/Pagos | RF 304-305, Pagos | ✅ Completado |
-| **José** | Gestión de Pagos | RF 401-402 | ✅ Completado |
-| **William** | Gestión de Saldos/Productos | RF 403-404 | ✅ Completado |
+| **Joab** | Gestión de Inventario | RF 101-104 | Completado |
+| **Sebastián** | Gestión de Clientes | RF 205-207 | Completado |
+| **Luis René** | Gestión de Productos | RF 207, 209, 213 | Completado |
+| **Daniel** | Gestión de Ventas | RF 301-303 | Completado |
+| **Brandon** | Gestión de Vendedores/Pagos | RF 304-305, Pagos | Completado |
+| **José** | Gestión de Pagos | RF 401-402 | Completado |
+| **William** | Gestión de Saldos/Productos | RF 403-404 | Completado |
 
 ### Estadísticas de Progreso
 - **Tareas planificadas:** 28 RFs
@@ -46,9 +46,9 @@ Completar la **Fase 2** del proyecto IMPORCOMGUA, implementando las funcionalida
 
 ---
 
-## 🚀 ¿Qué funcionó bien? (Keep Doing)
+## ¿Qué funcionó bien? (Keep Doing)
 
-### 💪 Fortalezas del Equipo
+### Fortalezas del Equipo
 
 1. **Comunicación efectiva**
    - Daily meetings puntuales y estructurados
@@ -70,7 +70,7 @@ Completar la **Fase 2** del proyecto IMPORCOMGUA, implementando las funcionalida
    - Conocimiento compartido entre módulos
    - Apoyo técnico entre integrantes
 
-### 🎯 Logros Técnicos Destacados
+### Logros Técnicos Destacados
 
 - **Arquitectura sólida:** Implementación exitosa de arquitectura en 3 capas
 - **Frontend responsivo:** Componentes React con Tailwind CSS funcionando correctamente
@@ -80,9 +80,9 @@ Completar la **Fase 2** del proyecto IMPORCOMGUA, implementando las funcionalida
 
 ---
 
-## 🔧 ¿Qué se puede mejorar? (Start Doing)
+## ¿Qué se puede mejorar? (Start Doing)
 
-### 📈 Oportunidades de Mejora
+### Oportunidades de Mejora
 
 1. **Gestión de dependencias técnicas**
    - **Problema identificado:** Algunos retrasos menores por dependencias entre módulos
@@ -110,9 +110,9 @@ Completar la **Fase 2** del proyecto IMPORCOMGUA, implementando las funcionalida
 
 ---
 
-## ⚠️ ¿Qué no funcionó? (Stop Doing)
+## ¿Qué no funcionó? (Stop Doing)
 
-### 🚫 Aspectos a Eliminar o Corregir
+### Aspectos a Eliminar o Corregir
 
 1. **Configuración tardía del entorno**
    - **Problema:** Algunos integrantes configuraron el entorno de desarrollo durante el sprint
@@ -131,9 +131,9 @@ Completar la **Fase 2** del proyecto IMPORCOMGUA, implementando las funcionalida
 
 ---
 
-## 📝 Plan de Acción para el Próximo Sprint
+## Plan de Acción para el Próximo Sprint
 
-### 🎯 Acciones Inmediatas (Próximos 3 días)
+### Acciones Inmediatas (Próximos 3 días)
 
 1. **Configuración de entorno de testing**
    - Responsable: José, Sebastián
@@ -147,7 +147,7 @@ Completar la **Fase 2** del proyecto IMPORCOMGUA, implementando las funcionalida
    - Responsable: Daniel, Luis René
    - Establecer linting rules y code style guide
 
-### 🔄 Mejoras de Proceso
+### Mejoras de Proceso
 
 1. **Daily meetings más enfocados**
    - Duración máxima: 15 minutos
@@ -163,12 +163,12 @@ Completar la **Fase 2** del proyecto IMPORCOMGUA, implementando las funcionalida
 
 ---
 
-## 🏆 Reconocimientos del Sprint
+## Reconocimientos del Sprint
 
-### 🌟 MVP del Sprint
+### MVP del Sprint
 **José** - Por la excelente gestión de la base de datos y resolución de problemas críticos de conectividad
 
-### 🏅 Menciones Especiales
+### Menciones Especiales
 
 - **Joab:** Configuración ejemplar del frontend y componentes reutilizables
 - **Daniel:** Liderazgo técnico en arquitectura y correcciones de documentación
@@ -179,7 +179,7 @@ Completar la **Fase 2** del proyecto IMPORCOMGUA, implementando las funcionalida
 
 ---
 
-## 📊 Métricas de Satisfacción del Equipo
+## Métricas de Satisfacción del Equipo
 
 ### Escala de 1-10 (10 = Excelente)
 
@@ -194,9 +194,9 @@ Completar la **Fase 2** del proyecto IMPORCOMGUA, implementando las funcionalida
 
 ---
 
-## 🔮 Expectativas para el Próximo Sprint
+## Expectativas para el Próximo Sprint
 
-### 🎯 Objetivos Preliminares
+### Objetivos Preliminares
 
 1. **Fase 3 - Despliegue y optimización**
    - Despliegue en AWS EC2
@@ -213,7 +213,7 @@ Completar la **Fase 2** del proyecto IMPORCOMGUA, implementando las funcionalida
    - Documentación técnica completa
    - Guías de instalación y despliegue
 
-### 📈 Metas del Equipo
+### Metas del Equipo
 
 - Mantener el 100% de participación
 - Implementar las mejoras identificadas
@@ -222,7 +222,7 @@ Completar la **Fase 2** del proyecto IMPORCOMGUA, implementando las funcionalida
 
 ---
 
-## 🔄 Compromisos del Equipo
+## Compromisos del Equipo
 
 ### Compromisos Individuales
 
