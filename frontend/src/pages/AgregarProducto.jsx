@@ -151,7 +151,7 @@ export default function AgregarProducto() {
             >
               <option value="">Opción</option>
               <option value="Unidad">Unidad</option>
-              <option value="Caja">Caja</option>
+              <option value="Paquete">Paquete</option>
               <option value="Fardo">Fardo</option>
             </select>
           </div>
