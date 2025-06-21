@@ -9,9 +9,9 @@ VALUES
 
 INSERT INTO `imporcomgua`.`productos` (codigo, nombre, unidad_medida, precio_unidad, unidades_por_fardo)
 VALUES
-('P001', 'Cemento', 'Fardo', 50.00, 20),
-('P002', 'Grava', 'Unidad', 30.00, 1),
-('P003', 'Cal', 'Paquete', 15.00, 10);
+('P1', 'Cemento', 'Fardo', 50.00, 20),
+('P2', 'Grava', 'Unidad', 30.00, 1),
+('P3', 'Cal', 'Paquete', 15.00, 10);
 
 
 -- Duca

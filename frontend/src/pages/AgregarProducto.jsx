@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 import { FiPackage, FiBox, FiHash } from "react-icons/fi";
-import { MdNumbers } from "react-icons/md";
+import { MdNumbers, MdOutlineAttachMoney } from "react-icons/md";
 import { RiEdit2Fill, RiDeleteBin5Fill } from "react-icons/ri";
 import { ImSearch } from "react-icons/im";
 
@@ -10,66 +11,88 @@ export default function AgregarProducto() {
     codigo_producto: "",
     nombre: "",
     unidad_medida: "",
-    unidades_por_paquete: ""
+    unidades_por_paquete: "",
+    precio_unitario: ""
   });
 
-  const [productos, setProductos] = useState([
-    {
-      id: 1,
-      codigo_producto: "PROD001",
-      nombre: "Aceite de Motor",
-      unidad_medida: "Unidad",
-      unidades_por_paquete: 150
-    },
-    {
-      id: 2,
-      codigo_producto: "PROD002",
-      nombre: "Filtro de Aire",
-      unidad_medida: "Caja",
-      unidades_por_paquete: 50
-    }
-  ]);
-
+  const [productos, setProductos] = useState([]);
   const [busqueda, setBusqueda] = useState("");
+
+  const API = "http://localhost:5000/api";
+
+  useEffect(() => {
+    axios.get(`${API}/GetAllProductos`)
+      .then(res => setProductos(res.data))
+      .catch(err => console.error("Error al cargar productos:", err));
+  }, []);
 
   const handleChange = (e) =>
     setForm({ ...form, [e.target.name]: e.target.value });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (form.id) {
-      setProductos((prev) =>
-        prev.map((p) => (p.id === form.id ? { ...form } : p))
-      );
-    } else {
-      const nuevo = {
-        ...form,
-        id: productos.length > 0 ? productos[productos.length - 1].id + 1 : 1
-      };
-      setProductos((prev) => [...prev, nuevo]);
-    }
+    try {
+      if (form.id) {
+        await axios.put(`${API}/ActualizarProducto/${form.id}`, {
+          nombre: form.nombre,
+          unidad_medida: form.unidad_medida,
+          unidades_por_fardo: form.unidades_por_paquete,
+          precio_unidad: form.precio_unitario,
+          codigo: form.codigo_producto
+        });
+      } else {
+        await axios.post(`${API}/InsertarProducto`, {
+          nombre: form.nombre,
+          unidad_medida: form.unidad_medida,
+          unidades_por_fardo: form.unidades_por_paquete,
+          precio_unidad: form.precio_unitario,
+          codigo: form.codigo_producto
+        });
+      }
 
-    setForm({
-      id: null,
-      codigo_producto: "",
-      nombre: "",
-      unidad_medida: "",
-      unidades_por_paquete: ""
-    });
+      const res = await axios.get(`${API}/GetAllProductos`);
+      setProductos(res.data);
+
+      setForm({
+        id: null,
+        codigo_producto: "",
+        nombre: "",
+        unidad_medida: "",
+        unidades_por_paquete: "",
+        precio_unitario: ""
+      });
+    } catch (err) {
+      console.error("Error al guardar producto:", err);
+      alert("No se pudo guardar el producto.");
+    }
   };
 
-  const handleDelete = (id) => {
+  const handleDelete = async (id) => {
     if (!confirm("¿Estás seguro de eliminar este producto?")) return;
-    setProductos((prev) => prev.filter((p) => p.id !== id));
+    try {
+      await axios.delete(`${API}/EliminarProducto/${id}`);
+      const res = await axios.get(`${API}/GetAllProductos`);
+      setProductos(res.data);
+    } catch (err) {
+      console.error("Error al eliminar producto:", err);
+      alert("No se pudo eliminar el producto.");
+    }
   };
 
   const handleEdit = (producto) => {
-    setForm({ ...producto });
+    setForm({
+      id: producto.id,
+      codigo_producto: producto.codigo,
+      nombre: producto.nombre,
+      unidad_medida: producto.unidad_medida,
+      unidades_por_paquete: producto.unidades_por_fardo,
+      precio_unitario: producto.precio_unidad
+    });
   };
 
   const productosFiltrados = productos.filter((p) =>
     p.nombre.toLowerCase().includes(busqueda.toLowerCase()) ||
-    p.codigo_producto.toLowerCase().includes(busqueda.toLowerCase())
+    p.codigo.toLowerCase().includes(busqueda.toLowerCase())
   );
 
   return (
@@ -79,7 +102,7 @@ export default function AgregarProducto() {
         onSubmit={handleSubmit}
         className="grid grid-cols-2 gap-4 bg-white p-6 rounded-xl border"
       >
-        <div className="relative">
+        <div>
           <label className="text-sm font-semibold block mb-1">
             Código de Producto *
           </label>
@@ -96,7 +119,7 @@ export default function AgregarProducto() {
           </div>
         </div>
 
-        <div className="relative">
+        <div>
           <label className="text-sm font-semibold block mb-1">
             Nombre del Producto *
           </label>
@@ -113,7 +136,7 @@ export default function AgregarProducto() {
           </div>
         </div>
 
-        <div className="relative">
+        <div>
           <label className="text-sm font-semibold block mb-1">
             Unidad de medida *
           </label>
@@ -129,12 +152,12 @@ export default function AgregarProducto() {
               <option value="">Opción</option>
               <option value="Unidad">Unidad</option>
               <option value="Caja">Caja</option>
-              <option value="Litro">Litro</option>
+              <option value="Fardo">Fardo</option>
             </select>
           </div>
         </div>
 
-        <div className="relative">
+        <div>
           <label className="text-sm font-semibold block mb-1">
             Unidades por fardo/paquete *
           </label>
@@ -152,6 +175,25 @@ export default function AgregarProducto() {
           </div>
         </div>
 
+        <div className="col-span-2">
+          <label className="text-sm font-semibold block mb-1">
+            Precio por unidad *
+          </label>
+          <div className="flex items-center border rounded-md px-2">
+            <MdOutlineAttachMoney className="text-gray-500 mr-2" />
+            <input
+              type="number"
+              name="precio_unitario"
+              value={form.precio_unitario}
+              onChange={handleChange}
+              placeholder="Placeholder"
+              className="w-full p-2 outline-none"
+              required
+              step="0.01"
+            />
+          </div>
+        </div>
+
         <div className="col-span-2 flex justify-end gap-2 mt-2">
           <button
             type="reset"
@@ -162,7 +204,8 @@ export default function AgregarProducto() {
                 codigo_producto: "",
                 nombre: "",
                 unidad_medida: "",
-                unidades_por_paquete: ""
+                unidades_por_paquete: "",
+                precio_unitario: ""
               })
             }
           >
@@ -195,31 +238,19 @@ export default function AgregarProducto() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           {productosFiltrados.map((p) => (
-            <div
-              key={p.id}
-              className="bg-white border rounded-md p-4 shadow-sm"
-            >
+            <div key={p.id} className="bg-white border rounded-md p-4 shadow-sm">
               <h3 className="font-bold text-lg">{p.nombre}</h3>
               <span className="inline-block bg-gray-200 text-xs font-bold px-2 py-1 rounded mt-1 mb-2">
-                {p.codigo_producto}
+                {p.codigo}
               </span>
-              <p className="text-sm">
-                <strong>Unidad de medida:</strong> {p.unidad_medida}
-              </p>
-              <p className="text-sm">
-                <strong>Unidades por fardo/paquete:</strong> {p.unidades_por_paquete}
-              </p>
+              <p className="text-sm"><strong>Unidad de medida:</strong> {p.unidad_medida}</p>
+              <p className="text-sm"><strong>Unidades por fardo/paquete:</strong> {p.unidades_por_fardo}</p>
+              <p className="text-sm"><strong>Precio por unidad:</strong> Q{p.precio_unidad}</p>
               <div className="flex gap-2 mt-3">
-                <button
-                  onClick={() => handleEdit(p)}
-                  className="text-blue-600"
-                >
+                <button onClick={() => handleEdit(p)} className="text-blue-600">
                   <RiEdit2Fill size={18} />
                 </button>
-                <button
-                  onClick={() => handleDelete(p.id)}
-                  className="text-red-600"
-                >
+                <button onClick={() => handleDelete(p.id)} className="text-red-600">
                   <RiDeleteBin5Fill size={18} />
                 </button>
               </div>

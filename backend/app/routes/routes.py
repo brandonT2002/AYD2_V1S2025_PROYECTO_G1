@@ -29,6 +29,8 @@ api_bp.route('/InsertarVenta', methods=['POST'])(GestionesVentas.create_venta)
 api_bp.route('/GetVenta/<int:venta_id>', methods=['GET'])(GestionesVentas.get_venta)
 api_bp.route('/ActualizarVenta/<int:venta_id>', methods=['PUT'])(GestionesVentas.update_venta)
 api_bp.route('/EliminarVenta/<int:venta_id>', methods=['DELETE'])(GestionesVentas.delete_venta)
+api_bp.route('/InsertarProductoVenta', methods=['POST'])(GestionesVentas.insert_productos_venta)
+api_bp.route('/DeleteVenta/<int:detalle_venta_id>', methods=['DELETE'])(GestionesVentas.delete_producto_venta)
 
 # Rutas para manejar Pagos
 api_bp.route('/InsertarPago', methods=['POST'])(GestionesPagos.create_pago)
@@ -46,5 +48,3 @@ api_bp.route('/GetProducto/<int:producto_id>', methods=['GET'])(GestionesProduct
 api_bp.route('/ActualizarProducto/<int:producto_id>', methods=['PUT'])(GestionesProductos.update_producto)
 api_bp.route('/EliminarProducto/<int:producto_id>', methods=['DELETE'])(GestionesProductos.delete_producto)
 api_bp.route('/GetAllProductos', methods=['GET'])(GestionesProductos.get_all_productos)
-
-

@@ -31,6 +31,53 @@ class Venta(BaseModel):
         query = f"DELETE FROM {self.table_name} WHERE id = %s"
         self.execute_query(query, (venta_id,))
         return "Venta eliminada con éxito"
+    
+    def insert_producto_venta(self, venta_id, producto_id, observaciones, cantidad_unidades):
+        """Inserta un producto en una venta"""
+        query = f"INSERT INTO venta_detalle (ventas_id, producto_id, observaciones, cantidad_unidades) VALUES (%s, %s, %s, %s)"
+        self.execute_query(query, (venta_id, producto_id, observaciones, cantidad_unidades))
+
+        query = f"SELECT precio_unidad FROM productos WHERE id = %s"
+        precio_venta = self.execute_single_query(query, (producto_id,))['precio_unidad']
+
+
+        # Actualizar el total de la venta
+        query = f"UPDATE ventas SET total_quetzales = %s + total_quetzales WHERE id = %s"
+        self.execute_query(query, (cantidad_unidades*precio_venta, venta_id))
+
+        query = f"UPDATE inventario SET stock = stock_unidades + %s WHERE productos_id = %s"
+        self.execute_query(query, (cantidad_unidades, producto_id))
+
+        return "Producto insertado en la venta con éxito"
+    
+    def delete_producto_venta(self, detalle_venta_id):
+        """Elimina un producto de una venta"""
+
+        # Verificar si el detalle de venta existe en la query query = f"SELECT cantidad_unidades, producto_id, ventas_id FROM venta_detalle WHERE id = %s"
+        query = f"SELECT cantidad_unidades, producto_id, ventas_id FROM venta_detalle WHERE id = %s"
+        detalle = self.execute_single_query(query, (detalle_venta_id,))
+        print(detalle)
+   
+        if detalle is None:
+            return {"error": "Detalle de venta no encontrado"}
+        
+        query = f"DELETE FROM venta_detalle WHERE id = %s"
+        self.execute_query(query, (detalle_venta_id,))
+
+        query = f"SELECT precio_unidad FROM productos WHERE id = %s"
+        precio_venta = self.execute_single_query(query, (detalle['producto_id'],))['precio_unidad']
+
+
+        # Actualizar el total de la venta
+        query = f"UPDATE ventas SET total_quetzales = total_quetzales -  %s WHERE id = %s"
+        self.execute_query(query, (detalle['cantidad_unidades'] * precio_venta, detalle['ventas_id']))
+
+
+
+        query = f"UPDATE inventario SET stock = stock_unidades - %s WHERE productos_id = %s"
+        self.execute_query(query, (detalle['cantidad_unidades'] , detalle['producto_id']))
+
+        return {"mensaje": "Producto eliminado de la venta con éxito", "detalle_venta_id": detalle_venta_id}
 
     
     

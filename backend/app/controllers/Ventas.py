@@ -64,7 +64,28 @@ class VentasController:
             return jsonify(ventas), 200
         except Exception as e:
             return jsonify({"error": str(e)}), 500
-
-
-
     
+    def insert_producto_venta(self, venta_id, producto_id, observaciones, cantidad_unidades):
+        """Inserta un producto en una venta"""
+        query = f"INSERT INTO venta_detalle (ventas_id, producto_id, observaciones, cantidad_unidades) VALUES (%s, %s, %s, %s)"
+        self.execute_query(query, (venta_id, producto_id, observaciones, cantidad_unidades))
+
+        query = f"SELECT precio_unidad FROM productos WHERE id = %s"
+        precio_venta = self.execute_single_query(query, (producto_id,))['precio_unidad']
+
+
+        # Actualizar el total de la venta
+        query = f"UPDATE ventas SET total_quetzales = %s + total_quetzales WHERE id = %s"
+        self.execute_query(query, (cantidad_unidades*precio_venta, venta_id))
+
+        query = f"UPDATE inventario SET stock_unidades = stock_unidades - %s WHERE productos_id = %s"
+        self.execute_query(query, (cantidad_unidades, producto_id))
+        return "Producto insertado en la venta con éxito"
+
+    def delete_producto_venta(self, detalle_venta_id):
+        """Elimina un producto de una venta"""
+        try:
+            result = self.ventas_service.delete_producto_venta(detalle_venta_id)
+            return jsonify(result), 200
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
