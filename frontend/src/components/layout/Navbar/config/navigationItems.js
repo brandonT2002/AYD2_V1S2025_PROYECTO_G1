@@ -25,7 +25,7 @@ export const navigationItems = [
     {
         label: "Ventas",
         to: "/ventas",
-    },
+},
     {
         label: "Bodega",
         to: "/bodega",
