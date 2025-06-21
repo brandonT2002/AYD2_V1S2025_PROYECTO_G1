@@ -14,20 +14,17 @@ class Producto(BaseModel):
     def create_producto(self, data):
         """Crea un nuevo producto"""
         try:
-            # Primero obtenemos el último ID para generar el código
-            print("La data recibida para crear el producto es:", data)
-            query_last_id = "SELECT MAX(id) as last_id FROM productos"
-            result = self.execute_single_query(query_last_id)
-            print("El resultado de la consulta para el último ID es:", result)
-            last_id = result['last_id'] if result and 'last_id' in result else 0
-            new_id = last_id + 1
-            codigo = f"P{new_id:03d}"  # Formatea el id con 3 dígitos y añade P al inicio
-            print("El nuevo ID generado es:", new_id)
-            # Insertar el producto incluyendo el id generado manualmente
-            query = f"INSERT INTO {self.table_name} (id, codigo, nombre, unidad_medida, precio_unidad, unidades_por_fardo) VALUES (%s, %s, %s, %s, %s, %s)"
-            producto_id = self.returning_id(query, (new_id, codigo, data['nombre'], data['unidad_medida'], data['precio_unidad'], data['unidades_por_fardo']))
+            # Insertar el producto usando el codigo recibido en el JSON
+            query = f"INSERT INTO {self.table_name} (codigo, nombre, unidad_medida, precio_unidad, unidades_por_fardo) VALUES (%s, %s, %s, %s, %s)"
+            producto_id = self.returning_id(query, (
+                data['codigo'],
+                data['nombre'],
+                data['unidad_medida'],
+                data['precio_unidad'],
+                data['unidades_por_fardo']
+            ))
 
-            return {"message": "Producto creado con éxito", "id": producto_id, "codigo": codigo}
+            return {"message": "Producto creado con éxito", "id": producto_id, "codigo": data['codigo']}
 
         except Exception as e:
             raise e
@@ -35,12 +32,22 @@ class Producto(BaseModel):
     def update_producto(self, producto_id, data):
         """Actualiza un producto existente"""
         try:
-            # Actualizar los datos del producto
-            query = f"UPDATE {self.table_name} SET nombre = %s, unidad_medida = %s, precio_unidad = %s, unidades_por_fardo = %s WHERE id = %s"
-            self.execute_query(query, (data['nombre'], data['unidad_medida'], data['precio_unidad'], data['unidades_por_fardo'], producto_id))
-            
+            # Actualizar los datos del producto, incluyendo el campo 'codigo'
+            query = f"""UPDATE {self.table_name} 
+                        SET nombre = %s, unidad_medida = %s, precio_unidad = %s, unidades_por_fardo = %s, codigo = %s 
+                        WHERE id = %s"""
+            self.execute_query(
+                query,
+                (
+                    data['nombre'],
+                    data['unidad_medida'],
+                    data['precio_unidad'],
+                    data['unidades_por_fardo'],
+                    data['codigo'],
+                    producto_id
+                )
+            )
             return {"message": "Producto actualizado con éxito"}
-            
         except Exception as e:
             raise e
         
