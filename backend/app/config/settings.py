@@ -10,4 +10,4 @@ class Config:
     DB_PORT = int(os.getenv('DB_PORT', 3306))
     DB_NAME = os.getenv('DB_NAME', 'imporcomgua')
     DB_USER = os.getenv('DB_USER', 'root')
-    DB_PASSWORD = os.getenv('DB_PASSWORD', 'root')
+    DB_PASSWORD = os.getenv('DB_PASSWORD', 'dekubaba12')
