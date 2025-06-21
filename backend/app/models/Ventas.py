@@ -45,11 +45,11 @@ class Venta(BaseModel):
         query = f"UPDATE ventas SET total_quetzales = %s + total_quetzales WHERE id = %s"
         self.execute_query(query, (cantidad_unidades*precio_venta, venta_id))
 
-        query = f"UPDATE inventario SET stock = stock_unidades + %s WHERE productos_id = %s"
+        query = f"UPDATE inventario SET stock_unidades = stock_unidades - %s WHERE productos_id = %s"
         self.execute_query(query, (cantidad_unidades, producto_id))
-
         return "Producto insertado en la venta con éxito"
     
+
     def delete_producto_venta(self, detalle_venta_id):
         """Elimina un producto de una venta"""
 
@@ -69,12 +69,10 @@ class Venta(BaseModel):
 
 
         # Actualizar el total de la venta
-        query = f"UPDATE ventas SET total_quetzales = total_quetzales -  %s WHERE id = %s"
+        query = f"UPDATE ventas SET total_quetzales = total_quetzales +  %s WHERE id = %s"
         self.execute_query(query, (detalle['cantidad_unidades'] * precio_venta, detalle['ventas_id']))
 
-
-
-        query = f"UPDATE inventario SET stock = stock_unidades - %s WHERE productos_id = %s"
+        query = f"UPDATE inventario SET stock_unidades = stock_unidades - %s WHERE productos_id = %s"
         self.execute_query(query, (detalle['cantidad_unidades'] , detalle['producto_id']))
 
         return {"mensaje": "Producto eliminado de la venta con éxito", "detalle_venta_id": detalle_venta_id}
