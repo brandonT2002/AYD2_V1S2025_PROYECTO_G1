@@ -5,6 +5,7 @@ import Inventory from "./pages/Inventory";
 import AgregarProducto from "./pages/AgregarProducto";
 import ClientePage from "./components/Clientes/ClientePage";
 import Vendedores from "./pages/Vendedores";
+import PaymentPage from "./pages/Pagos";
 
 
 
@@ -17,6 +18,10 @@ function App() {
                     <Route
                         path="/bodega"
                         element={<IndexPage />}
+                    />
+                    <Route
+                        path="/cobranzas"
+                        element={<PaymentPage />}
                     />
                     <Route path="/inventario" element={<Inventory />} />
                     <Route 
