@@ -4,6 +4,7 @@ from app.controllers.Clientes import ClientesController
 from app.controllers.Ventas import VentasController 
 from app.controllers.PagosController import PagosController
 from app.controllers.producto_controller import ProductoController
+from app.controllers.Inventario import InventarioController
 
 api_bp = Blueprint('api_bp', __name__, url_prefix='/api/')
 
@@ -12,6 +13,7 @@ GestionesVentas = VentasController()
 GestionesPagos = PagosController()
 GestionesProductos = ProductoController()
 GestionesSalidas = SalidaController()
+GestionInventario = InventarioController()
 
 # Rutas compatibles con el frontend actual
 api_bp.route('/clientes', methods=['GET'])(GestionesClientes.get_all)
@@ -29,7 +31,7 @@ api_bp.route('/InsertarVenta', methods=['POST'])(GestionesVentas.create_venta)
 api_bp.route('/GetVenta/<int:venta_id>', methods=['GET'])(GestionesVentas.get_venta)
 api_bp.route('/ActualizarVenta/<int:venta_id>', methods=['PUT'])(GestionesVentas.update_venta)
 api_bp.route('/EliminarVenta/<int:venta_id>', methods=['DELETE'])(GestionesVentas.delete_venta)
-api_bp.route('/InsertarProductoVenta', methods=['POST'])(GestionesVentas.insert_productos_venta)
+api_bp.route('/InsertarProductoVenta', methods=['POST'])(GestionesVentas.insert_producto_venta)
 api_bp.route('/DeleteVenta/<int:detalle_venta_id>', methods=['DELETE'])(GestionesVentas.delete_producto_venta)
 
 # Rutas para manejar Pagos
@@ -43,8 +45,11 @@ api_bp.route('/obtener-detalle-venta/<int:venta_id>', methods=['GET'])(Gestiones
 api_bp.route('/registrar-salida', methods=['POST'])(GestionesSalidas.registrar_salida)
 
 
-api_bp.route('/InsertarProducto', methods=['POST'])(GestionesProductos.create_producto)
+# api_bp.route('/InsertarProducto', methods=['POST'])(GestionesProductos.insert_producto_venta)
 api_bp.route('/GetProducto/<int:producto_id>', methods=['GET'])(GestionesProductos.get_producto)
 api_bp.route('/ActualizarProducto/<int:producto_id>', methods=['PUT'])(GestionesProductos.update_producto)
 api_bp.route('/EliminarProducto/<int:producto_id>', methods=['DELETE'])(GestionesProductos.delete_producto)
 api_bp.route('/GetAllProductos', methods=['GET'])(GestionesProductos.get_all_productos)
+
+# Rutas para inventario
+api_bp.route('/insertar-inventario', methods=['POST'])(GestionInventario.registrar_movimiento_inventario)
