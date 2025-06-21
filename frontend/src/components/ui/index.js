@@ -5,4 +5,5 @@ export { TitlePanel } from "./Title";
 export { IconButton } from "./Button";
 export { DatePicker } from "./DatePicker";
 export { TableComponent } from "./Table";
+export { TextArea } from "./TextArea";
 // export {  } from "./Button";
