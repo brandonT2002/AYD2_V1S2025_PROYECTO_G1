@@ -19,7 +19,7 @@ import {
     requestGetProductos,
     requestInsertarInventario,
 } from "../services/inventario";
-
+import { toast } from "sonner";
 import { set, useForm } from "react-hook-form";
 
 function Inventory() {
@@ -65,14 +65,33 @@ function Inventory() {
     };
 
     const ingresarInventario = async (data) => {
-        // Usar los useState para las fechas
-        data.fecha_ingreso = dateRecepcion;
-        data.fecha = dateDuca;
-        data.fecha_duca_rectificada = dateDucaRectificada;
-        console.log("Datos del inventario:", data);
+        const inventarioData = {
+            ...data,
+            fecha_ingreso: dateRecepcion,
+            fecha: dateDuca,
+            fecha_duca_rectificada: dateDucaRectificada,
+            unidades_totales: unidadesTotales,
+        };
+
         try {
-            const response = await requestInsertarInventario(data);
-            console.log("Inventario ingresado:", response.data);
+            const response = await requestInsertarInventario(inventarioData);
+            toast.success("Inventario ingresado exitosamente");
+
+            reset({
+                producto_id: "",
+                cantidad_fardos: "",
+                unidades: "",
+                unidades_totales: "",
+                numero_contendor: "",
+                numero_duca: "",
+                numero_duca_rectificada: "",
+                observaciones: "",
+            });
+            setDateDuca("");
+            setDateDucaRectificada("");
+            setDateRecepcion("");
+            setUnidadesTotales("");
+            setValue("");
         } catch (error) {
             console.error("Error al ingresar inventario:", error);
         }
@@ -147,6 +166,7 @@ function Inventory() {
                             defaultValue={value}
                             register={register}
                             icon={FiPackage}
+                            readOnly
                         />
                         <InputField
                             name="unidades_totales"
@@ -157,6 +177,7 @@ function Inventory() {
                             defaultValue={unidadesTotales}
                             register={register}
                             icon={PiPencilLineLight}
+                            readOnly
                         />
                     </div>
                     <div className="flex gap-3">
