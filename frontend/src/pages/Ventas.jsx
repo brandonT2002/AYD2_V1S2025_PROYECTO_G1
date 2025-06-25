@@ -27,7 +27,8 @@ import {
     FiBox,
 } from "react-icons/fi";
 import { useEffect, useState } from "react";
-import { requestBuscarVentas } from "../services/bajaBodega";
+import { useForm } from "react-hook-form";
+import { requestNuevaVenta } from "../services/bajaBodega";
 import { requestGetAllClientes } from "../services/clientes";
 import { requestGetAllVendedores } from "../services/vendedores";
 import { requestGetProductos } from "../services/inventario";
@@ -36,6 +37,14 @@ import ProductTable from "../components/ui/ProductSelect/ProductTable";
 import { toast } from "sonner";
 
 function VentasPage() {
+    const getCurrentDate = () => {
+        const date = new Date();
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const day = String(date.getDate()).padStart(2, "0");
+        return `${year}-${month}-${day}`;
+    };
+
     const vendedor = useSelectInput("");
     const tipo_pago = useSelectInput("");
     const producto = useSelectInput("");
@@ -49,51 +58,9 @@ function VentasPage() {
     const [currentProductos, setCurrentProductos] = useState([]);
     const [allProductos, setAllProductos] = useState([]);
     const [selectedProducts, setSelectedProducts] = useState([]);
-
-    const getCurrentDate = () => {
-        const date = new Date();
-        const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, "0");
-        const day = String(date.getDate()).padStart(2, "0");
-        return `${year}-${month}-${day}`;
-    };
-
-    const [ventaData, setVentaData] = useState({
-        fecha_venta: getCurrentDate(),
-        fecha_salida_bodega: "",
-        cliente: "",
-        nit_cliente: "",
-        tipo_pago: "",
-        dias_credito: "",
-        estado_cobro: "",
-        vendedor_id: "",
-        dte_numero: "",
-        dte_nombre: "",
-        dte_nit: "",
-        total_quetzales: "",
-        observaciones: "",
-    });
-
-    const handleVentaDataChange = (e) => {
-        const { name, value } = e.target;
-        setVentaData((prev) => ({
-            ...prev,
-            [name]: value,
-        }));
-
-        if (name === "cliente") {
-            getPaymentMethods({ target: { value } });
-        }
-    };
-
-    const searchSells = async (formData) => {
-        try {
-            const response = await requestBuscarVentas(formData);
-            setSells(response.data.data);
-        } catch (error) {
-            console.error("Error buscando ventas:", error);
-        }
-    };
+    const { register, handleSubmit, reset, watch } = useForm();
+    const [date, setDate] = useState(getCurrentDate());
+    const [dateExit, setDateExit] = useState("");
 
     const getProductos = async () => {
         try {
@@ -118,39 +85,33 @@ function VentasPage() {
         }
     };
 
-    const insertarVenta = async () => {
+    const insertarVenta = async (ventaData) => {
+        // console.log("Datos de la venta:", ventaData,selectedProducts);
         try {
-            if (!ventaData.cliente || selectedProducts.length === 0) {
+            if (!ventaData.cliente_id || ventaData.cliente_id === 0 || selectedProducts.length === 0) {
                 toast.error(
                     "Por favor, seleccione un cliente y al menos un producto."
                 );
                 return;
             }
-
+            const total = selectedProducts.reduce(
+                (acc, product) => acc + product.subtotal,
+                0
+            );
             const ventaCompleta = {
                 ...ventaData,
                 productos: selectedProducts,
+                total_quetzales: total,
+                fecha_venta: date,
+                fecha_salida_bodega: dateExit,
             };
-            console.log("Datos de la venta a insertar:", ventaCompleta);
-            // const response = await requestNuevaVenta(ventaCompleta);
+            const response = await requestNuevaVenta(ventaCompleta);
             // alert(`Venta registrada con éxito: ${response.data}`);
-
-            setVentaData({
-                fecha_venta: getCurrentDate(),
-                fecha_salida_bodega: "",
-                cliente: "",
-                nit_cliente: "",
-                tipo_pago: "",
-                dias_credito: "",
-                estado_cobro: "",
-                vendedor_id: "",
-                dte_numero: "",
-                dte_nombre: "",
-                dte_nit: "",
-                total_quetzales: "",
-                observaciones: "",
-            });
+            toast.success("Venta registrada con éxito.");
             setSelectedProducts([]);
+            setDate(getCurrentDate());
+            setDateExit(getCurrentDate());
+            reset()
         } catch (error) {
             console.error("Error al insertar venta:", error);
         }
@@ -163,6 +124,10 @@ function VentasPage() {
                 value: cliente.id,
                 label: cliente.nombre_contacto,
             }));
+            formattedClientes.unshift({
+                value: 0,
+                label: "Seleccione un cliente",
+            });
             setAllClientes(response.data);
             setCliente(formattedClientes);
         } catch (error) {
@@ -224,43 +189,50 @@ function VentasPage() {
 
     return (
         <SendSelectorProvider>
-            <div className="flex flex-col bg-gray-100 gap-3">
+            <form
+                className="flex flex-col bg-gray-100 gap-3"
+                onSubmit={handleSubmit(insertarVenta)}
+            >
                 <Title>Registrar Nueva Venta</Title>
 
                 <Panel>
                     <TitlePanel>Detalles de la Venta</TitlePanel>
                     <div className="grid grid-cols-2 gap-x-4 gap-y-3 w-full">
                         <DatePicker
-                            name="fecha_venta"
+                            name="fecha_venta_1"
                             label="Fecha de Venta"
+                            value={date}
                             placeholder="Fecha de Venta"
                             className="text-text-second font-bold"
                             icon={FiCalendar}
-                            defaultValue={getCurrentDate()}
-                            value={ventaData.fecha_venta}
-                            onChange={handleVentaDataChange}
                             position="top"
+                            register={register}
+                            onDateChange={(selectedDate) => {
+                                setDate(selectedDate);
+                            }}
                         />
                         <DatePicker
-                            name="fecha_salida_bodega"
+                            name="fecha_salida_bodega_1"
                             label="Fecha de Salida de Bodega"
                             placeholder="Fecha de Salida"
                             className="text-text-second font-bold"
                             icon={FiCalendar}
-                            value={ventaData.fecha_salida_bodega}
-                            onChange={handleVentaDataChange}
                             position="top"
+                            register={register}
+                            onDateChange={(date) => setDateExit(date)}
                         />
                     </div>
                     <div className="grid grid-cols-2 gap-x-4 gap-y-3 w-full">
                         <SelectInput
-                            name="cliente"
+                            name="cliente_id"
                             label="Cliente"
                             icon={FiHome}
                             className="text-text-second font-semibold"
                             options={currentClientes}
-                            value={ventaData.cliente}
-                            onChange={handleVentaDataChange}
+                            onChange={(e) => {
+                                getPaymentMethods(e);
+                            }}
+                            register={register}
                             {...currentClientes.bind}
                         />
                         <InputField
@@ -269,8 +241,7 @@ function VentasPage() {
                             placeholder="NIT del Cliente"
                             className="text-text-second font-semibold"
                             icon={FiBox}
-                            value={ventaData.nit_cliente}
-                            onChange={handleVentaDataChange}
+                            register={register}
                         />
                     </div>
 
@@ -281,9 +252,8 @@ function VentasPage() {
                             icon={CgMenuGridR}
                             className="text-text-second font-semibold"
                             options={paymentMethods}
-                            value={ventaData.tipo_pago}
-                            onChange={handleVentaDataChange}
                             {...tipo_pago.bind}
+                            register={register}
                         />
                         <InputField
                             name="dias_credito"
@@ -291,8 +261,7 @@ function VentasPage() {
                             placeholder="Días de Crédito"
                             className="text-text-second font-semibold"
                             icon={LuClockAlert}
-                            value={ventaData.dias_credito}
-                            onChange={handleVentaDataChange}
+                            register={register}
                         />
                         <InputField
                             name="estado_cobro"
@@ -300,8 +269,7 @@ function VentasPage() {
                             placeholder="Ej: Pagado / Pendiente"
                             className="text-text-second font-semibold"
                             icon={LuBadgeDollarSign}
-                            value={ventaData.estado_cobro}
-                            onChange={handleVentaDataChange}
+                            register={register}
                         />
                     </div>
 
@@ -312,9 +280,8 @@ function VentasPage() {
                             icon={CgMenuGridR}
                             className="text-text-second font-semibold"
                             options={currentVendedores}
-                            value={ventaData.vendedor_id}
-                            onChange={handleVentaDataChange}
                             {...vendedor.bind}
+                            register={register}
                         />
                     </div>
 
@@ -325,8 +292,7 @@ function VentasPage() {
                             placeholder="Número de Factura"
                             className="text-text-second font-semibold"
                             icon={LuHash}
-                            value={ventaData.dte_numero}
-                            onChange={handleVentaDataChange}
+                            register={register}
                         />
                         <InputField
                             name="dte_nombre"
@@ -334,8 +300,7 @@ function VentasPage() {
                             placeholder="Nombre Factura"
                             className="text-text-second font-semibold"
                             icon={FiFileText}
-                            value={ventaData.dte_nombre}
-                            onChange={handleVentaDataChange}
+                            register={register}
                         />
                         <InputField
                             name="dte_nit"
@@ -343,20 +308,7 @@ function VentasPage() {
                             placeholder="NIT"
                             className="text-text-second font-semibold"
                             icon={LuHash}
-                            value={ventaData.dte_nit}
-                            onChange={handleVentaDataChange}
-                        />
-                    </div>
-
-                    <div className="grid grid-cols-1 gap-y-3 w-full">
-                        <InputField
-                            name="total_quetzales"
-                            label="Total en Quetzales"
-                            placeholder="Q0.00"
-                            className="text-text-second font-semibold"
-                            icon={FiDollarSign}
-                            value={ventaData.total_quetzales}
-                            onChange={handleVentaDataChange}
+                            register={register}
                         />
                     </div>
                 </Panel>
@@ -371,21 +323,17 @@ function VentasPage() {
                         selectedProducts={selectedProducts}
                         onRemoveProduct={handleRemoveProduct}
                     />
-                </Panel>
-
-                <Panel>
                     <div className="flex justify-end gap-4">
                         <IconButton
-                            type="button"
+                            type="subbmit"
                             variant={ButtonVariant.PRIMARY}
                             size={ButtonSize.MD}
-                            onClick={insertarVenta}
                         >
                             Registrar Venta
                         </IconButton>
                     </div>
                 </Panel>
-            </div>
+            </form>
         </SendSelectorProvider>
     );
 }

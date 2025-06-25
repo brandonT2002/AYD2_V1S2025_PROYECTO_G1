@@ -8,8 +8,8 @@ const ProductTable = ({ selectedProducts, onRemoveProduct }) => {
 
     if (selectedProducts.length === 0) {
         return (
-            <div className="bg-white p-6 rounded-lg shadow-sm border-2 mt-6 border-border-second">
-                <h3 className="text-lg font-semibold mb-4">
+            <div className="bg-white p-4 rounded-lg shadow-sm border-2 mt-6 border-border-second">
+                <h3 className="text-lg font-semibold mb-2">
                     Resumen de Productos
                 </h3>
                 <p className="text-gray-500 text-center py-8">

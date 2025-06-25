@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { LuCalendarDays } from "react-icons/lu";
 import { useDatePicker } from "./hooks";
 import { Calendar } from "./components";
@@ -10,6 +10,7 @@ const DatePicker = ({
     name,
     onDateChange,
     register,
+    value,
     defaultValue,
     position = "bottom",
 }) => {
@@ -18,18 +19,41 @@ const DatePicker = ({
     const calendarRef = useRef(null);
     const pickerContainerRef = useRef(null);
 
+    const [inputValue, setInputValue] = useState(() => {
+        if (value) return value;
+        if (defaultValue) return defaultValue;
+        return dp.selected ? dp.format(dp.selected) : "";
+    });
+
     const handleSelect = {
         format: dp.format,
         handle: (day) => {
             const newDate = new Date(dp.year, dp.month, day);
             dp.setSelected(newDate);
+            const formattedDate = dp.format(newDate);
+
+            setInputValue(formattedDate);
+
             if (inputRef.current) {
-                inputRef.current.value = dp.format(newDate);
+                inputRef.current.value = formattedDate;
             }
+
             dp.setShow(false);
-            onDateChange?.(dp.format(newDate));
+            onDateChange?.(formattedDate);
         },
     };
+
+    useEffect(() => {
+        if (value !== undefined) {
+            setInputValue(value);
+        }
+    }, [value]);
+
+    useEffect(() => {
+        if (defaultValue && !value && !inputValue) {
+            setInputValue(defaultValue);
+        }
+    }, [defaultValue, value, inputValue]);
 
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -74,7 +98,7 @@ const DatePicker = ({
                         inputRect.top +
                         bodyScrollTop +
                         calendarEl.offsetHeight +
-                        350; 
+                        360; 
                 } else {
                     top = inputRect.bottom + bodyScrollTop + 10;
                 }
@@ -96,7 +120,7 @@ const DatePicker = ({
     }, [dp.show, dp.month, dp.year, position]);
 
     const combinedRef = (el) => {
-        inputRef.current = el; 
+        inputRef.current = el;
         if (register && name) {
             const { ref } = register(name);
             if (typeof ref === "function") {
@@ -121,8 +145,8 @@ const DatePicker = ({
                 </div>
                 <input
                     type="text"
-                    ref={combinedRef} // Use the combined ref here
-                    defaultValue={defaultValue || dp.format(dp.selected)}
+                    ref={combinedRef}
+                    value={inputValue}
                     readOnly
                     placeholder="YYYY-MM-DD"
                     onClick={() => dp.setShow(!dp.show)}
@@ -161,4 +185,5 @@ const DatePicker = ({
         </div>
     );
 };
+
 export default DatePicker;
