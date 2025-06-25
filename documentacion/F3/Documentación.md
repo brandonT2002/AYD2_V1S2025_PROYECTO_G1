@@ -2,6 +2,396 @@
 ## Documentación Grupo 1
 # IMPORCOMGUA
 
+
+
+
+# Documentación Fase 1
+
+## 1. Core de Negocio
+### A. Descripción
+
+IMPORCOMGUA busca digitalizar de extremo a extremo sus procesos, inventario, comisiones y cobranzas debido a que cuentan con mucha intervención manual, para asegurar que el producto correcto salga a tiempo, la factura se emita sin errores y el dinero ingrese puntualmente. La plataforma web propuesta centraliza la captura de datos, valida las reglas de negocio y expone reportes en tiempo real, de modo que Administrador, Vendedor, Bodeguero y Encargado de Cobranza trabajen sobre la misma fuente de datos. El flujo unificado abarca el mantenimiento de clientes, productos y vendedores. Las entradas / salidas de inventario, el registro de ventas con descuentos, el seguimiento de pagos y el cálculo automático de comisiones, complementado con alertas inteligentes (crédito vencido, stock crítico) que agilizan la toma de decisiones.
+
+
+| Actor                     | Funciones                                                                                   |
+|-------------------------|---------------------------------------------------------------------------------------------|
+| **Cliente**             | Solicitar productos, autorizar tipo de pago, efectuar pagos.                                |
+| **Vendedor**            | Registrar ventas, aplicar descuentos autorizados, consultar su comisión.                    |
+| **Bodeguero**           | Confirmar ingresos DUCA, programar y despachar salidas de bodega.                           |
+| **Administrador del sistema** | Gestionar maestros y usuarios, configurar reglas de negocio, emitir reportes.         |
+| **Cobranza**            | Registrar abonos, monitorear saldos, disparar alertas de vencimiento.                       |
+
+### B.1 Diagrama de CDU de Alto nivel
+
+![alt text](img/cduAN.png)
+
+### B.2 Diagrama de CDU Primera descomposición
+
+![alt text](img/cduDescom.png)
+
+
+
+# Documentación Fase 2
+
+## 1. Core de Negocio
+### A. Descripción
+
+IMPORCOMGUA busca digitalizar de extremo a extremo sus procesos, inventario, comisiones y cobranzas debido a que cuentan con mucha intervención manual, para asegurar que el producto correcto salga a tiempo, la factura se emita sin errores y el dinero ingrese puntualmente. La plataforma web propuesta centraliza la captura de datos, valida las reglas de negocio y expone reportes en tiempo real, de modo que Administrador, Vendedor, Bodeguero y Encargado de Cobranza trabajen sobre la misma fuente de datos. El flujo unificado abarca el mantenimiento de clientes, productos y vendedores. Las entradas / salidas de inventario, el registro de ventas con descuentos, el seguimiento de pagos y el cálculo automático de comisiones, complementado con alertas inteligentes (crédito vencido, stock crítico) que agilizan la toma de decisiones.
+
+
+
+### B.1 Diagrama de CDU de Alto nivel
+
+![alt text](img/image.png)
+
+### B.2 Diagrama de CDU Primera descomposición
+
+![alt text](img/image-2.png)
+
+
+
+## Documentación Fase 3
+
+
+# ACA NO HAY NADA 
+
+
+
+
+
+# Documentación Fase 1
+
+### 2. Gestionar datos (CUN 200)
+
+#### 2.1 Clientes
+
+- **RF-201 Registrar Cliente**
+  - Solicitar: nombre del negocio, nombre del contacto, NIT, departamento, municipio, tipo de venta.
+  - Generar automáticamente el código de cliente (prefijo de departamento + correlativo).
+
+- **RF-202 Consultar Cliente**
+  - Buscar por código de cliente o NIT para mostrar los datos del usuario.
+
+- **RF-203 Actualizar Cliente**
+  - Permitir modificar datos no clave (teléfono, dirección, observaciones).
+
+- **RF-204 Dar de baja Cliente**
+  - Marcar al cliente como inactivo y conservar su historial de ventas.
+
+#### 2.2 Productos
+
+- **RF-205 Registrar Producto**
+  - Solicitar: código, nombre, unidad de medida, unidades por fardo/paquete.
+
+- **RF-206 Consultar Producto**
+  - Buscar por código o nombre y mostrar disponibilidad actual.
+
+- **RF-207 Actualizar Producto**
+  - Permitir editar precio, nombre o unidades.
+
+- **RF-208 Retirar Producto de catálogo**
+  - Marcar el producto como no disponible para nuevas ventas.
+
+#### 2.3 Vendedores
+
+- **RF-209 Registrar Vendedor**
+  - Solicitar datos personales y porcentaje de comisión.
+
+- **RF-210 Consultar Vendedor**
+  - Mostrar los datos del vendedor con historial de ventas.
+
+- **RF-211 Actualizar Vendedor**
+  - Permitir modificar teléfono o porcentaje de comisión.
+
+- **RF-212 Dar de baja Vendedor**
+  - Marcar al vendedor como inactivo sin eliminar registros anteriores.
+
+---
+
+### 3. Gestionar Ventas (CUN 300)
+
+- **RF-301 Registrar Venta**
+  - El sistema debe solicitar:
+    - Fecha de venta (autorrellenada, editable).
+    - Cliente (Se recupera automáticamente su NIT).
+    - Productos (código o nombre + cantidad).
+    - Tipo de pago (contado/crédito) y, si es crédito, días de plazo.
+    - Vendedor.
+    - Número de envío (obligatorio).
+    - Datos de factura (número DTE, nombre y NIT de factura) opcionales.
+  - Validar disponibilidad en inventario.
+  - Calcular cantidades en unidades, precio por fardo/paquete y total en quetzales.
+  - Guardar la venta con estado inicial “Cobro pendiente” y estado “Vigente”.
+
+- **RF-302 Aplicar Descuento**
+  - Permitir aplicar un porcentaje de descuento autorizado y recalcular totales.
+
+- **RF-303 Anular Venta**
+  - Cambiar el estado a “Anulada” y devolver stock al inventario.
+
+- **RF-304 Consultar Venta**
+  - Buscar por número de envío, cliente o fecha y mostrar detalle.
+
+- **RF-305 Alerta de crédito vencido**
+  - Generar notificación si la venta a crédito supera el plazo pactado sin pago.
+
+- **RF-306 Liquidar Comisión**
+  - Una vez pagada la venta, calcular y registrar la comisión del vendedor.
+
+---
+
+### 4. Manejar Datos (CUN 400)
+
+- **RF-401 Registrar Pago**
+  - Seleccionar la venta y solicitar:
+    - Fecha de pago.
+    - Banco (Industrial, Banrural, G&T, BAM).
+    - Número de cuenta y n.º de transferencia/depósito.
+    - Número de recibo de caja.
+    - Monto de abono.
+  - Antes de confirmar, mostrar saldo pendiente.
+
+- **RF-402 Revisar Información de Cobranza**
+  - Mostrar al encargado el saldo pendiente, los días de crédito restantes y la lista de abonos anteriores.
+
+- **RF-403 Registrar Medio de Pago**
+  - Identificar si la cuenta está en estado “Pagado en su totalidad” o “Pago Parcial” si no se cubrió la totalidad del monto.
+
+- **RF-404 Actualizar Estado de Cobro**
+  - Recalcular saldo y cambiar estado a “Parcial” o “Pagado”; registrar la fecha de cancelación definitiva si el saldo llega a cero.
+
+- **RF-405 Consultar Saldo de Cliente**
+  - Permitir al encargado ver en cualquier momento el saldo de un cliente.
+
+- **RF-406 Liquidar Comisión en Pago Total**
+  - Cuando el saldo llegue a cero, se liquidará automáticamente la comisión correspondiente al vendedor.
+
+## B. Requerimientos no funcionales
+
+### 2.1 Rendimiento y capacidad
+- Las operaciones de alta — ventas, abonos y recepciones de inventario— deben finalizar en **≤ 5 s** con hasta **200 transacciones concurrentes**.  
+- Para lograrlo se emplearán índices en las tablas principales y consultas paginadas; si el volumen crece, bastará optimizar los índices o mover la base a un servidor con más recursos, sin tocar el código.
+
+### 2.2 Escalabilidad
+- El sistema se construirá con **capas separadas (presentación, lógica y datos)** y variables de entorno para las conexiones; así, en el futuro podrá trasladarse a un servidor con mayor CPU/RAM o duplicarse en otra instancia **sin reescribir la aplicación**.  
+
+### 2.3 Disponibilidad
+- Se exige una disponibilidad práctica de **≥ 95 %** en horario laboral.  
+- Una única instancia con reinicios automáticos ante fallo.
+
+### 2.4 Seguridad y cumplimiento
+- Contraseñas almacenadas con **SHA-256**.  
+- Acceso cifrado vía **HTTPS (TLS 1.2 o superior)**.  
+- Control de acceso por roles (Administrador, Vendedor, Bodeguero, Cobranza, Cliente).  
+- Se registrará en bitácora la creación, edición o eliminación de ventas, pagos e inventario para auditoría.
+
+### 2.5 Usabilidad
+- Interfaz web **responsiva** con validación en línea para minimizar errores de captura.  
+- Usuarios operativos (bodega y cobranza) deberán dominar sus tareas habituales tras **dos sesiones de práctica** como máximo.
+
+### 2.6 Mantenibilidad
+- Repositorio Git con código comentado y un **README** de instalación.  
+- Al menos **una prueba automática** por módulo crítico (Inventario, Ventas, Pagos).  
+
+### 2.7 Portabilidad / despliegue
+- La aplicación debe poder ejecutarse localmente (ambiente de desarrollo) y, en su entrega final, **deploy** a una instancia **AWS EC2**.
+- La misma versión de código debe correr sin cambios entre ambos entornos.
+
+
+
+
+# Documentación Fase 2
+
+### 2. Gestionar datos (CUN 200)
+
+#### 2.1 Clientes
+
+- **RF-201 Registrar Cliente**
+  - Solicitar: nombre del negocio, nombre del contacto, NIT, departamento, municipio, tipo de venta.
+  - Generar automáticamente el código de cliente (prefijo de departamento + correlativo).
+
+- **RF-202 Consultar Cliente**
+  - Buscar por código de cliente o NIT para mostrar los datos del usuario.
+
+- **RF-203 Actualizar Cliente**
+  - Permitir modificar datos no clave (teléfono, dirección, observaciones).
+
+- **RF-204 Dar de baja Cliente**
+  - Marcar al cliente como inactivo y conservar su historial de ventas.
+
+#### 2.2 Productos
+
+- **RF-205 Registrar Producto**
+  - Solicitar: código, nombre, unidad de medida, unidades por fardo/paquete.
+
+- **RF-206 Consultar Producto**
+  - Buscar por código o nombre y mostrar disponibilidad actual.
+
+- **RF-207 Actualizar Producto**
+  - Permitir editar precio, nombre o unidades.
+
+- **RF-208 Retirar Producto de catálogo**
+  - Marcar el producto como no disponible para nuevas ventas.
+
+#### 2.3 Vendedores
+
+- **RF-209 Registrar Vendedor**
+  - Solicitar datos personales y porcentaje de comisión.
+
+- **RF-210 Consultar Vendedor**
+  - Mostrar los datos del vendedor con historial de ventas.
+
+- **RF-211 Actualizar Vendedor**
+  - Permitir modificar teléfono o porcentaje de comisión.
+
+- **RF-212 Dar de baja Vendedor**
+  - Marcar al vendedor como inactivo sin eliminar registros anteriores.
+
+---
+
+### 3. Gestionar Ventas (CUN 300)
+
+- **RF-301 Registrar Venta**
+  - El sistema debe solicitar:
+    - Fecha de venta (autorrellenada, editable).
+    - Cliente (Se recupera automáticamente su NIT).
+    - Productos (código o nombre + cantidad).
+    - Tipo de pago (contado/crédito) y, si es crédito, días de plazo.
+    - Vendedor.
+    - Número de envío (obligatorio).
+    - Datos de factura (número DTE, nombre y NIT de factura) opcionales.
+  - Validar disponibilidad en inventario.
+  - Calcular cantidades en unidades, precio por fardo/paquete y total en quetzales.
+  - Guardar la venta con estado inicial “Cobro pendiente” y estado “Vigente”.
+
+- **RF-302 Aplicar Descuento**
+  - Permitir aplicar un porcentaje de descuento autorizado y recalcular totales.
+
+- **RF-304 Consultar Venta**
+  - Buscar por número de envío, cliente o fecha y mostrar detalle.
+
+- **RF-305 Liquidar Comisión**
+  - Una vez pagada la venta, calcular y registrar la comisión del vendedor.
+
+---
+
+### 4. Manejar Datos (CUN 400)
+
+- **RF-401 Registrar Pago**
+  - Seleccionar la venta y solicitar:
+    - Fecha de pago.
+    - Banco (Industrial, Banrural, G&T, BAM).
+    - Número de cuenta y n.º de transferencia/depósito.
+    - Número de recibo de caja.
+    - Monto de abono.
+  - Antes de confirmar, mostrar saldo pendiente.
+
+- **RF-402 Revisar Información de Cobranza**
+  - Mostrar al encargado el saldo pendiente, los días de crédito restantes y la lista de abonos anteriores.
+
+- **RF-403 Registrar Medio de Pago**
+  - Identificar si la cuenta está en estado “Pagado en su totalidad” o “Pago Parcial” si no se cubrió la totalidad del monto.
+
+- **RF-404 Actualizar Estado de Cobro**
+  - Recalcular saldo y cambiar estado a “Parcial” o “Pagado”; registrar la fecha de cancelación definitiva si el saldo llega a cero.
+
+- **RF-405 Consultar Saldo de Cliente**
+  - Permitir al encargado ver en cualquier momento el saldo de un cliente.
+
+- **RF-406 Liquidar Comisión en Pago Total**
+  - Cuando el saldo llegue a cero, se liquidará automáticamente la comisión correspondiente al vendedor.
+
+## B. Requerimientos no funcionales
+
+### 2.1 Rendimiento y capacidad
+- Las operaciones de alta — ventas, abonos y recepciones de inventario— deben finalizar en **≤ 5 s** con hasta **200 transacciones concurrentes**.  
+- Para lograrlo se emplearán índices en las tablas principales y consultas paginadas; si el volumen crece, bastará optimizar los índices o mover la base a un servidor con más recursos, sin tocar el código.
+
+### 2.2 Escalabilidad
+- El sistema se construirá con **capas separadas (presentación, lógica y datos)** y variables de entorno para las conexiones; así, en el futuro podrá trasladarse a un servidor con mayor CPU/RAM o duplicarse en otra instancia **sin reescribir la aplicación**.  
+
+### 2.3 Disponibilidad
+- Se exige una disponibilidad práctica de **≥ 95 %** en horario laboral.  
+- Una única instancia con reinicios automáticos ante fallo.
+
+### 2.4 Seguridad y cumplimiento
+- Contraseñas almacenadas con **SHA-256**.  
+- Acceso cifrado vía **HTTPS (TLS 1.2 o superior)**.  
+- Control de acceso por roles (Administrador, Vendedor, Bodeguero, Cobranza, Cliente).  
+- Se registrará en bitácora la creación, edición o eliminación de ventas, pagos e inventario para auditoría.
+
+### 2.5 Usabilidad
+- Interfaz web **responsiva** con validación en línea para minimizar errores de captura.  
+- Usuarios operativos (bodega y cobranza) deberán dominar sus tareas habituales tras **dos sesiones de práctica** como máximo.
+
+### 2.6 Mantenibilidad
+- Repositorio Git con código comentado y un **README** de instalación.  
+- Al menos **una prueba automática** por módulo crítico (Inventario, Ventas, Pagos).  
+
+### 2.7 Portabilidad / despliegue
+- La aplicación debe poder ejecutarse localmente (ambiente de desarrollo) y, en su entrega final, **deploy** a una instancia **AWS EC2**.
+- La misma versión de código debe correr sin cambios entre ambos entornos.
+
+
+## C. Requerimientos de Restricción
+
+### R-01: Restricción Temporal
+**Descripción:** El proyecto debe completarse en el transcurso de un mes, dividido en tres fases específicas con entregables definidos.
+
+**Justificación:** La empresa IMPORCOMGUA requiere una implementación rápida debido a las ineficiencias operativas actuales que están impactando la productividad y capacidad de respuesta hacia clientes.
+
+**Impacto en la arquitectura:**
+- Necesidad de implementar una arquitectura modular que permita desarrollo incremental
+- Priorización de funcionalidades críticas para el MVP (Fase 2)
+- Selección de tecnologías maduras y bien documentadas para reducir curva de aprendizaje
+- Reutilización de componentes y patrones de diseño establecidos
+
+### R-02: Restricción de Recursos Humanos
+**Descripción:** El desarrollo debe ser realizado por un equipo de tamaño limitado (grupo de 7 personas) con roles específicos y participación validada de todos los integrantes.
+
+**Justificación:** Todos los integrantes deben estar presentes en la calificación y tener commits sustanciales a lo largo del desarrollo.
+
+**Impacto en la arquitectura:**
+- Diseño de arquitectura simple y comprensible para facilitar el trabajo colaborativo
+- Implementación de patrones de diseño conocidos para reducir complejidad
+- Documentación exhaustiva para facilitar la colaboración del equipo
+- División clara de responsabilidades entre módulos del sistema
+
+### R-03: Restricción de Plataforma Web
+**Descripción:** La solución debe ser una aplicación web que permita automatizar y optimizar los procesos clave del negocio.
+
+**Justificación:** IMPORCOMGUA requiere una solución tecnológica web accesible desde diferentes ubicaciones y dispositivos.
+
+**Impacto en la arquitectura:**
+- Implementación de protocolos web estándar (HTTP/HTTPS)
+- Consideración de navegadores web como plataforma de ejecución
+- Diseño de interfaces adaptables a diferentes dispositivos
+
+### R-04: Restricción de Despliegue en la Nube
+**Descripción:** El sistema final debe ser desplegado en un entorno en la nube, preparado para el entorno operativo de IMPORCOMGUA.
+
+**Justificación:** Necesidad de escalabilidad, disponibilidad y mantenimiento eficiente del sistema.
+
+**Impacto en la arquitectura:**
+- Arquitectura compatible con servicios de nube
+- Implementación de patrones cloud-native
+- Configuración para ambientes distribuidos
+
+### R-05: Restricción de Metodología Ágil
+**Descripción:** El desarrollo debe seguir una metodología ágil con iteraciones rápidas, validación continua y entrega incremental de funcionalidades.
+
+**Justificación:** Necesidad de gestión eficiente del tiempo, colaboración continua y alineación con prioridades del cliente.
+
+**Impacto en la arquitectura:**
+- Arquitectura modular que permita desarrollo e integración incremental
+- Diseño de componentes independientes para facilitar iteraciones
+- Implementación de interfaces bien definidas entre módulos
+
+---
+
+
+
+
 ## 1. Core de Negocio
 ### A. Descripción
 
