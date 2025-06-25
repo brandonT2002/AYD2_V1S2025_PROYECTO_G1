@@ -10,6 +10,7 @@ const DatePicker = ({
     name,
     onDateChange,
     register,
+    defaultValue,
     position = "bottom",
 }) => {
     const inputRef = useRef(null);
@@ -30,7 +31,6 @@ const DatePicker = ({
         },
     };
 
-    // Effect to handle clicks outside the calendar
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (!dp.show || !calendarRef.current || !inputRef.current) {
@@ -54,10 +54,8 @@ const DatePicker = ({
         };
     }, [dp.show]);
 
-    // Effect to position the calendar
     useEffect(() => {
         if (dp.show && calendarRef.current && inputRef.current) {
-            // Small delay to ensure the input is fully rendered after potential RHF updates
             const timeoutId = setTimeout(() => {
                 const inputRect = inputRef.current.getBoundingClientRect();
                 const calendarEl = calendarRef.current;
@@ -72,14 +70,11 @@ const DatePicker = ({
                     left = inputRect.left + bodyScrollLeft;
 
                 if (position === "top") {
-                    // Adjust logic for "top" positioning if needed, it seems quite large (350)
-                    // For 'top', you typically want to place it *above* the input.
-                    // So, input.top - calendarHeight - some_margin.
                     top =
                         inputRect.top +
                         bodyScrollTop +
                         calendarEl.offsetHeight +
-                        350; // Example adjustment
+                        350; 
                 } else {
                     top = inputRect.bottom + bodyScrollTop + 10;
                 }
@@ -94,18 +89,15 @@ const DatePicker = ({
                 calendarEl.style.top = `${top}px`;
                 calendarEl.style.left = `${left}px`;
                 calendarEl.style.zIndex = "1000";
-            }, 0); // A tiny delay
+            }, 0);
 
             return () => clearTimeout(timeoutId);
         }
     }, [dp.show, dp.month, dp.year, position]);
 
-    // Use a combined ref for react-hook-form and your internal ref
-    // This ensures both get the correct DOM node.
     const combinedRef = (el) => {
-        inputRef.current = el; // Your ref
+        inputRef.current = el; 
         if (register && name) {
-            // react-hook-form's ref
             const { ref } = register(name);
             if (typeof ref === "function") {
                 ref(el);
@@ -130,9 +122,9 @@ const DatePicker = ({
                 <input
                     type="text"
                     ref={combinedRef} // Use the combined ref here
+                    defaultValue={defaultValue || dp.format(dp.selected)}
                     readOnly
                     placeholder="YYYY-MM-DD"
-                    defaultValue={dp.format(dp.selected)}
                     onClick={() => dp.setShow(!dp.show)}
                     className="w-full pl-10 pr-4 py-2 rounded-sm
                      bg-panel-dark text-text-base
@@ -142,13 +134,11 @@ const DatePicker = ({
             {dp.show &&
                 ReactDOM.createPortal(
                     <>
-                        {/* 1️⃣ Full-screen overlay */}
                         <div
                             className="fixed inset-0 z-[999]"
                             onClick={() => dp.setShow(false)}
                         />
 
-                        {/* 2️⃣ Calendar */}
                         <div
                             ref={calendarRef}
                             className="absolute z-[1000] bg-white shadow-lg rounded-md"

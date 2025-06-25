@@ -5,6 +5,7 @@ const BaseInput = ({
     children,
     ...inputProps
 }) => (
+    console.log("BaseInput rendered with props:", inputProps),
     <div className="relative">
         {Icon && (
             <Icon className="w-6 h-6 text-gray-400 absolute left-3 top-2.5 pointer-events-none " />
