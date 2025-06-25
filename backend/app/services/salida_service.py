@@ -21,19 +21,17 @@ class SalidaService(BaseService):
     
     def obtener_detalle_venta(self, venta_id):
         """Obtiene el detalle completo de una venta"""
-        return self.venta_model.obtener_venta_completa(venta_id)
+        return self.venta_model.obtener_productos_venta(venta_id)
     
     def registrar_salida_bodega(self, venta_id, fecha_salida=None):
         """Registra la salida de bodega para una venta"""
         if fecha_salida is None:
             fecha_salida = datetime.now().strftime('%Y-%m-%d')
         
-        # Validar que la venta existe y está vigente
         venta = self.venta_model.obtener_venta_completa(venta_id)
         if not venta:
             raise ValueError("Venta no encontrada")
         
-        # Actualizar fecha de salida
         result = self.venta_model.actualizar_fecha_salida(venta_id, fecha_salida)
         
         return {

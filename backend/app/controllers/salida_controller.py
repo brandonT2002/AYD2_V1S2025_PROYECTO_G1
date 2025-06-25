@@ -10,7 +10,6 @@ class SalidaController:
     def buscar_ventas(self):
         """Endpoint para buscar ventas (ahora espera un JSON en el body)"""
         try:
-            # Verifica que el contenido sea JSON y lo parsea
             if not request.is_json:
                 return jsonify({'error': 'Se requiere un JSON en el body'}), 400
 
@@ -24,6 +23,10 @@ class SalidaController:
                 }), 400
 
             ventas = self.salida_service.buscar_ventas(criterio, valor)
+            # detalle_ventas = []
+            for venta in ventas:
+                detalle = self.salida_service.obtener_detalle_venta(venta['id'])
+                ventas[ventas.index(venta)]['productos'] = detalle
             return jsonify({
                 'success': True,
                 'data': ventas

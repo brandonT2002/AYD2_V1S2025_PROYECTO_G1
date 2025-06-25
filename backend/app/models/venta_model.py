@@ -19,7 +19,6 @@ class VentaModel(BaseModel):
             ORDER BY v.fecha_venta DESC
         """
         venta_info =  self.execute_query(query, (f"%{numero_envio}%",))
-        # Buscar productos que coincidan con el número de envío
         query = """
             SELECT p.codigo, p.nombre, p.unidad_medida, p.precio_unidad, p.unidades_por_fardo, vd.observaciones
             FROM productos p
@@ -28,7 +27,6 @@ class VentaModel(BaseModel):
             WHERE v.numero_envio LIKE %s
         """
         productos_info = self.execute_query(query, (f"%{numero_envio}%",))
-        # Combinar información de ventas y productos
         for venta in venta_info:
             venta['productos'] = []
             for producto in productos_info:
@@ -53,23 +51,7 @@ class VentaModel(BaseModel):
         """
 
         ventas_inf = self.execute_query(query, (f"%{nombre_cliente}%", f"%{nombre_cliente}%"))
-        # buscar productos que coincidan con el nombre del cliente
-        query = """
-            SELECT p.codigo, p.nombre, p.unidad_medida, p.precio_unidad, p.unidades_por_fardo, vd.observaciones
-            FROM productos p
-            JOIN venta_detalle vd ON p.id = vd.producto_id
-            JOIN ventas v ON vd.ventas_id = v.id
-            JOIN clientes c ON v.cliente_id = c.id
-            WHERE (c.nombre_contacto LIKE %s OR c.nombre_negocio LIKE %s)
-            AND v.estado_venta = 'Vigente'
-            ORDER BY v.fecha_venta DESC
-        """
-        productos_info = self.execute_query(query, (f"%{nombre_cliente}%", f"%{nombre_cliente}%"))
-        # Combinar información de ventas y productos
-        for venta in ventas_inf:
-            venta['productos'] = []
-            for producto in productos_info:
-                venta['productos'].append(producto)
+        
         return ventas_inf
             
 
@@ -116,7 +98,7 @@ class VentaModel(BaseModel):
         try:
             with connection.cursor() as cursor:
                 cursor.execute(query, (fecha_salida, venta_id))
-                return cursor.rowcount > 0  # Retorna True si se actualizó alguna fila
+                return cursor.rowcount > 0 
         except Exception as e:
             print(f"Error actualizando fecha de salida: {e}")
             raise
