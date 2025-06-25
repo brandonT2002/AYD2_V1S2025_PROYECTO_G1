@@ -25,14 +25,9 @@ import {
     FiFileText,
     FiHome,
     FiBox,
-    FiHeadphones,
 } from "react-icons/fi";
 import { useEffect, useState } from "react";
-import {
-    requestBuscarVentas,
-    requestNuevaVenta,
-    requestRegistrarSalida,
-} from "../services/bajaBodega";
+import { requestBuscarVentas } from "../services/bajaBodega";
 import { requestGetAllClientes } from "../services/clientes";
 import { requestGetAllVendedores } from "../services/vendedores";
 import { requestGetProductos } from "../services/inventario";
@@ -241,6 +236,7 @@ function VentasPage() {
                             placeholder="Fecha de Venta"
                             className="text-text-second font-bold"
                             icon={FiCalendar}
+                            defaultValue={getCurrentDate()}
                             value={ventaData.fecha_venta}
                             onChange={handleVentaDataChange}
                             position="top"

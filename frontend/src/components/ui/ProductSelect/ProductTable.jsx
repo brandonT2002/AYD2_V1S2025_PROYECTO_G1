@@ -8,7 +8,7 @@ const ProductTable = ({ selectedProducts, onRemoveProduct }) => {
 
     if (selectedProducts.length === 0) {
         return (
-            <div className="bg-white p-6 rounded-lg shadow-sm border mt-6">
+            <div className="bg-white p-6 rounded-lg shadow-sm border-2 mt-6 border-border-second">
                 <h3 className="text-lg font-semibold mb-4">
                     Resumen de Productos
                 </h3>
@@ -20,60 +20,60 @@ const ProductTable = ({ selectedProducts, onRemoveProduct }) => {
     }
 
     return (
-        <div className="bg-white p-6 rounded-lg shadow-sm border mt-6">
+        <div className="bg-white p-4 rounded-lg border-2 mt-6 border-border-second">
             <h3 className="text-lg font-semibold mb-4">Resumen de Productos</h3>
 
             <div className="overflow-x-auto">
                 <table className="w-full">
-                    <thead>
+                    <thead className="bg-[#eef0f4] sticky top-0">
                         <tr className="border-b bg-gray-50">
-                            <th className="text-left p-3 font-medium text-gray-700">
+                            <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider border-b border-gray-200">
                                 Código
                             </th>
-                            <th className="text-left p-3 font-medium text-gray-700">
+                            <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider border-b border-gray-200">
                                 Producto
                             </th>
-                            <th className="text-left p-3 font-medium text-gray-700">
+                            <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider border-b border-gray-200">
                                 Cantidad
                             </th>
-                            <th className="text-left p-3 font-medium text-gray-700">
+                            <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider border-b border-gray-200">
                                 Precio Unit.
                             </th>
-                            <th className="text-left p-3 font-medium text-gray-700">
+                            <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider border-b border-gray-200">
                                 Unidades por{" "}
                                 {selectedProducts[0]?.unidadMedida || "Unidad"}
                             </th>
-                            <th className="text-left p-3 font-medium text-gray-700">
+                            <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider border-b border-gray-200">
                                 Subtotal
                             </th>
-                            <th className="text-left p-3 font-medium text-gray-700">
+                            <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider border-b border-gray-200">
                                 Acciones
                             </th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody className="bg-white divide-y divide-gray-200">
                         {selectedProducts.map((product) => (
                             <tr
                                 key={product.id}
-                                className="border-b hover:bg-gray-50"
+                                className="hover:bg-gray-100 transition-colors duration-150"
                             >
-                                <td className="p-3 font-mono text-sm">
+                                <td className="px-4 py-3 text-sm text-gray-900 whitespace-nowrap font-mono font-bold">
                                     {product.codigo}
                                 </td>
-                                <td className="p-3">{product.name}</td>
-                                <td className="p-3">
+                                <td className="px-4 py-3 text-sm text-gray-900 whitespace-nowrap">{product.name}</td>
+                                <td className="px-4 py-3 text-sm text-gray-900 whitespace-nowrap">
                                     {product.quantity} {product.unidadMedida}
                                 </td>
-                                <td className="p-3">
+                                <td className="px-4 py-3 text-sm text-gray-900 whitespace-nowrap">
                                     Q{product.unitPrice.toFixed(2)}
                                 </td>
-                                <td className="p-3">
+                                <td className="px-4 py-3 text-sm text-gray-900 whitespace-nowrap">
                                     {product.unitsQuantity} unidades
                                 </td>
-                                <td className="p-3">
+                                <td className="px-4 py-3 text-sm text-gray-900 whitespace-nowrap">
                                     Q{product.subtotal.toFixed(2)}
                                 </td>
-                                <td className="p-3">
+                                <td className="px-4 py-3 text-sm text-gray-900 whitespace-nowrap">
                                     <div className="flex gap-2 ">
                                         <button
                                             onClick={() =>
@@ -84,7 +84,6 @@ const ProductTable = ({ selectedProducts, onRemoveProduct }) => {
                                         >
                                             <FaRegTrashCan className="w-4 h-4" />
                                         </button>
-                                        
                                     </div>
                                 </td>
                             </tr>
@@ -93,7 +92,7 @@ const ProductTable = ({ selectedProducts, onRemoveProduct }) => {
                 </table>
             </div>
 
-            <div className="flex justify-between items-center mt-4 pt-4 border-t">
+            <div className="flex justify-end items-center mt-4 pt-4 border-t border-gray-500">
                 <div className="text-lg font-semibold">
                     Total: Q{total.toFixed(2)}
                 </div>

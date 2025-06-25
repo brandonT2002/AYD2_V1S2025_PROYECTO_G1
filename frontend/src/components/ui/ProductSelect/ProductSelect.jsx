@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { LuPackage2 } from "react-icons/lu";
+import { toast } from "sonner";
 
 const ProductSelector = ({ products, onAddProduct }) => {
     const [selectedProduct, setSelectedProduct] = useState("");
@@ -12,7 +13,7 @@ const ProductSelector = ({ products, onAddProduct }) => {
 
     const handleAddProduct = () => {
         if (!selectedProduct || !quantity) {
-            alert("Por favor complete todos los campos requeridos");
+            toast.error("Por favor, selecciona un producto y una cantidad.");
             return;
         }
 
@@ -48,11 +49,7 @@ const ProductSelector = ({ products, onAddProduct }) => {
     );
 
     return (
-        <div className="bg-white p-6 rounded-lg shadow-sm border">
-            <h2 className="text-lg font-semibold mb-4">
-                Seleccionar Productos
-            </h2>
-
+        <div className="bg-white p-4 border-2 border-border-second rounded-md">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
                 {/* Selector de Producto */}
                 <div>
@@ -90,7 +87,7 @@ const ProductSelector = ({ products, onAddProduct }) => {
                     />
                 </div>
 
-                {/* Cantidad en unidades (slo lectura) */}
+                {/* Cantidad en unidades */}
                 <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
                         Unidades por{" "}
@@ -101,7 +98,7 @@ const ProductSelector = ({ products, onAddProduct }) => {
                     </div>
                 </div>
 
-                {/* Precio por fardo/paquete (calculado */}
+                {/* Precio por fardo/paquete*/}
                 <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
                         Precio por{" "}
