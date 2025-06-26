@@ -219,6 +219,21 @@ ON DELETE CASCADE
 ON UPDATE NO ACTION;
 
 
+CREATE TABLE roles (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL
+);
+
+INSERT INTO roles (nombre) VALUES ('Gerencia General'), ('Gerente de Ventas y Finanzas'), ('Gerente de Inventario');
+
+CREATE TABLE usuarios (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    correo VARCHAR(100) UNIQUE NOT NULL,
+    contraseña VARCHAR(255) NOT NULL,
+    rol_id INT NOT NULL,
+    FOREIGN KEY (rol_id) REFERENCES roles(id)
+);
+
 -- cleintes
 INSERT INTO `imporcomgua`.`clientes` (codigo_cliente, nombre_negocio, nombre_contacto, departamento, municipio, direccion, nit, encargado_bodega, telefono, tipo_venta, observaciones)
 VALUES 
