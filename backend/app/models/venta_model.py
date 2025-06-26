@@ -6,7 +6,7 @@ class VentaModel(BaseModel):
     def buscar_ventas_por_envio(self, numero_envio):
         """Busca ventas por número de envío"""
         query = """
-            SELECT v.id, v.numero_envio, v.fecha_venta, v.fecha_salida_bodega,
+            SELECT v.id, v.numero_envio, v.fecha_venta, v.fecha_salida_bodega, v.dias_credito,  v.created_at,
                    v.tipo_pago, v.dias_credito, v.estado_venta, v.estado_cobro,
                    v.total_quetzales, v.dte_numero, v.dte_nombre, v.dte_nit, v.pagado,
                    c.nombre_contacto, c.nombre_negocio, c.codigo_cliente,
@@ -37,7 +37,7 @@ class VentaModel(BaseModel):
     def buscar_ventas_por_cliente(self, nombre_cliente):
         """Busca ventas por nombre de cliente"""
         query = """
-            SELECT v.id, v.numero_envio, v.fecha_venta, v.fecha_salida_bodega,
+            SELECT v.id, v.numero_envio, v.fecha_venta, v.fecha_salida_bodega, v.dias_credito,  v.created_at,
                    v.tipo_pago, v.dias_credito, v.estado_venta, v.estado_cobro,
                    v.total_quetzales, v.dte_numero, v.dte_nombre, v.dte_nit, v.pagado,
                    c.nombre_contacto, c.nombre_negocio, c.codigo_cliente,

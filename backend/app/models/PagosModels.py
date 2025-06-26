@@ -47,7 +47,7 @@ class PagosModels(BaseModel):
         else:
             update_query = f"""
                 UPDATE ventas 
-                SET pagado = pagado + %s, estado_completo = 'Pagado'
+                SET pagado = pagado + %s, estado_cobro = 'Pagado'
                 WHERE id = %s
             """
             self.execute_query(update_query, (monto_abono, venta_id))

@@ -1,6 +1,6 @@
 from flask import request, jsonify
 from app.services.salida_service import SalidaService
-
+from datetime import date,datetime, timedelta
 class SalidaController:
     """Controlador para manejar las salidas de bodega"""
     
@@ -23,7 +23,17 @@ class SalidaController:
                 }), 400
 
             ventas = self.salida_service.buscar_ventas(criterio, valor)
-            # detalle_ventas = []
+            fecha_actual = datetime.now()
+
+            for venta in ventas:
+                fecha_venta = venta['created_at']  # ya es datetime.datetime
+                dias_credito = venta['dias_credito']
+                fecha_limite = fecha_venta + timedelta(days=dias_credito)
+                fecha_limite += timedelta(days=1)
+                dias_restantes = (fecha_limite - fecha_actual).days
+                venta['dias_restantes'] = dias_restantes
+            
+
             for venta in ventas:
                 detalle = self.salida_service.obtener_detalle_venta(venta['id'])
                 ventas[ventas.index(venta)]['productos'] = detalle
