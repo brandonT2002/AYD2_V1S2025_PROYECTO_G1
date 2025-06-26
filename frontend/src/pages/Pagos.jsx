@@ -81,6 +81,7 @@ function PagosPage() {
             const response = await requestRegistrarPago(paymentData);
             console.log("Respuesta del servidor:", response);
             toast.success("Pago registrado exitosamente");
+            resetSearch();
         } catch (error) {
             toast.error("Error al registrar el pago");
             console.error("Error al registrar el pago:", error);
@@ -174,7 +175,7 @@ function PagosPage() {
                                 className="text-text-second font-bold"
                                 icon={FiCalendar}
                                 position="top"
-                                register={registerSearch}
+                                register={registerPayment}
                                 onDateChange={(date) => setDate(date)}
                             />
                             <SelectInput
@@ -234,8 +235,6 @@ function PagosPage() {
                                         let max =
                                             parseFloat(infoCobranza.pendiente)+
                                             parseFloat(infoCobranza.pagado);
-                                        // max = max + parseFloat(infoCobranza.pagado);
-                                        // max = max.toFixed(2);
                                         console.log("Maximo:", max);
                                         e.target.value = infoCobranza.pendiente;
                                         setInfoCobranza((prev) => ({

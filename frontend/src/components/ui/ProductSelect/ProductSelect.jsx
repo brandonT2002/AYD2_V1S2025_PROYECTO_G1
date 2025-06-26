@@ -126,10 +126,6 @@ const ProductSelector = ({ products, onAddProduct }) => {
                             2
                         )}
                     </div>
-                    <div>
-                        Disponible:{" "}
-                        {selectedProductData.disponible ? "Sí" : "No"}
-                    </div>
                 </div>
             )}
 

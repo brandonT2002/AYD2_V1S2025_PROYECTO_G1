@@ -104,20 +104,20 @@ export default function AgregarProducto() {
       <h2 className="text-2xl font-bold mb-2">Nuevo Producto</h2>
       <form
         onSubmit={handleSubmit}
-        className="grid grid-cols-2 gap-4 bg-white p-6 rounded-xl border"
+        className="grid grid-cols-2 gap-4 bg-white p-6 rounded-xl border border-border-dark"
       >
         <div>
           <label className="text-sm font-semibold block mb-1">
             Código de Producto *
           </label>
-          <div className="flex items-center border rounded-md px-2">
+          <div className="flex items-center border rounded-md px-2 border-border-second">
             <FiHash className="text-gray-500 mr-2" />
             <input
               name="codigo_producto"
               value={form.codigo_producto}
               onChange={handleChange}
               placeholder="Placeholder"
-              className="w-full p-2 outline-none"
+              className="w-full p-2 outline-none "
               required
             />
           </div>
@@ -127,7 +127,7 @@ export default function AgregarProducto() {
           <label className="text-sm font-semibold block mb-1">
             Nombre del Producto *
           </label>
-          <div className="flex items-center border rounded-md px-2">
+          <div className="flex items-center border rounded-md px-2 border-border-second">
             <FiBox className="text-gray-500 mr-2" />
             <input
               name="nombre"
@@ -144,7 +144,7 @@ export default function AgregarProducto() {
           <label className="text-sm font-semibold block mb-1">
             Unidad de medida *
           </label>
-          <div className="flex items-center border rounded-md px-2">
+          <div className="flex items-center border rounded-md px-2 border-border-second">
             <FiPackage className="text-gray-500 mr-2" />
             <select
               name="unidad_medida"
@@ -165,7 +165,7 @@ export default function AgregarProducto() {
           <label className="text-sm font-semibold block mb-1">
             Unidades por fardo/paquete *
           </label>
-          <div className="flex items-center border rounded-md px-2">
+          <div className="flex items-center border rounded-md px-2 border-border-second">
             <MdNumbers className="text-gray-500 mr-2" />
             <input
               type="number"
@@ -183,7 +183,7 @@ export default function AgregarProducto() {
           <label className="text-sm font-semibold block mb-1">
             Precio por unidad *
           </label>
-          <div className="flex items-center border rounded-md px-2">
+          <div className="flex items-center border rounded-md px-2 border-border-second">
             <MdOutlineAttachMoney className="text-gray-500 mr-2" />
             <input
               type="number"
@@ -225,11 +225,11 @@ export default function AgregarProducto() {
       </form>
 
       <h2 className="text-2xl font-bold">Productos</h2>
-      <div className="bg-white p-4 rounded-md border">
+      <div className="bg-white p-4 rounded-md border border-border-dark">
         <label className="text-sm font-semibold block mb-1">
           Buscar Producto
         </label>
-        <div className="flex items-center border rounded-md px-2 mb-4">
+        <div className="flex items-center border rounded-md px-2 mb-4 border-border-second">
           <ImSearch className="text-gray-500 mr-2" />
           <input
             type="text"
@@ -242,7 +242,7 @@ export default function AgregarProducto() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           {productosFiltrados.map((p) => (
-            <div key={p.id} className="bg-white border rounded-md p-4 shadow-sm">
+            <div key={p.id} className="bg-white border rounded-md p-4 shadow-sm border-border-second">
               <h3 className="font-bold text-lg">{p.nombre}</h3>
               <span className="inline-block bg-gray-200 text-xs font-bold px-2 py-1 rounded mt-1 mb-2">
                 {p.codigo}

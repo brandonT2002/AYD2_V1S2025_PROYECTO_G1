@@ -8,7 +8,7 @@ import {
     TextArea,
 } from "../components/ui";
 import { ButtonVariant, ButtonSize } from "../components/ui/Button/config";
-
+import { useNavigate } from "react-router-dom";
 import { Panel } from "../components/layout";
 import { useState, useEffect } from "react";
 import { CgMenuGridR } from "react-icons/cg";
@@ -25,7 +25,7 @@ import { set, useForm } from "react-hook-form";
 function Inventory() {
     const handleSearch = () => console.log("Search action triggered");
     const { register, handleSubmit, reset } = useForm();
-
+    const navigate = useNavigate();
     const [dateDuca, setDateDuca] = useState("");
     const [dateDucaRectificada, setDateDucaRectificada] = useState("");
     const [dateRecepcion, setDateRecepcion] = useState("");
@@ -44,7 +44,10 @@ function Inventory() {
                 value: product.id,
                 label: product.nombre,
             }));
-            productOptions.unshift({ value: "", label: "Seleccione un producto" });
+            productOptions.unshift({
+                value: "",
+                label: "Seleccione un producto",
+            });
 
             setProducts(productOptions);
             setProductsData(response.data);
@@ -79,22 +82,9 @@ function Inventory() {
         try {
             const response = await requestInsertarInventario(inventarioData);
             toast.success("Inventario ingresado exitosamente");
-
-            reset({
-                producto_id: "",
-                cantidad_fardos: "",
-                unidades: "",
-                unidades_totales: "",
-                numero_contendor: "",
-                numero_duca: "",
-                numero_duca_rectificada: "",
-                observaciones: "",
-            });
-            setDateDuca("");
-            setDateDucaRectificada("");
-            setDateRecepcion("");
-            setUnidadesTotales("");
-            setValue("");
+            setTimeout(() => {
+                navigate(0);
+            }, 1500);
         } catch (error) {
             console.error("Error al ingresar inventario:", error);
         }
