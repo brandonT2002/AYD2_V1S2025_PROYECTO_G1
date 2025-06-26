@@ -16,6 +16,10 @@ class Cliente(BaseModel):
         return self.execute_query(query)
 
     def create_cliente(self, nombre_negocio, nombre_contacto, departamento, municipio, direccion, nit, encargado_bodega, telefono, tipo_venta, observaciones):
+        # Validación del NIT
+        if not nit.isdigit() or len(nit) != 7:
+            return {"error": "El NIT debe tener 7 dígitos."}
+
         query = f"""
             INSERT INTO {self.table_name} 
             (nombre_negocio, nombre_contacto, departamento, municipio, direccion, nit, encargado_bodega, telefono, tipo_venta, observaciones) 
