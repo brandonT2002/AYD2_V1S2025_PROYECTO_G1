@@ -21,13 +21,21 @@ class InventarioModel(BaseModel):
         print(f"Nuevo Duca insertado con ID: {duca_id}")
         return duca_id
 
-    def insertar_inventario(self, tipo, cantidad_fardos, unidades_totales,  producto_id, duca_id):
+    def insertar_inventario(self, tipo, cantidad_fardos, unidades_totales,  producto_id, duca_id, observaciones=None):
         """Inserta un nuevo movimiento de inventario"""
         query = """
-            INSERT INTO inventario_movimientos (tipo, cantidad_fardos, unidades_totales,  productos_id, duca_id)
+            INSERT INTO inventario_movimientos (tipo, cantidad_fardos, unidades_totales,  productos_id, duca_id, comentario)
+            VALUES (%s, %s, %s, %s, %s, %s)
+        """
+        return self.returning_id(query, (tipo, cantidad_fardos, unidades_totales,  producto_id, duca_id, observaciones))
+    
+    def salida_inventario(self, tipo, cantidad_fardos, unidades_totales, salida_bodega ,producto_id):
+        """Inserta un nuevo movimiento de salida de inventario"""
+        query = """
+            INSERT INTO inventario_movimientos (tipo, cantidad_fardos, unidades_totales, salida_bodega,  productos_id)
             VALUES (%s, %s, %s, %s, %s)
         """
-        return self.returning_id(query, (tipo, cantidad_fardos, unidades_totales,  producto_id, duca_id))
+        return self.returning_id(query, (tipo, cantidad_fardos, unidades_totales, salida_bodega, producto_id))
     
     def update_created_at(self, inventario_id, fecha):
         """Actualiza el campo created_at de un movimiento de inventario"""
@@ -49,20 +57,12 @@ class InventarioModel(BaseModel):
         self.execute_query(query, (total, product_id))
         return
     
-    def update_stock_inventario_venta(self, venta_id):
+    def update_stock_inventario_salida(self, producto_id, cantidad):
         query = """
-            UPDATE inventario_movimientos im
-            JOIN detalle_venta dv ON im.productos_id = dv.producto_id
-            SET im.unidades_totales = im.unidades_totales - dv.cantidad
-            WHERE dv.venta_id = %s
+            UPDATE inventario
+            SET stock_unidades = stock_unidades - %s
+            WHERE productos_id = %s
         """
 
-        query = """
-            UPDATE inventario in
-            JOIN detalle_venta dv ON in.productos_id = dv.producto_id
-            SET in.stock_unidades = in.stock_unidades - dv.cantidad
-            WHERE dv.venta_id = %s
-        """
-
-        self.execute_query(query, (venta_id, venta_id))
+        self.execute_query(query, (cantidad, producto_id))
         return

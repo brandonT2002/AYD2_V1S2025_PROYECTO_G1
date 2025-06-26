@@ -29,7 +29,7 @@ class Ventas(BaseService):
 
         producto_id = data['productId']
         observaciones = data['notes']
-        cantidad_unidades = data['unitsQuantity']
+        cantidad_unidades = data['quantity']
 
         return self.venta_model.insert_producto_venta(venta_id, producto_id, observaciones, cantidad_unidades)
     

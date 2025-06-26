@@ -61,6 +61,7 @@ class InventarioController:
             duca_num_rectificada = data.get('numero_duca_rectificada')
             fecha_duca_rectificada = data.get('fecha_duca_rectificada')
             num_contendor = data.get('numero_contendor')
+            observaciones = data.get('observaciones')
 
             print(f"Datos recibidos: {data}")
             duca_id = self.inventario_service.registrar_duca(
@@ -70,14 +71,14 @@ class InventarioController:
 
             inventario_id = self.inventario_service.registrar_movimiento_inventario(
                 tipo, cantidad_fardos, unidades_totales, 
-                producto_id, duca_id
+                producto_id, duca_id, observaciones
             )
             # convertir fecha a formato current timestamp
             fecha_datetime = datetime.strptime(fecha_ingreso, "%Y-%m-%d")
             formato_mysql_con_hora = fecha_datetime.strftime("%Y-%m-%d %H:%M:%S")
 
             self.inventario_service.inventario_model.update_created_at(inventario_id, formato_mysql_con_hora)
-            self.inventario_service.actualizar_stock_inventario(producto_id, unidades_totales)
+            self.inventario_service.actualizar_stock_inventario(producto_id, cantidad_fardos)
             return jsonify({'success': True, 'inventario_id': inventario_id})
         except Exception as e:
             return jsonify({'error': str(e)}), 500

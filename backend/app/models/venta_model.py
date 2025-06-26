@@ -92,7 +92,7 @@ class VentaModel(BaseModel):
         query = """
             UPDATE ventas 
             SET fecha_salida_bodega = %s
-            WHERE id = %s AND estado_venta = 'Vigente'
+            WHERE id = %s
         """
         connection = self.db.get_connection()
         try:
@@ -106,7 +106,7 @@ class VentaModel(BaseModel):
     def obtener_productos_venta(self, venta_id):
         """Obtiene solo los productos de una venta específica"""
         query = """
-            SELECT vd.id as detalle_id, vd.cantidad_unidades, vd.Observaciones,
+            SELECT vd.id as detalle_id, vd.cantidad_unidades, vd.Observaciones, vd.producto_id,
                    p.codigo as producto_codigo, p.nombre as producto_nombre, 
                    p.unidad_medida, p.precio_unidad, p.unidades_por_fardo,
                    -- Calcular cantidad en fardos/paquetes
