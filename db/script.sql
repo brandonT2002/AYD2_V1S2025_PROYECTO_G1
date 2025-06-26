@@ -86,7 +86,7 @@ CREATE TABLE IF NOT EXISTS `imporcomgua`.`inventario_movimientos` (
   `comentario` TEXT NULL DEFAULT NULL,
   `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `productos_id` INT UNSIGNED NOT NULL,
-  `duca_id` INT UNSIGNED NOT NULL,
+  `duca_id` INT UNSIGNED,
   PRIMARY KEY (`id`),
   INDEX `fk_inventario_movimientos_productos1_idx` (`productos_id`),
   INDEX `fk_inventario_movimientos_duca1_idx` (`duca_id`),
@@ -138,6 +138,7 @@ CREATE TABLE IF NOT EXISTS `imporcomgua`.`ventas` (
   `dte_nombre` VARCHAR(100) NULL DEFAULT NULL,
   `dte_nit` VARCHAR(20) NULL DEFAULT NULL,
   `total_quetzales` DECIMAL(12,2) NULL DEFAULT 0.00,
+  `pagado` DECIMAL(12,2) NULL DEFAULT 0.00,
   `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   INDEX `idx_ventas_fecha` (`fecha_venta`),
@@ -207,6 +208,15 @@ CREATE TABLE IF NOT EXISTS `imporcomgua`.`venta_detalle` (
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_unicode_ci;
 
+ALTER TABLE inventario
+DROP FOREIGN KEY fk_inventario_productos1;
+
+ALTER TABLE inventario
+ADD CONSTRAINT fk_inventario_productos1
+FOREIGN KEY (productos_id)
+REFERENCES productos(id)
+ON DELETE CASCADE
+ON UPDATE NO ACTION;
 
 
 -- cleintes
