@@ -8,7 +8,7 @@ import {
     TextArea,
 } from "../components/ui";
 import { ButtonVariant, ButtonSize } from "../components/ui/Button/config";
-
+import { useNavigate } from "react-router-dom";
 import { Panel } from "../components/layout";
 import { useState, useEffect } from "react";
 import { CgMenuGridR } from "react-icons/cg";
@@ -19,13 +19,13 @@ import {
     requestGetProductos,
     requestInsertarInventario,
 } from "../services/inventario";
-
+import { toast } from "sonner";
 import { set, useForm } from "react-hook-form";
 
 function Inventory() {
     const handleSearch = () => console.log("Search action triggered");
     const { register, handleSubmit, reset } = useForm();
-
+    const navigate = useNavigate();
     const [dateDuca, setDateDuca] = useState("");
     const [dateDucaRectificada, setDateDucaRectificada] = useState("");
     const [dateRecepcion, setDateRecepcion] = useState("");
@@ -44,8 +44,14 @@ function Inventory() {
                 value: product.id,
                 label: product.nombre,
             }));
+            productOptions.unshift({
+                value: "",
+                label: "Seleccione un producto",
+            });
+
             setProducts(productOptions);
             setProductsData(response.data);
+            // toast.success("Productos cargados exitosamente");
         } catch (error) {
             console.error("Error fetching products:", error);
         }
@@ -65,14 +71,20 @@ function Inventory() {
     };
 
     const ingresarInventario = async (data) => {
-        // Usar los useState para las fechas
-        data.fecha_ingreso = dateRecepcion;
-        data.fecha = dateDuca;
-        data.fecha_duca_rectificada = dateDucaRectificada;
-        console.log("Datos del inventario:", data);
+        const inventarioData = {
+            ...data,
+            fecha_ingreso: dateRecepcion,
+            fecha: dateDuca,
+            fecha_duca_rectificada: dateDucaRectificada,
+            unidades_totales: unidadesTotales,
+        };
+
         try {
-            const response = await requestInsertarInventario(data);
-            console.log("Inventario ingresado:", response.data);
+            const response = await requestInsertarInventario(inventarioData);
+            toast.success("Inventario ingresado exitosamente");
+            setTimeout(() => {
+                navigate(0);
+            }, 1500);
         } catch (error) {
             console.error("Error al ingresar inventario:", error);
         }
@@ -143,10 +155,11 @@ function Inventory() {
                             label="Unidades por fardo/paquete"
                             placeholder="Ingrese unidades"
                             className={"text-text-base font-semibold"}
-                            isRequired={true}
+                            isRequired={false}
                             defaultValue={value}
                             register={register}
                             icon={FiPackage}
+                            readOnly
                         />
                         <InputField
                             name="unidades_totales"
@@ -157,6 +170,7 @@ function Inventory() {
                             defaultValue={unidadesTotales}
                             register={register}
                             icon={PiPencilLineLight}
+                            readOnly
                         />
                     </div>
                     <div className="flex gap-3">
@@ -178,6 +192,7 @@ function Inventory() {
                             className={"text-text-base font-semibold"}
                             isRequired={true}
                             register={register}
+                            icon={PiListNumbersDuotone}
                         />
                         <DatePicker
                             label="Fecha de DUCA"

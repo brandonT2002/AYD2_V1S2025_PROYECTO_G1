@@ -13,6 +13,9 @@ class Venta(BaseModel):
     
     def create_venta(self, data):
         """Crea una nueva venta"""
+        if data["estado_cobro"] == "":
+            data["estado_cobro"] = "Pendiente"
+            
         query = f"INSERT INTO {self.table_name} (fecha_venta,fecha_salida_bodega,cliente_id,tipo_pago,dias_credito,vendedor_id,estado_cobro,dte_numero,dte_nombre,dte_nit,total_quetzales) VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
         # Asegurarse de que los campos en 'data' coincidan con los de la tabla 'ventas'
         id = self.returning_id(query, (data['fecha_venta'], data['fecha_salida_bodega'], data['cliente_id'], data['tipo_pago'], data['dias_credito'], data['vendedor_id'], data['estado_cobro'], data['dte_numero'], data['dte_nombre'], data['dte_nit'], data['total_quetzales']))
@@ -37,16 +40,14 @@ class Venta(BaseModel):
         query = f"INSERT INTO venta_detalle (ventas_id, producto_id, observaciones, cantidad_unidades) VALUES (%s, %s, %s, %s)"
         self.execute_query(query, (venta_id, producto_id, observaciones, cantidad_unidades))
 
-        query = f"SELECT precio_unidad FROM productos WHERE id = %s"
-        precio_venta = self.execute_single_query(query, (producto_id,))['precio_unidad']
+        # query = f"SELECT precio_unidad FROM productos WHERE id = %s"
+        # precio_venta = self.execute_single_query(query, (producto_id,))['precio_unidad']
 
+        # query = f"UPDATE ventas SET total_quetzales = %s + total_quetzales WHERE id = %s"
+        # self.execute_query(query, (cantidad_unidades*precio_venta, venta_id))
 
-        # Actualizar el total de la venta
-        query = f"UPDATE ventas SET total_quetzales = %s + total_quetzales WHERE id = %s"
-        self.execute_query(query, (cantidad_unidades*precio_venta, venta_id))
-
-        query = f"UPDATE inventario SET stock_unidades = stock_unidades - %s WHERE productos_id = %s"
-        self.execute_query(query, (cantidad_unidades, producto_id))
+        # query = f"UPDATE inventario SET stock_unidades = stock_unidades - %s WHERE productos_id = %s"
+        # self.execute_query(query, (cantidad_unidades, producto_id))
         return "Producto insertado en la venta con éxito"
     
 

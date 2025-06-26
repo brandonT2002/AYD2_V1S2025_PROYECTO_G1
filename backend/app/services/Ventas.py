@@ -24,13 +24,12 @@ class Ventas(BaseService):
         """Elimina una venta por su ID"""
         return self.venta_model.delete_venta(venta_id)
     
-    def insert_producto_venta(self, data):
+    def insert_producto_venta(self, venta_id,data):
         """Inserta un producto en una venta"""
 
-        venta_id = data['venta_id']
-        producto_id = data['producto_id']
-        observaciones = data['observaciones']
-        cantidad_unidades = data['cantidad_unidades']
+        producto_id = data['productId']
+        observaciones = data['notes']
+        cantidad_unidades = data['quantity']
 
         return self.venta_model.insert_producto_venta(venta_id, producto_id, observaciones, cantidad_unidades)
     

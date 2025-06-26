@@ -4,6 +4,7 @@ import axios from "axios";
 import { FiUser, FiPhone, FiMapPin, FiPercent } from "react-icons/fi";
 import { RiEdit2Fill, RiDeleteBin5Fill } from "react-icons/ri";
 import { ImSearch } from "react-icons/im";
+import { toast } from "sonner";
 
 export default function Vendedores() {
   const [form, setForm] = useState({
@@ -60,6 +61,7 @@ export default function Vendedores() {
       }
       fetchVendedores();
       setForm({ id: null, nombre: "", apellido: "", telefono: "", direccion: "", comision: "" });
+      toast.success("Vendedor guardado exitosamente");
     } catch (error) {
       console.error("Error al guardar:", error);
     }
@@ -70,6 +72,7 @@ export default function Vendedores() {
     try {
       await axios.delete(`http://127.0.0.1:5000/api/EliminarVendedor/${id}`);
       fetchVendedores();
+      toast.success("Vendedor eliminado exitosamente");
     } catch (error) {
       console.error("Error al eliminar:", error);
     }

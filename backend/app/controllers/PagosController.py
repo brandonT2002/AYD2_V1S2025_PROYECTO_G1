@@ -19,16 +19,15 @@ class PagosController:
         except Exception as e:
             return jsonify({"error": str(e)}), 500
         
-    def get_pago(self, pago_id):
+    def get_pago(self, venta_id):
         """Obtiene un pago por su ID"""
-        if not pago_id:
-            return jsonify({"error": "ID del pago es requerido"}), 400
-        
+        print("get_pago")
+        print(f"Obteniendo pago con ID: {venta_id}")
         try:
-            pago = self.pagos_service.get_pago(pago_id)
+            pago = self.pagos_service.get_pago(venta_id)
             if not pago:
                 return jsonify({"error": "Pago no encontrado"}), 404
-            return jsonify(pago), 200
+            return pago, 200
         except Exception as e:
             return jsonify({"error": str(e)}), 500
         

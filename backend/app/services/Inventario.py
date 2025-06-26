@@ -15,9 +15,9 @@ class InventarioService(BaseService):
         """Registra un nuevo Duca en el sistema"""
         return self.inventario_model.insertar_duca(numero_duca, fecha, numero_contendor, numero_duca_rectificada, fecha_duca_rectificada)
 
-    def registrar_movimiento_inventario(self, tipo, cantidad_fardos, unidades_totales,   producto_id, duca_id):
+    def registrar_movimiento_inventario(self, tipo, cantidad_fardos, unidades_totales,  producto_id, duca_id, observaciones=None):
         """Registra un nuevo movimiento de inventario"""
-        return self.inventario_model.insertar_inventario(tipo, cantidad_fardos, unidades_totales,  producto_id, duca_id)
+        return self.inventario_model.insertar_inventario(tipo, cantidad_fardos, unidades_totales,  producto_id, duca_id, observaciones)
     
     def actualizar_fecha_creacion(self, inventario_id, fecha):
         """Actualiza el campo created_at de un movimiento de inventario"""
@@ -27,6 +27,6 @@ class InventarioService(BaseService):
         """Actualiza el stock de un producto en inventario"""
         self.inventario_model.update_stock_intentario(producto_id, total)
 
-    def actualizar_stock_inventario_venta(self, venta_id):
+    def actualizar_stock_inventario_salida(self, venta_id):
         """Actualiza el stock de inventario al registrar una salida"""
-        self.inventario_model.update_stock_inventario_venta(venta_id)
+        self.inventario_model.update_stock_inventario_salida(venta_id)

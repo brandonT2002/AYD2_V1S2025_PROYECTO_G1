@@ -1,5 +1,6 @@
 from app.services.base_service import BaseService
 from app.models.venta_model import VentaModel
+from app.models.Inventario_model import InventarioModel
 from app.models.Cliente import Cliente
 from datetime import datetime
 
@@ -8,6 +9,7 @@ class SalidaService(BaseService):
     
     def setup(self):
         self.venta_model = VentaModel()
+        self.inventario_model = InventarioModel()
         self.Cliente = Cliente()
     
     def buscar_ventas(self, criterio, valor):
@@ -21,20 +23,27 @@ class SalidaService(BaseService):
     
     def obtener_detalle_venta(self, venta_id):
         """Obtiene el detalle completo de una venta"""
-        return self.venta_model.obtener_venta_completa(venta_id)
+        return self.venta_model.obtener_productos_venta(venta_id)
     
     def registrar_salida_bodega(self, venta_id, fecha_salida=None):
         """Registra la salida de bodega para una venta"""
         if fecha_salida is None:
             fecha_salida = datetime.now().strftime('%Y-%m-%d')
         
-        # Validar que la venta existe y está vigente
-        venta = self.venta_model.obtener_venta_completa(venta_id)
+        venta = self.venta_model.obtener_productos_venta(venta_id)
         if not venta:
             raise ValueError("Venta no encontrada")
-        
-        # Actualizar fecha de salida
-        result = self.venta_model.actualizar_fecha_salida(venta_id, fecha_salida)
+        print(venta)
+        # result = self.venta_model.actualizar_fecha_salida(venta_id, fecha_salida)
+        tipo = "Salida"
+        for producto in venta:
+            # print(f"Producto: {producto['producto_nombre']}")
+            cantidad_fardos = producto['cantidad_unidades']
+            unidades_totales = producto['total_producto']
+            producto_id = producto['producto_id']
+            print(f"Producto ID: {producto_id}, Cantidad Fardos: {cantidad_fardos}, Unidades Totales: {unidades_totales}")
+            self.inventario_model.salida_inventario(tipo, cantidad_fardos, unidades_totales, fecha_salida, producto_id)
+            self.inventario_model.update_stock_inventario_salida(producto_id, cantidad_fardos)
         
         return {
             'success': True,

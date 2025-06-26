@@ -7,35 +7,31 @@ import ClientePage from "./components/Clientes/ClientePage";
 import Vendedores from "./pages/Vendedores";
 import PaymentPage from "./pages/Pagos";
 import VentaPage from "./pages/Ventas";
-
-
+import { Toaster } from "sonner";
 
 function App() {
     return (
         <Router>
+            <Toaster position="top-center" richColors />
             <Navbar logoTitle="IMPORCOMGUA" />
             <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-4 py-2">
                 <Routes>
-                    <Route
-                        path="/bodega"
-                        element={<IndexPage />}
-                    />
-                    <Route
-                        path="/cobranzas"
-                        element={<PaymentPage />}
-                    />
-                    <Route
-                        path="/ventas"
-                        element={<VentaPage />}
-                    />
+                    <Route path="/bodega" element={<IndexPage />} />
+                    <Route path="/cobranzas" element={<PaymentPage />} />
+                    <Route path="/ventas" element={<VentaPage />} />
                     <Route path="/inventario" element={<Inventory />} />
-                    <Route 
-                        path="/mantenimiento/productos" 
-                        element={<AgregarProducto />} 
+                    <Route
+                        path="/mantenimiento/productos"
+                        element={<AgregarProducto />}
                     />
-                    <Route path="/mantenimiento/clientes" element={<ClientePage />} />
-                    <Route path="/mantenimiento/vendedores" element={<Vendedores />} />
-
+                    <Route
+                        path="/mantenimiento/clientes"
+                        element={<ClientePage />}
+                    />
+                    <Route
+                        path="/mantenimiento/vendedores"
+                        element={<Vendedores />}
+                    />
                 </Routes>
             </main>
         </Router>

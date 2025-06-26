@@ -6,12 +6,16 @@ const InputField = ({
     icon,
     isRequired,
     register,
+    value,
+    onChange,
     className,
     ...rest
 }) => {
     const inputProps = {
         id: name,
-        ...(register ? register(name, { required: true }) : {}),
+        ...(register ? register(name, { required: isRequired }) : {}),
+        ...(value !== undefined ? { value } : {}),
+        ...(onChange ? { onChange } : {}),
         icon,
         ...rest,
     };
@@ -31,5 +35,4 @@ const InputField = ({
         </div>
     );
 };
-
 export default InputField;

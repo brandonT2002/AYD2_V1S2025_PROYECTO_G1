@@ -22,7 +22,7 @@ const TableComponent = ({ data, columns, maxHeight = "300px" }) => {
                         {data.map((row, idx) => (
                             <tr 
                                 key={idx} 
-                                className="hover:bg-gray-50 transition-colors duration-150"
+                                className="hover:bg-gray-100 transition-colors duration-150"
                             >
                                 {columns.map((col) => (
                                     <td 
