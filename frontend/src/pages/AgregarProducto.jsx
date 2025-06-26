@@ -4,6 +4,7 @@ import { FiPackage, FiBox, FiHash } from "react-icons/fi";
 import { MdNumbers, MdOutlineAttachMoney } from "react-icons/md";
 import { RiEdit2Fill, RiDeleteBin5Fill } from "react-icons/ri";
 import { ImSearch } from "react-icons/im";
+import { toast } from "sonner";
 
 export default function AgregarProducto() {
   const [form, setForm] = useState({
@@ -61,6 +62,8 @@ export default function AgregarProducto() {
         unidades_por_paquete: "",
         precio_unitario: ""
       });
+      toast.success("Producto guardado exitosamente");
+
     } catch (err) {
       console.error("Error al guardar producto:", err);
       alert("No se pudo guardar el producto.");
@@ -73,6 +76,7 @@ export default function AgregarProducto() {
       await axios.delete(`${API}/EliminarProducto/${id}`);
       const res = await axios.get(`${API}/GetAllProductos`);
       setProductos(res.data);
+      toast.success("Producto eliminado exitosamente");
     } catch (err) {
       console.error("Error al eliminar producto:", err);
       alert("No se pudo eliminar el producto.");

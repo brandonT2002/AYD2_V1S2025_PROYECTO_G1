@@ -44,8 +44,11 @@ function Inventory() {
                 value: product.id,
                 label: product.nombre,
             }));
+            productOptions.unshift({ value: "", label: "Seleccione un producto" });
+
             setProducts(productOptions);
             setProductsData(response.data);
+            // toast.success("Productos cargados exitosamente");
         } catch (error) {
             console.error("Error fetching products:", error);
         }
@@ -162,7 +165,7 @@ function Inventory() {
                             label="Unidades por fardo/paquete"
                             placeholder="Ingrese unidades"
                             className={"text-text-base font-semibold"}
-                            isRequired={true}
+                            isRequired={false}
                             defaultValue={value}
                             register={register}
                             icon={FiPackage}
@@ -199,6 +202,7 @@ function Inventory() {
                             className={"text-text-base font-semibold"}
                             isRequired={true}
                             register={register}
+                            icon={PiListNumbersDuotone}
                         />
                         <DatePicker
                             label="Fecha de DUCA"
