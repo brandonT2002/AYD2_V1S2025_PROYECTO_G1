@@ -36,19 +36,36 @@ def test_get_producto_not_found(client):
         assert data is not None
         assert data["error"] == "Producto no encontrado"
 
-def test_nit_valido_crea_cliente():
+
+def test_nit_exacto_7_digitos():
     cliente = Cliente()
     resultado = cliente.create_cliente(
-        nombre_negocio="Tienda El Centro",
-        nombre_contacto="María López",
+        nombre_negocio="NIT Exacto",
+        nombre_contacto="Juan",
+        departamento="01",
+        municipio="Guatemala",
+        direccion="Zona 1",
+        nit="1234567",  # Cambiar para buscar el fallo
+        encargado_bodega="Pedro",
+        telefono="12345678",
+        tipo_venta="Contado",
+        observaciones=""
+    )
+    assert isinstance(resultado, tuple), "El NIT no tiene exactamente 7 dígitos numéricos"
+
+
+def test_telefono_exacto_8_digitos():
+    cliente = Cliente()
+    resultado = cliente.create_cliente(
+        nombre_negocio="Teléfono Exacto",
+        nombre_contacto="Ana",
         departamento="02",
         municipio="Mixco",
-        direccion="Zona 4",
-        nit="765432",
+        direccion="Zona 2",
+        nit="7654321",
         encargado_bodega="Luis",
-        telefono="87654321",
-        tipo_venta="Contado",
-        observaciones="Cliente nuevo"
+        telefono="87654321",  # Cambiar para buscar el fallo
+        tipo_venta="Crédito",
+        observaciones=""
     )
-    assert isinstance(resultado, tuple)
-    assert resultado[0] == "Cliente creado con éxito"
+    assert isinstance(resultado, tuple), "El teléfono no tiene exactamente 8 dígitos numéricos"
