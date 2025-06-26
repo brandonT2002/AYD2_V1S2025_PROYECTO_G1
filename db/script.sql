@@ -228,11 +228,14 @@ INSERT INTO roles (nombre) VALUES ('Gerencia General'), ('Gerente de Ventas y Fi
 
 CREATE TABLE usuarios (
     id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
     correo VARCHAR(100) UNIQUE NOT NULL,
-    contraseña VARCHAR(255) NOT NULL,
+    contrasena VARCHAR(255) NOT NULL,
     rol_id INT NOT NULL,
     FOREIGN KEY (rol_id) REFERENCES roles(id)
 );
+
+INSERT INTO usuarios (nombre,correo, contrasena, rol_id) VALUES ("Administrador",'admin@gmail.com', SHA2('admin123',256), 1);
 
 -- cleintes
 INSERT INTO `imporcomgua`.`clientes` (codigo_cliente, nombre_negocio, nombre_contacto, departamento, municipio, direccion, nit, encargado_bodega, telefono, tipo_venta, observaciones)

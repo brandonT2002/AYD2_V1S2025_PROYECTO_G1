@@ -6,6 +6,7 @@ from app.controllers.PagosController import PagosController
 from app.controllers.producto_controller import ProductoController
 from app.controllers.Vendedores import VendedoresController
 from app.controllers.Inventario import InventarioController
+from app.controllers.auth_controller import AuthController
 
 api_bp = Blueprint('api_bp', __name__, url_prefix='/api/')
 
@@ -16,6 +17,7 @@ GestionesProductos = ProductoController()
 GestionesSalidas = SalidaController()
 GestionesVendedores = VendedoresController()
 GestionInventario = InventarioController()
+GestionesAuth = AuthController()
 
 # Rutas compatibles con el frontend actual
 api_bp.route('/clientes', methods=['GET'])(GestionesClientes.get_all)
@@ -60,9 +62,10 @@ api_bp.route('/GetVendedor/<int:vendedor_id>', methods=['GET'])(GestionesVendedo
 api_bp.route('/GetAllVendedores', methods=['GET'])(GestionesVendedores.get_all_vendedores)
 api_bp.route('/ActualizarVendedor/<int:vendedor_id>', methods=['PUT'])(GestionesVendedores.update_vendedor)
 api_bp.route('/EliminarVendedor/<int:vendedor_id>', methods=['DELETE'])(GestionesVendedores.delete_vendedor)
-# Rutas para manejar el Dashboard
-
-
 
 # Rutas para inventario
 api_bp.route('/insertar-inventario', methods=['POST'])(GestionInventario.registrar_movimiento_inventario)
+
+# Rutas para la autenticacion
+api_bp.route('/login', methods=['POST'])(GestionesAuth.login)
+api_bp.route('/crear-usuario', methods=['POST'])(GestionesAuth.crear_usuario)
