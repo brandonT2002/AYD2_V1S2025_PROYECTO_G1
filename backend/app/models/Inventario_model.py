@@ -1,34 +1,4 @@
 from app.models.base_model import BaseModel
-
-""""
-    CREATE TABLE IF NOT EXISTS `imporcomgua`.`inventario_movimientos` (
-    `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-    `tipo` ENUM('Ingreso', 'Despacho', 'Salida', 'Recepcion') NOT NULL,
-    `cantidad_fardos` INT UNSIGNED NOT NULL,
-    `unidades_totales` INT UNSIGNED NOT NULL,
-    `salida_bodega` DATE NOT NULL,
-    `comentario` TEXT NULL DEFAULT NULL,
-    `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `productos_id` INT UNSIGNED NOT NULL,
-    `duca_id` INT UNSIGNED NOT NULL,
-    PRIMARY KEY (`id`),
-    INDEX `fk_inventario_movimientos_productos1_idx` (`productos_id`),
-    INDEX `fk_inventario_movimientos_duca1_idx` (`duca_id`),
-    CONSTRAINT `fk_inventario_movimientos_productos1`
-        FOREIGN KEY (`productos_id`)
-        REFERENCES `imporcomgua`.`productos` (`id`)
-        ON DELETE NO ACTION
-        ON UPDATE NO ACTION,
-    CONSTRAINT `fk_inventario_movimientos_duca1`
-        FOREIGN KEY (`duca_id`)
-        REFERENCES `imporcomgua`.`duca` (`id`)
-        ON DELETE NO ACTION
-        ON UPDATE NO ACTION
-    ) ENGINE = InnoDB
-    DEFAULT CHARACTER SET = utf8mb4
-    COLLATE = utf8mb4_unicode_ci;
-    """
-
 class InventarioModel(BaseModel):
     def buscar_si_existe_inventario(self, producto_id, duca_id):
         """Busca si existe un inventario para un producto y Duca específicos"""
@@ -86,7 +56,7 @@ class InventarioModel(BaseModel):
             SET im.unidades_totales = im.unidades_totales - dv.cantidad
             WHERE dv.venta_id = %s
         """
-        # actualizar la tabla inventario_movimientos restando las unidades vendidas
+
         query = """
             UPDATE inventario in
             JOIN detalle_venta dv ON in.productos_id = dv.producto_id

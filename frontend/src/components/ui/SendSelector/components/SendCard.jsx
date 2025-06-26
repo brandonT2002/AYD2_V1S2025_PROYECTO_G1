@@ -2,7 +2,7 @@ import { FiPackage } from "react-icons/fi";
 import { FaRegUserCircle, FaRegCalendar } from "react-icons/fa";
 import { useSendSelectorContext } from "../context/SendSelectorContext";
 
-export const SendCard = ({ envio, onSelect }) => {
+export const SendCard = ({ envio, onSelect, onSelectCobro }) => {
     const {
         id,
         numero_envio,
@@ -19,6 +19,7 @@ export const SendCard = ({ envio, onSelect }) => {
         total_quetzales,
         estado_venta = "Vigente",
         estado_cobro,
+        pagado,
         nombre_contacto,
     } = envio;
 
@@ -26,8 +27,16 @@ export const SendCard = ({ envio, onSelect }) => {
     const selected = isSelected(id);
 
     const handleClick = () => {
+        // console.log("Envío seleccionado:", envio);
         selectEnvio(envio);
         if (onSelect) onSelect(id);
+        if (onSelectCobro) onSelectCobro({
+            diasCredito: dias_credito,
+            pagado: pagado,
+            total: total_quetzales,
+            pendiente: total_quetzales - pagado,
+            currentPagado: pagado,
+        });
     };
 
     const handleKeyDown = (e) => {

@@ -8,7 +8,7 @@ class VentaModel(BaseModel):
         query = """
             SELECT v.id, v.numero_envio, v.fecha_venta, v.fecha_salida_bodega,
                    v.tipo_pago, v.dias_credito, v.estado_venta, v.estado_cobro,
-                   v.total_quetzales, v.dte_numero, v.dte_nombre, v.dte_nit,
+                   v.total_quetzales, v.dte_numero, v.dte_nombre, v.dte_nit, v.pagado,
                    c.nombre_contacto, c.nombre_negocio, c.codigo_cliente,
                    vend.nombre as vendedor_nombre, vend.apellido as vendedor_apellido
             FROM ventas v
@@ -39,7 +39,7 @@ class VentaModel(BaseModel):
         query = """
             SELECT v.id, v.numero_envio, v.fecha_venta, v.fecha_salida_bodega,
                    v.tipo_pago, v.dias_credito, v.estado_venta, v.estado_cobro,
-                   v.total_quetzales, v.dte_numero, v.dte_nombre, v.dte_nit,
+                   v.total_quetzales, v.dte_numero, v.dte_nombre, v.dte_nit, v.pagado,
                    c.nombre_contacto, c.nombre_negocio, c.codigo_cliente,
                    vend.nombre as vendedor_nombre, vend.apellido as vendedor_apellido
             FROM ventas v

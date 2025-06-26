@@ -4,7 +4,7 @@ import {
     SelectInput,
     TitlePanel,
     IconButton,
-    TableComponent,
+    DatePicker,
 } from "../components/ui";
 import { Panel, PanelSecundary } from "../components/layout";
 import { useSelectInput } from "../components/ui/SelectInput";
@@ -21,97 +21,90 @@ import { CgMenuGridR } from "react-icons/cg";
 import { ImSearch } from "react-icons/im";
 import { FiPackage, FiHash, FiCalendar, FiDollarSign } from "react-icons/fi";
 
-import { useForm } from "react-hook-form";
+import { get, set, useForm } from "react-hook-form";
 import { useState } from "react";
 import {
     requestBuscarVentas,
     requestRegistrarSalida,
 } from "../services/bajaBodega";
-import { requestInsertarPago } from "../services/pagos";
+import { requestRegistrarPago } from "../services/pagos";
+import { toast } from "sonner";
 
-function PagosPage() {    const banco = useSelectInput("");
+function PagosPage() {
+    const banco = useSelectInput("");
     const criterio = useSelectInput("");
     const [sells, setSells] = useState([]);
-    let selectedId = 0; // Para pruebas, establecer un ID de venta fijo
-    
-    // Formulario para búsqueda de ventas
-    const { register: registerSearch, handleSubmit: handleSubmitSearch, reset: resetSearch } = useForm();
-    
-    // Formulario para registro de pagos
-    const { register: registerPayment, handleSubmit: handleSubmitPayment, reset: resetPayment } = useForm();
+    const [selectedId, setSelectedId] = useState(null);
+    const [infoCobranza, setInfoCobranza] = useState({
+        diasCredito: 0,
+        total: 0,
+        pagado: 0,
+        pendiente: 0,
+        currentPagado: 0,
+    });
+    const [date, setDate] = useState("");
+    const {
+        register: registerSearch,
+        handleSubmit: handleSubmitSearch,
+        reset: resetSearch,
+    } = useForm();
 
-    // Log para mostrar el estado actual de las variables importantes
-    console.log("Estado actual de variables:");
-    console.log("- selectedId:", selectedId);
-    console.log("- banco.value:", banco.value);
-    console.log("- criterio.value:", criterio.value);
-    console.log("- sells.length:", sells.length);    const searchSells = async (formData) => {
-        console.log("=== BÚSQUEDA DE VENTAS ===");
-        console.log("Datos de búsqueda:", formData);
+    const {
+        register: registerPayment,
+        handleSubmit: handleSubmitPayment,
+        reset: resetPayment,
+    } = useForm();
+
+    const searchSells = async (searchTerm) => {
         try {
-            const response = await requestBuscarVentas(formData);
-            console.log("Respuesta de búsqueda:", response.data);
-            setSells(response.data.data);
-            console.log("Ventas encontradas:", response.data.data.length);
-        } catch (error) {
-            console.error("Error buscando ventas:", error);
-        }
-    };const handlePay = async (datoPago) => {
-        console.log("=== INICIANDO PROCESO DE PAGO ===");
-        console.log("1. Datos del formulario recibidos:", datoPago);
-        console.log("2. ID de venta seleccionada:", selectedId);
-        console.log("3. Valor del banco seleccionado:", banco.value);
-       
-        
-        try {
-
-
-            // Preparar los datos del pago
-            const paymentData = {
-                ...datoPago
-            };
-
-            console.log("4. Datos finales a enviar al endpoint:");
-            console.log(JSON.stringify(paymentData, null, 2));
-            console.log("5. URL del endpoint: http://localhost:5000/api/InsertarPago");
-            
-            const response = await requestInsertarPago(paymentData);
-            console.log("6. Respuesta del servidor:", response);
-              if (response.status === 200 || response.status === 201) {
-                console.log("✅ PAGO REGISTRADO EXITOSAMENTE");
-                alert("Pago registrado exitosamente");
-                resetPayment(); // Limpiar el formulario de pago
-                // Opcional: refrescar la lista de ventas
-                // await searchSells({ criterio: criterio.value, valor: "" });
+            const response = await requestBuscarVentas(searchTerm);
+            if (response.data.data.length === 0) {
+                toast.error("No se encontraron ventas con ese criterio");
+                setSells([]);
+                return;
             }
+            setSells(response.data.data);
         } catch (error) {
-            console.error("❌ ERROR registrando pago:", error);
-            console.error("Detalles del error:", error.response?.data || error.message);
-            alert("Error al registrar el pago. Por favor intente nuevamente.");
+            toast.error("Error al buscar ventas");
+            console.error("Error al buscar ventas:", error);
+        }
+    };
+    const handlePay = async (datoPago) => {
+        try {
+            const paymentData = {
+                ...datoPago,
+                venta_id: selectedId,
+                pendiente: infoCobranza.total- infoCobranza.currentPagado,
+                fecha_pago: date,
+            };
+            console.log("Datos del pago:", paymentData);
+            const response = await requestRegistrarPago(paymentData);
+            console.log("Respuesta del servidor:", response);
+            toast.success("Pago registrado exitosamente");
+        } catch (error) {
+            toast.error("Error al registrar el pago");
+            console.error("Error al registrar el pago:", error);
+            return;
         }
     };
 
-    const columns = [
-        { header: "Producto", key: "producto" },
-        { header: "Cantidad", key: "cantidad" },
-        { header: "Precio Unit.", key: "precio_unitario" },
-        { header: "Cantidad en Unidades", key: "cantidad_unidades" },
-        { header: "Precio por fardo/paquete", key: "precio_paquete" },
-        { header: "Subtotal", key: "subtotal" },
-        { header: "Observaciones", key: "observaciones" },
-    ];
-
-    const data = [
-        
-    ];
+    const getTotalPendiente = () => {
+        const totalPendiente =
+            parseFloat(infoCobranza.total) -
+            parseFloat(infoCobranza.currentPagado);
+        if (isNaN(totalPendiente)) {
+            return "0.00";
+        }
+        return totalPendiente.toFixed(2);
+    }
 
     return (
         <SendSelectorProvider>
             <div className="flex flex-col bg-gray-100 gap-3">
                 <Title>Registrar Pagos</Title>
-
                 <Panel>
-                    <TitlePanel>Buscar Venta</TitlePanel>                    <form
+                    <TitlePanel>Buscar Venta</TitlePanel>{" "}
+                    <form
                         className="flex gap-3 w-full justify-between"
                         onSubmit={handleSubmitSearch(searchSells)}
                     >
@@ -150,24 +143,19 @@ function PagosPage() {    const banco = useSelectInput("");
                         </div>
                     </form>
                 </Panel>
-
                 <Panel className="overflow-visible">
-                    <TitlePanel>Resultados de Búsqueda</TitlePanel>                    <SendSelectorDemo
-                        envios={sells}
-                        onSelectChange={(id) => {
-                            console.log("=== VENTA SELECCIONADA ===");
-                            console.log("ID de venta seleccionada:", id);
-                        }}
-                    />
-                </Panel>
-
-                <PanelSecundary>
-                    <div className="flex items-center gap-2 mb-4 border-b-2 border-gray-400 pb-2 text-text-second">
-                        <LuPackageSearch size={20} />
-                        <span className="font-bold">Productos</span>
+                    <TitlePanel>Resultados de Búsqueda</TitlePanel>{" "}
+                    <div>
+                        <SendSelectorDemo
+                            envios={sells}
+                            onSelectChange={(id) => setSelectedId(id)}
+                            onSelectChangeCobro={(info) => {
+                                setInfoCobranza(info);
+                            }}
+                        />
                     </div>
-                    <TableComponent data={data} columns={columns} maxHeight="210px" />
-                </PanelSecundary>                <Panel>
+                </Panel>
+                <Panel>
                     <form onSubmit={handleSubmitPayment(handlePay)}>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 px-4 mb-4">
                             <InputField
@@ -179,14 +167,15 @@ function PagosPage() {    const banco = useSelectInput("");
                                 register={registerPayment}
                                 required
                             />
-                            <InputField
-                                name="fecha_pago"
-                                label="Fecha de Pago"
-                                type="date"
-                                className="text-text-second font-semibold"
+                            <DatePicker
+                                name="fecha_pago_1"
+                                label="Fecha de Salida de Bodega"
+                                placeholder="Fecha de Salida"
+                                className="text-text-second font-bold"
                                 icon={FiCalendar}
-                                register={registerPayment}
-                                required
+                                position="top"
+                                register={registerSearch}
+                                onDateChange={(date) => setDate(date)}
                             />
                             <SelectInput
                                 name="banco"
@@ -197,7 +186,10 @@ function PagosPage() {    const banco = useSelectInput("");
                                     { value: "Banrural", label: "Banrural" },
                                     { value: "BAM", label: "BAM" },
                                     { value: "G&T", label: "G&T" },
-                                    { value: "Industrial", label: "Bnaco Industrial" },
+                                    {
+                                        value: "Industrial",
+                                        label: "Banco Industrial",
+                                    },
                                 ]}
                                 {...banco.bind}
                                 register={registerPayment}
@@ -230,19 +222,99 @@ function PagosPage() {    const banco = useSelectInput("");
                                 className="text-text-second font-semibold"
                                 icon={FiDollarSign}
                                 register={registerPayment}
-                                required
-                            />
-                            <InputField
-                                name="venta_id"
-                                label="ID de Venta"
-                                placeholder="ID de Venta"
-                                className="text-text-second font-semibold"
-                                icon={FiHash}
-                                register={registerPayment}
+                                onChange={(e) => {
+                                    const value = parseFloat(e.target.value);
+                                    if (
+                                        value >
+                                        infoCobranza.total - infoCobranza.pagado
+                                    ) {
+                                        toast.error(
+                                            "El monto no puede ser mayor al pendiente"
+                                        );
+                                        let max =
+                                            parseFloat(infoCobranza.pendiente)+
+                                            parseFloat(infoCobranza.pagado);
+                                        // max = max + parseFloat(infoCobranza.pagado);
+                                        // max = max.toFixed(2);
+                                        console.log("Maximo:", max);
+                                        e.target.value = infoCobranza.pendiente;
+                                        setInfoCobranza((prev) => ({
+                                            ...prev,
+                                            currentPagado: max,
+                                        }));
+                                        return;
+                                    }
+                                    if (value < 0) {
+                                        toast.error(
+                                            "El monto no puede ser negativo"
+                                        );
+                                        e.target.value = "";
+                                    }
+                                    const nuevo =
+                                        parseFloat(infoCobranza.pagado) +
+                                        parseFloat(e.target.value);
+                                    setInfoCobranza((prev) => ({
+                                        ...prev,
+                                        currentPagado: nuevo,
+                                    }));
+
+                                    if (isNaN(value)) {
+                                        setInfoCobranza((prev) => ({
+                                            ...prev,
+                                            currentPagado: infoCobranza.pagado,
+                                        }));
+                                    }
+                                }}
                                 required
                             />
                         </div>
-                        
+                        <PanelSecundary>
+                            <div className="grid grid-cols-4 gap-4 mb-2 text-text-second">
+                                <div className="flex flex-col items-start gap-1">
+                                    <div className="flex items-center gap-2">
+                                        <LuHash size={15} />
+                                        <span className="font-bold">
+                                            Días de Crédito Restantes
+                                        </span>
+                                    </div>
+                                    <span className="text-sm text-gray-500">
+                                        {infoCobranza.diasCredito} días
+                                    </span>
+                                </div>
+                                <div className="flex flex-col items-start gap-1">
+                                    <div className="flex items-center gap-2">
+                                        <LuHash size={15} />
+                                        <span className="font-bold">Total</span>
+                                    </div>
+                                    <span className="text-sm text-gray-500">
+                                        Q {infoCobranza.total}
+                                    </span>
+                                </div>
+                                <div className="flex flex-col items-start gap-1">
+                                    <div className="flex items-center gap-2">
+                                        <LuBadgeDollarSign size={15} />
+                                        <span className="font-bold">
+                                            Pagado
+                                        </span>
+                                    </div>
+                                    <span className="text-sm text-gray-500">
+                                        Q {infoCobranza.currentPagado}
+                                    </span>
+                                </div>
+                                <div className="flex flex-col items-start gap-1">
+                                    <div className="flex items-center gap-2">
+                                        <LuClockAlert size={15} />
+                                        <span className="font-bold">
+                                            Pendiente
+                                        </span>
+                                    </div>
+                                    <span className="text-sm text-gray-500">
+                                        Q{" "}
+                                        {getTotalPendiente()}
+                                    </span>
+                                </div>
+                            </div>
+                        </PanelSecundary>
                         <div className="flex justify-end gap-4 px-4">
                             <IconButton
                                 type="submit"
@@ -254,37 +326,6 @@ function PagosPage() {    const banco = useSelectInput("");
                         </div>
                     </form>
                 </Panel>
-                <PanelSecundary>
-                    <div className="grid grid-cols-4 gap-4 mb-4 border-b-2 border-gray-400 pb-2 text-text-second">
-                        <div className="flex flex-col items-start gap-1">
-                            <div className="flex items-center gap-2">
-                                <LuHash size={15} />
-                                <span className="font-bold">Días de Crédito Restantes</span>
-                            </div>
-                            <span className="text-sm text-gray-500">15 días</span>
-                        </div>
-                        <div className="flex flex-col items-start gap-1">
-                            <div className="flex items-center gap-2">
-                                <LuHash size={15} />
-                                <span className="font-bold">Total</span>
-                            </div>
-                            <span className="text-sm text-gray-500">Q 1,500.00</span>
-                        </div>
-                        <div className="flex flex-col items-start gap-1">
-                            <div className="flex items-center gap-2">
-                                <LuBadgeDollarSign size={15} />
-                                <span className="font-bold">Pagado</span>
-                            </div>
-                            <span className="text-sm text-gray-500">Q 1,200.00</span>
-                        </div>
-                        <div className="flex flex-col items-start gap-1">
-                            <div className="flex items-center gap-2">
-                                <LuClockAlert size={15} />
-                                <span className="font-bold">Pendiente</span>
-                            </div>
-                            <span className="text-sm text-gray-500">Q 300.00</span>
-                        </div>
-                    </div>                </PanelSecundary>
             </div>
         </SendSelectorProvider>
     );
