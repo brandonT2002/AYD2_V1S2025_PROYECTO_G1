@@ -12,6 +12,7 @@ import LoginPage from "./pages/Login";
 import { useAuth } from "./context/AuthContext";
 import { getNavigationItemsForUser } from "./components/layout/Navbar";
 import ProtectedRoutes from "./ProtectedRoutes";
+import UsersPage from "./pages/Users";
 
 function App() {
     const { user } = useAuth();
@@ -28,6 +29,12 @@ function App() {
             <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-4 py-2">
                 <Routes>
                     <Route path="/" element={<LoginPage />} />
+                    <Route element={<ProtectedRoutes rolesPermitidos={[1]} />}>
+                        <Route
+                            path="/mantenimiento/usuarios"
+                            element={<UsersPage />}
+                        />
+                    </Route>
                     <Route
                         element={<ProtectedRoutes rolesPermitidos={[1, 3]} />}
                     >

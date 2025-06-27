@@ -16,6 +16,10 @@ export const navigationItems = [
                 label: "Clientes",
                 to: "/mantenimiento/clientes",
             },
+            {
+                label: "Usuarios",
+                to: "/mantenimiento/usuarios",
+            },
         ],
     },
     {
