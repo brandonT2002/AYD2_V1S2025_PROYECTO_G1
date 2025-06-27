@@ -71,3 +71,9 @@ def test_fecha_formato_correcto():
         fecha_duca_rectificada=None
     )
     assert resultado is None, "La fecha no tiene exactamente 10 caracteres en formato YYYY-MM-DD."
+
+# Prueba para validar que el contenedor sea un número
+def test_contenedor_es_numero():
+    inventario = InventarioModel()
+    resultado = inventario.is_contenedor_a_number("1")
+    assert resultado is None, "El número de contenedor debe ser un número."
