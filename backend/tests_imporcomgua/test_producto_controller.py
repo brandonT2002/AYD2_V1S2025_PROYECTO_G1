@@ -1,11 +1,15 @@
 import sys
 import os
+
+
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 import pytest
 from app import create_app
 from unittest.mock import patch
 from app.models.Cliente import Cliente
+from app.models.Inventario_model import InventarioModel
+
 
 @pytest.fixture
 def client():
@@ -69,3 +73,15 @@ def test_telefono_exacto_8_digitos():
         observaciones=""
     )
     assert isinstance(resultado, tuple), "El teléfono no tiene exactamente 8 dígitos numéricos"
+
+
+def test_fecha_formato_correcto():
+    inventario = InventarioModel()
+    resultado = inventario.insertar_duca(
+        numero_duca="DUCA123",
+        fecha="2025-06-26",  # Se cambia el formato para que de el error 
+        numero_contendor="CONT123",
+        numero_duca_rectificada=None,
+        fecha_duca_rectificada=None
+    )
+    assert isinstance(resultado, int), "La fecha no tiene exactamente 10 caracteres en formato YYYY-MM-DD"
