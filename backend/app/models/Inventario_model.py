@@ -10,12 +10,16 @@ class InventarioModel(BaseModel):
         result = self.execute_query(query, (producto_id, duca_id))
         return result[0]['count'] > 0
     
-    def insertar_duca(self, numero_duca, fecha, numero_contendor, numero_duca_rectificada, fecha_duca_rectificada):
+    
+    def is_date_correct_format(self, fecha,fecha_duca_rectificada):
         if len(fecha) != 10:
             return {"error": "La fecha debe tener exactamente 10 caracteres en formato YYYY-MM-DD."}
         if fecha_duca_rectificada and len(fecha_duca_rectificada) != 10:
             return {"error": "La fecha rectificada debe tener exactamente 10 caracteres en formato YYYY-MM-DD."}
+        
 
+    def insertar_duca(self, numero_duca, fecha, numero_contendor, numero_duca_rectificada, fecha_duca_rectificada):
+        self.is_date_correct_format(fecha, fecha_duca_rectificada)
         print(f"Insertando Duca: {numero_duca}, Fecha: {fecha}, Contenedor: {numero_contendor}, Rectificada: {numero_duca_rectificada}, Fecha Rectificada: {fecha_duca_rectificada}")
         query = """
             INSERT INTO duca (numero_duca, fecha, numero_contenedor, numero_duca_rectificada, fecha_duca_rectificada)
