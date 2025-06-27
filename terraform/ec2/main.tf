@@ -8,7 +8,7 @@ resource "aws_s3_bucket" "static_site" {
 
     website {
         index_document = "index.html"
-        error_document = "index.html" # útil para React SPA
+        error_document = "index.html"
     }
 
     tags = {
