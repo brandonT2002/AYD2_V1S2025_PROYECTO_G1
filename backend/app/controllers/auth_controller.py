@@ -42,3 +42,32 @@ class AuthController:
             return jsonify({'success': True, 'user_id': user_id})
         except Exception as e:
             return jsonify({'error': str(e)}), 500
+        
+    def actualizar_usuario(self, user_id):
+        """Actualiza la información de un usuario existente"""
+        try:
+            data = request.get_json()
+            nombre = data.get('nombre')
+            password = data.get('password')
+            rol = data.get('rol')
+
+            updated_user = self.auth_service.actualizar_usuario(user_id, nombre,  password, rol)
+            return jsonify({'success': True, 'updated_user': updated_user})
+        except Exception as e:
+            return jsonify({'error': str(e)}), 500
+        
+    def eliminar_usuario(self, user_id):
+        """Elimina un usuario del sistema"""
+        try:
+            self.auth_service.eliminar_usuario(user_id)
+            return jsonify({'success': True, 'message': 'Usuario eliminado correctamente'})
+        except Exception as e:
+            return jsonify({'error': str(e)}), 500
+        
+    def obtener_usuarios(self):
+        """Obtiene la lista de todos los usuarios"""
+        try:
+            usuarios = self.auth_service.obtener_usuarios()
+            return jsonify({'success': True, 'usuarios': usuarios})
+        except Exception as e:
+            return jsonify({'error': str(e)}), 500

@@ -69,3 +69,6 @@ api_bp.route('/insertar-inventario', methods=['POST'])(GestionInventario.registr
 # Rutas para la autenticacion
 api_bp.route('/login', methods=['POST'])(GestionesAuth.login)
 api_bp.route('/crear-usuario', methods=['POST'])(GestionesAuth.crear_usuario)
+api_bp.route('/actualizar-usuario/<int:user_id>', methods=['PUT'])(GestionesAuth.actualizar_usuario)
+api_bp.route('/eliminar-usuario/<int:user_id>', methods=['DELETE'])(GestionesAuth.eliminar_usuario)
+api_bp.route('/obtener-usuarios', methods=['GET'])(GestionesAuth.obtener_usuarios)

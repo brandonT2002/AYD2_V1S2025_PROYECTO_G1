@@ -21,3 +21,38 @@ class AuthModel(BaseModel):
             VALUES (%s, %s,  SHA2(%s,256), %s)
         """
         return self.execute_query(query, (nombre,  email, password, rol))
+    
+    def actualizar_usuario(self, user_id, nombre=None, password=None, rol=None):
+        """Actualiza la informacion de un usuario existente"""
+        query = "UPDATE usuarios SET "
+        params = []
+        
+        if nombre:
+            query += "nombre = %s, "
+            params.append(nombre)
+        if password:
+            query += "contrasena = SHA2(%s,256), "
+            params.append(password)
+        if rol:
+            query += "rol_id = %s, "
+            params.append(rol)
+
+        query = query.rstrip(", ") + " WHERE id = %s"
+        params.append(user_id)
+        print(query, params)
+        return self.execute_query(query, tuple(params))
+    
+    def eliminar_usuario(self, user_id):
+        """Elimina un usuario de la base de datos"""
+        query = "DELETE FROM usuarios WHERE id = %s"
+        return self.execute_query(query, (user_id,))
+    
+    def obtener_usuarios(self):
+        """Obtiene la lista de todos los usuarios con el nombre del rol"""
+        query = """
+            SELECT u.id, u.nombre, u.correo, u.rol_id, r.nombre AS rol
+            FROM usuarios u
+            JOIN roles r ON u.rol_id = r.id
+            ORDER BY u.id
+        """
+        return self.execute_query(query)
