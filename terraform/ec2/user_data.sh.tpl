@@ -14,9 +14,9 @@ usermod -aG docker ubuntu
 
 cd /home/ubuntu
 
-git clone https://${github_token}@github.com/brandonT2002/AYD2_1S2025_PRAC_G1.git
+git clone https://${github_token}@github.com/sebastian-godoy/AYD2_V1S2025_PROYECTO_G1.git
 
-cd AYD2_1S2025_PRAC_G1/Backend
+cd AYD2_1S2025_PRAC_G1/backend
 
 cat <<EOF > .env
 DB_HOST=${db_host}
