@@ -63,11 +63,41 @@ IMPORCOMGUA busca digitalizar de extremo a extremo sus procesos, inventario, com
 ## Documentación Fase 3
 
 
-# ACA NO HAY NADA 
+## 1. Core de Negocio
+### A. Descripción
+
+IMPORCOMGUA busca digitalizar de extremo a extremo sus procesos, inventario, comisiones y cobranzas debido a que cuentan con mucha intervención manual, para asegurar que el producto correcto salga a tiempo, la factura se emita sin errores y el dinero ingrese puntualmente. La plataforma web propuesta centraliza la captura de datos, valida las reglas de negocio y expone reportes en tiempo real, de modo que Administrador, Vendedor, Bodeguero y Encargado de Cobranza trabajen sobre la misma fuente de datos. El flujo unificado abarca el mantenimiento de clientes, productos y vendedores. Las entradas / salidas de inventario, el registro de ventas con descuentos, el seguimiento de pagos y el cálculo automático de comisiones, complementado con alertas inteligentes (crédito vencido, stock crítico) que agilizan la toma de decisiones.
+
+
+
+
+### B.1 Diagrama de CDU de Alto nivel
+
+![alt text](image-2.png)
+
+### B.2 Diagrama de CDU Primera descomposición
+
+![alt text](image-3.png)
+
+### B. 4 Identificación de Stakeholders
+
+| Actor                                     | Funciones / Responsabilidades                                                                                                                                                  |
+| ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Cliente**                               | Autorizar y efectuar pagos de sus compras, recibir confirmaciones y facturas.                                                                                                  |
+| **Vendedor**                              | Registrar ventas, clientes y detalles de pago, consultar sus comisiones y metas.                                                                                               |
+| **Aduana**                                | Verificar la DUCA                                                                                           |
+| **Administrador del sistema**             | Gestionar inventario, datos maestros, ventas y pagos; configurar reglas de negocio; emitir reportes estratégicos.                                                              |
+| **Gerencia General**                      | Acceso completo a todas las funciones: puede crear / editar / eliminar usuarios y asignar roles: recibe alertas de inventario bajo por correo. |
+| **Gerente de Ventas y Finanzas**          | Registrar ventas, clientes y pagos.                            |
+| **Gerente de Inventario**                 | Registrar productos, ingresos y salidas, recibe alertas automáticas cuando el stock baja de nivel.                          |
+| **Encargado de Bodega**                   | Recepcionar mercancía física, actualizar existencias reales y validar movimientos internos de almacén.                                                                         |
+| **Proveedores**                           | Suministrar productos .                                                                                            |
+| **Proveedor de email** (servicio externo) | Entregar las notificaciones automáticas de inventario a Gerencia General y Gerente de Inventario.        |
 
 
 
 # Documentación Fase 1
+
 ## 2. Drivers Arquitectónicos
 
 ## A. Requerimientos funcionales críticos
@@ -474,6 +504,12 @@ IMPORCOMGUA busca digitalizar de extremo a extremo sus procesos, inventario, com
 - Implementación de interfaces bien definidas entre módulos
 
 ---
+
+# Documentación fase 3
+
+
+
+
 
 
 # Documentación Fase 1
