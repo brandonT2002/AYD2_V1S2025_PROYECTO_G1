@@ -2,41 +2,31 @@ provider "aws" {
     region = "us-east-1"
 }
 
-resource "aws_s3_bucket" "static_site" {
-    bucket        = var.bucket_name
-    force_destroy = true
+# Grupo de seguridad existente (ya permite tráfico en puerto 5000)
+data "aws_security_group" "rds_existing" {
+    id = "sg-019fdb7f717ebdf1a"
+}
 
-    website {
-        index_document = "index.html"
-        error_document = "index.html"
-    }
+# Cargar script de inicialización (user_data) con templatefile
+locals {
+    user_data_script = templatefile("${path.module}/user_data.sh.tpl", {
+        github_token = var.github_token
+        db_host      = var.db_host
+        db_user      = var.db_user
+        db_password  = var.db_password
+        db_name      = var.db_name
+    })
+}
+
+# Crear la instancia EC2 con el script
+resource "aws_instance" "app_server" {
+    ami                    = "ami-0a7d80731ae1b2435" # Ubuntu 22.04
+    instance_type          = "t2.micro"
+    key_name               = var.ec2_key_name
+    vpc_security_group_ids = [data.aws_security_group.rds_existing.id]
+    user_data              = local.user_data_script
 
     tags = {
-        Name        = var.bucket_name
-        Environment = "StaticWebsite"
+        Name = "ec2-imporcomgua"
     }
-}
-
-resource "aws_s3_bucket_public_access_block" "allow_public" {
-    bucket = aws_s3_bucket.static_site.id
-
-    block_public_acls       = false
-    block_public_policy     = false
-    ignore_public_acls      = false
-    restrict_public_buckets = false
-}
-
-resource "aws_s3_bucket_policy" "public_read" {
-    bucket = aws_s3_bucket.static_site.id
-
-    policy = jsonencode({
-        Version = "2012-10-17"
-        Statement = [{
-            Sid       = "PublicReadGetObject"
-            Effect    = "Allow"
-            Principal = "*"
-            Action    = "s3:GetObject"
-            Resource  = "${aws_s3_bucket.static_site.arn}/*"
-        }]
-    })
 }
