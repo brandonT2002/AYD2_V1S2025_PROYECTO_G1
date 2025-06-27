@@ -9,6 +9,7 @@ export const ButtonSize = {
     SM: "sm",
     MD: "md",
     LG: "lg",
+    FULL: "full",
 };
 
 export const IconPosition = {
@@ -33,6 +34,7 @@ export const buttonStyles = {
         [ButtonSize.SM]: "px-3 py-2 text-sm gap-1.5",
         [ButtonSize.MD]: "px-4 py-3 text-sm gap-2",
         [ButtonSize.LG]: "px-6 py-3 text-base gap-2.5",
+        [ButtonSize.FULL]: "w-full px-4 py-3 text-sm gap-2",
     },
     states: {
         disabled: "opacity-50 cursor-not-allowed",

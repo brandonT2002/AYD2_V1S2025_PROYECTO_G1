@@ -1,7 +1,8 @@
 import { IoIosClose } from "react-icons/io";
 import { Link, useLocation } from "react-router-dom";
 
-const MobileMenu = ({ isOpen, onClose, navigationItems }) => {
+
+const MobileMenu = ({ isOpen, onClose, navigationItems, userProfile }) => {
     const location = useLocation();
 
     if (!isOpen) return null;
@@ -66,6 +67,7 @@ const MobileMenu = ({ isOpen, onClose, navigationItems }) => {
                             )}
                         </div>
                     ))}
+                    {userProfile}
                 </nav>
             </div>
         </div>
