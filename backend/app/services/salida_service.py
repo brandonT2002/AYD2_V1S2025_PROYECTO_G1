@@ -3,6 +3,7 @@ from app.models.venta_model import VentaModel
 from app.models.Inventario_model import InventarioModel
 from app.models.Cliente import Cliente
 from datetime import datetime
+from app.mail.notif_email import enviar_correo
 
 class SalidaService(BaseService):
     """Servicio para manejar la lógica de salidas de bodega"""
@@ -86,6 +87,14 @@ class SalidaService(BaseService):
                 print(f"   ⚠️  {producto['producto_nombre']}: {producto['unidades_restantes']} unidades ({producto['porcentaje_actual']}%)")
         else:
             print(f"\n✅ TODOS LOS PRODUCTOS MANTIENEN STOCK ADECUADO")
+
+
+        # unimos por comas los ids de los productos con stock bajo
+        id_productos_stock_bajo = ", ".join([str(p['producto_id']) for p in productos_con_stock_bajo])
+
+        # Enviar correo de notificación si hay productos con stock bajo
+        if productos_con_stock_bajo:
+            enviar_correo("wmazariegos@fegora.net","Administrador",datetime.datetime.now().strftime('%d/%m/%Y a las %I:%M %p')+'- Id de productos con stock bajo:'+id_productos_stock_bajo)
         
         print("=" * 60)
         
