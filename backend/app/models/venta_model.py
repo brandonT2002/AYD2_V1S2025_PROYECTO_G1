@@ -6,9 +6,9 @@ class VentaModel(BaseModel):
     def buscar_ventas_por_envio(self, numero_envio):
         """Busca ventas por número de envío"""
         query = """
-            SELECT v.id, v.numero_envio, v.fecha_venta, v.fecha_salida_bodega,
+            SELECT v.id, v.numero_envio, v.fecha_venta, v.fecha_salida_bodega, v.dias_credito,  v.created_at,
                    v.tipo_pago, v.dias_credito, v.estado_venta, v.estado_cobro,
-                   v.total_quetzales, v.dte_numero, v.dte_nombre, v.dte_nit,
+                   v.total_quetzales, v.dte_numero, v.dte_nombre, v.dte_nit, v.pagado,
                    c.nombre_contacto, c.nombre_negocio, c.codigo_cliente,
                    vend.nombre as vendedor_nombre, vend.apellido as vendedor_apellido
             FROM ventas v
@@ -19,7 +19,6 @@ class VentaModel(BaseModel):
             ORDER BY v.fecha_venta DESC
         """
         venta_info =  self.execute_query(query, (f"%{numero_envio}%",))
-        # Buscar productos que coincidan con el número de envío
         query = """
             SELECT p.codigo, p.nombre, p.unidad_medida, p.precio_unidad, p.unidades_por_fardo, vd.observaciones
             FROM productos p
@@ -28,7 +27,6 @@ class VentaModel(BaseModel):
             WHERE v.numero_envio LIKE %s
         """
         productos_info = self.execute_query(query, (f"%{numero_envio}%",))
-        # Combinar información de ventas y productos
         for venta in venta_info:
             venta['productos'] = []
             for producto in productos_info:
@@ -39,9 +37,9 @@ class VentaModel(BaseModel):
     def buscar_ventas_por_cliente(self, nombre_cliente):
         """Busca ventas por nombre de cliente"""
         query = """
-            SELECT v.id, v.numero_envio, v.fecha_venta, v.fecha_salida_bodega,
+            SELECT v.id, v.numero_envio, v.fecha_venta, v.fecha_salida_bodega, v.dias_credito,  v.created_at,
                    v.tipo_pago, v.dias_credito, v.estado_venta, v.estado_cobro,
-                   v.total_quetzales, v.dte_numero, v.dte_nombre, v.dte_nit,
+                   v.total_quetzales, v.dte_numero, v.dte_nombre, v.dte_nit, v.pagado,
                    c.nombre_contacto, c.nombre_negocio, c.codigo_cliente,
                    vend.nombre as vendedor_nombre, vend.apellido as vendedor_apellido
             FROM ventas v
@@ -53,23 +51,7 @@ class VentaModel(BaseModel):
         """
 
         ventas_inf = self.execute_query(query, (f"%{nombre_cliente}%", f"%{nombre_cliente}%"))
-        # buscar productos que coincidan con el nombre del cliente
-        query = """
-            SELECT p.codigo, p.nombre, p.unidad_medida, p.precio_unidad, p.unidades_por_fardo, vd.observaciones
-            FROM productos p
-            JOIN venta_detalle vd ON p.id = vd.producto_id
-            JOIN ventas v ON vd.ventas_id = v.id
-            JOIN clientes c ON v.cliente_id = c.id
-            WHERE (c.nombre_contacto LIKE %s OR c.nombre_negocio LIKE %s)
-            AND v.estado_venta = 'Vigente'
-            ORDER BY v.fecha_venta DESC
-        """
-        productos_info = self.execute_query(query, (f"%{nombre_cliente}%", f"%{nombre_cliente}%"))
-        # Combinar información de ventas y productos
-        for venta in ventas_inf:
-            venta['productos'] = []
-            for producto in productos_info:
-                venta['productos'].append(producto)
+        
         return ventas_inf
             
 
@@ -110,13 +92,13 @@ class VentaModel(BaseModel):
         query = """
             UPDATE ventas 
             SET fecha_salida_bodega = %s
-            WHERE id = %s AND estado_venta = 'Vigente'
+            WHERE id = %s
         """
         connection = self.db.get_connection()
         try:
             with connection.cursor() as cursor:
                 cursor.execute(query, (fecha_salida, venta_id))
-                return cursor.rowcount > 0  # Retorna True si se actualizó alguna fila
+                return cursor.rowcount > 0 
         except Exception as e:
             print(f"Error actualizando fecha de salida: {e}")
             raise
@@ -124,7 +106,7 @@ class VentaModel(BaseModel):
     def obtener_productos_venta(self, venta_id):
         """Obtiene solo los productos de una venta específica"""
         query = """
-            SELECT vd.id as detalle_id, vd.cantidad_unidades, vd.Observaciones,
+            SELECT vd.id as detalle_id, vd.cantidad_unidades, vd.Observaciones, vd.producto_id,
                    p.codigo as producto_codigo, p.nombre as producto_nombre, 
                    p.unidad_medida, p.precio_unidad, p.unidades_por_fardo,
                    -- Calcular cantidad en fardos/paquetes

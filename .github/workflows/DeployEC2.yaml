@@ -1,0 +1,38 @@
+name: Deploy EC2
+
+on:
+  workflow_dispatch:
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.EC2_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.EC2_SECRET_ACCESS_KEY }}
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.5.7
+
+      - name: Terraform Init
+        run: terraform init
+        working-directory: ./terraform/ec2
+
+      - name: Terraform Validate
+        run: terraform validate
+        working-directory: ./terraform/ec2
+
+      - name: Terraform Plan
+        run: terraform plan -out=tfplan -var="ec2_key_name=${{ secrets.EC2_KEY_NAME }}" -var="github_token=${{ secrets.GH_PAT }}" -var="db_host=${{ secrets.TF_DB_HOST }}" -var="db_user=${{ secrets.TF_DB_USER }}" -var="db_password=${{ secrets.TF_DB_PASSWORD }}" -var="db_name=${{ secrets.TF_DB_NAME }}"
+        working-directory: ./terraform/ec2
+
+      - name: Terraform Apply
+        run: terraform apply -auto-approve -var="ec2_key_name=${{ secrets.EC2_KEY_NAME }}" -var="github_token=${{ secrets.GH_PAT }}" -var="db_host=${{ secrets.TF_DB_HOST }}" -var="db_user=${{ secrets.TF_DB_USER }}" -var="db_password=${{ secrets.TF_DB_PASSWORD }}" -var="db_name=${{ secrets.TF_DB_NAME }}"
+        working-directory: ./terraform/ec2
+

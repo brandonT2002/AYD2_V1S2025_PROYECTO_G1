@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-
+import { toast } from "sonner";
 // Departamentos y municipios quemados
 const DEPARTAMENTOS = {
   AL: "Alta Verapaz", BA: "Baja Verapaz", CH: "Chimaltenango", CQ: "Chiquimula",
@@ -89,6 +89,7 @@ export default function ClientePage() {
         tipo_venta: "",
         observaciones: ""
       });
+      toast.success("Cliente guardado exitosamente");
     } catch (err) {
       console.error(err);
       alert("No se pudo guardar el cliente");
@@ -101,6 +102,7 @@ export default function ClientePage() {
       await axios.delete(`${api}/clientes/${id}`);
       const res = await axios.get(`${api}/clientes`);
       setClientes(res.data);
+      toast.success("Cliente eliminado exitosamente");
     } catch (err) {
       console.error(err);
       alert("No se pudo eliminar el cliente");

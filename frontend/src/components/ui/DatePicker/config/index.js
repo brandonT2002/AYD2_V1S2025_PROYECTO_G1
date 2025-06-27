@@ -1,4 +1,3 @@
-// DatePicker/config/index.js
 export const MONTH_NAMES = [
     "January",
     "February",
@@ -16,8 +15,7 @@ export const MONTH_NAMES = [
 
 export const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-// Devuelve 100 años hacia atrás (útil para el <select>)
 export const YEARS = Array.from(
-    { length: 100 },
-    (_, i) => new Date().getFullYear() - i
+    { length: 111 },
+    (_, i) => new Date().getFullYear() - 100 + i
 );

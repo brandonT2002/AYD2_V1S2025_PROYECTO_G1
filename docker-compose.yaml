@@ -1,0 +1,49 @@
+version: "3.8"
+services:
+  app:
+    container_name: my-node-app
+    build:
+      context: ./frontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+    command: npm run dev
+
+  backend:
+    container_name: flask-backend
+    build:
+      context: ./Backend   
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./Backend:/app    
+    environment:
+      - FLASK_ENV=development
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_PORT=${DB_PORT}
+      - DB_HOST=mysql
+      - DB_NAME=${DB_NAME}
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql-container
+    environment:
+      MYSQL_DATABASE: ${DB_NAME}   
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"  
+    ports:
+      - "${DB_PORT}:${DB_PORT}"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - mynetwork
+
+volumes:
+  mysql-data:  
+networks:
+  mynetwork:  
+    driver: bridge

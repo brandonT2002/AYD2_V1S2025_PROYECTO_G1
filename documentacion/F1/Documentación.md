@@ -2,6 +2,34 @@
 ## Documentación Grupo 1
 # IMPORCOMGUA
 
+
+## Documentación Fase 1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ## 1. Core de Negocio
 ### A. Descripción
 
