@@ -14,14 +14,18 @@ class Cliente(BaseModel):
     def get_all(self):
         query = f"SELECT * FROM {self.table_name}"
         return self.execute_query(query)
-
-    def create_cliente(self, nombre_negocio, nombre_contacto, departamento, municipio, direccion, nit, encargado_bodega, telefono, tipo_venta, observaciones):
+    
+    def is_correct_length_nit(self, nit):
         if not nit.isdigit() or len(nit) != 7:
             return {"error": "El NIT debe tener exactamente 7 dígitos numéricos."}
-
+        
+    def is_correct_length_telefono(self, telefono):
         if not telefono.isdigit() or len(telefono) != 8:
             return {"error": "El teléfono debe tener exactamente 8 dígitos numéricos."}
 
+    def create_cliente(self, nombre_negocio, nombre_contacto, departamento, municipio, direccion, nit, encargado_bodega, telefono, tipo_venta, observaciones):
+        self.is_correct_lengt_nit(nit)
+        self.is_correct_length_telefono(telefono)
         query = f"""
             INSERT INTO {self.table_name} 
             (nombre_negocio, nombre_contacto, departamento, municipio, direccion, nit, encargado_bodega, telefono, tipo_venta, observaciones) 
