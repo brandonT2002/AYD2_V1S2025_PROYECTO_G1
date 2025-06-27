@@ -1,4 +1,4 @@
-name: Manage RDS Infrastructure
+name: Deploy RDS
 
 on:
   workflow_dispatch:
@@ -31,9 +31,9 @@ jobs:
             -var="db_password=${{ secrets.TF_DB_PASSWORD }}"
         working-directory: ./terraform/rds
 
-      - name: Obtener endpoint RDS y guardarlo en archivo
-        run: terraform output -raw rds_endpoint > rds_endpoint.txt
-        working-directory: ./terraform/rds
+      # - name: Obtener endpoint RDS y guardarlo en archivo
+      #   run: terraform output -raw rds_endpoint > rds_endpoint.txt
+      #   working-directory: ./terraform/rds
 
-      - name: Mostrar contenido del archivo
-        run: cat ./terraform/rds_endpoint.txt
+      # - name: Mostrar contenido del archivo
+      #   run: cat ./terraform/rds_endpoint.txt
