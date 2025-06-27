@@ -37,8 +37,8 @@ Requires=docker.service
 [Service]
 Restart=always
 User=ubuntu
-WorkingDirectory=/home/ubuntu/AYD2_1S2025_PRAC_G1/Backend
-ExecStart=/usr/bin/docker run --rm -p 5000:5000 --env-file /home/ubuntu/AYD2_1S2025_PRAC_G1/Backend/.env --name api-ayd2 api-ayd2
+WorkingDirectory=/home/ubuntu/AYD2_V1S2025_PROYECTO_G1/backend
+ExecStart=/usr/bin/docker run --rm -p 5000:5000 --env-file /home/ubuntu/AYD2_V1S2025_PROYECTO_G1/backend/.env --name api-ayd2 api-ayd2
 ExecStop=/usr/bin/docker stop api-ayd2
 
 [Install]
