@@ -2,7 +2,7 @@ import { FiPackage } from "react-icons/fi";
 import { FaRegUserCircle, FaRegCalendar } from "react-icons/fa";
 import { useSendSelectorContext } from "../context/SendSelectorContext";
 
-export const SendCard = ({ envio, onSelect }) => {
+export const SendCard = ({ envio, onSelect, onSelectCobro }) => {
     const {
         id,
         numero_envio,
@@ -18,7 +18,9 @@ export const SendCard = ({ envio, onSelect }) => {
         dias_credito,
         total_quetzales,
         estado_venta = "Vigente",
+        dias_restantes,
         estado_cobro,
+        pagado,
         nombre_contacto,
     } = envio;
 
@@ -26,8 +28,16 @@ export const SendCard = ({ envio, onSelect }) => {
     const selected = isSelected(id);
 
     const handleClick = () => {
+        // console.log("Envío seleccionado:", envio);
         selectEnvio(envio);
         if (onSelect) onSelect(id);
+        if (onSelectCobro) onSelectCobro({
+            diasCredito: dias_restantes,
+            pagado: pagado,
+            total: total_quetzales,
+            pendiente: total_quetzales - pagado,
+            currentPagado: pagado,
+        });
     };
 
     const handleKeyDown = (e) => {
@@ -97,21 +107,21 @@ export const SendCard = ({ envio, onSelect }) => {
                             </span>
                             <span
                                 className={`
-                  inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium
+                  inline-flex items-center rounded-full px-3 py-1 text-xs font-bold
                   ${
-                      estado_venta === "Vigente"
+                      estado_cobro === "Pagado"
                           ? selected
                               ? "bg-green-200 text-green-800"
                               : "bg-green-100 text-green-700"
-                          : estado_venta === "Pendiente"
+                          : estado_cobro === "Pendiente"
                           ? selected
                               ? "bg-yellow-200 text-yellow-800"
                               : "bg-yellow-100 text-yellow-700"
-                          : "bg-gray-100 text-gray-700"
+                          : "bg-gray-200 text-gray-700"
                   }
                 `}
                             >
-                                {estado_venta}
+                                {estado_cobro}
                             </span>
                         </div>
 
@@ -134,7 +144,7 @@ export const SendCard = ({ envio, onSelect }) => {
                     <div className="flex items-center space-x-1 text-sm text-gray-600">
                         <FaRegCalendar className="h-4 w-4" />
                         <span>
-                            {new Date(fecha_venta).toLocaleDateString()}
+                            {new Date(fecha_salida_bodega).toLocaleDateString()}
                         </span>
                     </div>
                 </div>

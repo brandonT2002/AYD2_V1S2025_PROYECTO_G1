@@ -1,6 +1,5 @@
 import { useSendSelectorContext } from "../context/SendSelectorContext";
 import { RiInformation2Line } from "react-icons/ri";
-import { PanelSecundary } from "../../../../components/layout";
 import { TableComponent } from "../../../../components/ui";
 import { useEffect, useState } from "react";
 import { LuPackageSearch } from "react-icons/lu";
@@ -17,6 +16,7 @@ export const SelectedInfo = ({
         const columns = [
             { header: "Código", key: "codigo" },
             { header: "Producto", key: "nombre" },
+            { header: "Cantidad", key: "cantidad" },
             { header: "Precio Unitario", key: "precio_unidad" },
             { header: "Unidad de Medida", key: "unidad_medida" },
             { header: "Unidades por Fardo", key: "unidades_por_fardo" },
@@ -24,8 +24,9 @@ export const SelectedInfo = ({
         ];
 
         const dataTable = productos.map((producto) => ({
-            codigo: producto.codigo,
-            nombre: producto.nombre,
+            codigo: producto.producto_codigo,
+            nombre: producto.producto_nombre,
+            cantidad: producto.cantidad_unidades,
             precio_unidad: `Q ${producto.precio_unidad}`,
             unidad_medida: producto.unidad_medida,
             unidades_por_fardo: producto.unidades_por_fardo,

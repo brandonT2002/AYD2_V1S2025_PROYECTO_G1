@@ -23,7 +23,7 @@ import {
     requestBuscarVentas,
     requestRegistrarSalida,
 } from "../services/bajaBodega";
-
+import { toast } from "sonner";
 import { set, useForm } from "react-hook-form";
 import { data } from "react-router-dom";
 import { useState } from "react";
@@ -33,7 +33,6 @@ function IndexPage() {
     const handleSearch = () => console.log("Search action triggered");
     const { register, handleSubmit, reset } = useForm();
     const [date, setDate] = useState("");
-    //otro userform para el formulario de registro de salida
     const { register: registerExitForm, handleSubmit: handleSubmitExit } =
         useForm();
     const [sells, setSells] = useState([]);
@@ -43,9 +42,15 @@ function IndexPage() {
     const searchSells = async (searchTerm) => {
         try {
             const response = await requestBuscarVentas(searchTerm);
-            console.log("Ventas encontradas:", response.data.data);
+            // console.log("Ventas encontradas:", response.data.data);
+            if (response.data.data.length === 0) {
+                toast.error("No se encontraron ventas con ese criterio");
+                setSells([]);
+                return;
+            }
             setSells(response.data.data);
         } catch (error) {
+            toast.error("Error al buscar ventas");
             console.error("Error al buscar ventas:", error);
         }
     };
@@ -62,13 +67,12 @@ function IndexPage() {
         };
 
         try {
-            console.log("Datos de salida registrados:", exitData);
             const response = await requestRegistrarSalida(exitData);
-            console.log("Respuesta del servidor:", response.data);
             reset();
             setSelectedId(null);
             setDate("");
             setSells([]);
+            toast.success("Salida registrada exitosamente");
         } catch (error) {
             console.error("Error al registrar la salida:", error);
         }
