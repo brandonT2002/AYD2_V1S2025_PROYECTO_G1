@@ -1,6 +1,15 @@
-name: Deploy S3
+name: Deploy React (S3)
+
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - 'frontend/**'
+  pull_request:
+    types: [closed]
+    branches:
+      - main
 
 jobs:
   deploy:
@@ -20,23 +29,6 @@ jobs:
         run: |
           npm install
           npm run build
-
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v2
-        with:
-          terraform_version: 1.5.0
-
-      - name: Terraform Init
-        working-directory: terraform/s3
-        run: terraform init
-
-      - name: Terraform Apply
-        working-directory: terraform/s3
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.S3_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_ACCESS_KEY }}
-          AWS_REGION: us-east-1
-        run: terraform apply -auto-approve -var "aws_access_key_id=$AWS_ACCESS_KEY_ID" -var "aws_secret_access_key=$AWS_SECRET_ACCESS_KEY" -var "aws_region=$AWS_REGION"
 
       - name: Configure AWS CLI
         uses: aws-actions/configure-aws-credentials@v2

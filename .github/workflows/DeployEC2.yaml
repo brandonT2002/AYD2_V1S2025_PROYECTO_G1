@@ -35,4 +35,3 @@ jobs:
       - name: Terraform Apply
         run: terraform apply -auto-approve -var="ec2_key_name=${{ secrets.EC2_KEY_NAME }}" -var="github_token=${{ secrets.GH_PAT }}" -var="db_host=${{ secrets.TF_DB_HOST }}" -var="db_user=${{ secrets.TF_DB_USER }}" -var="db_password=${{ secrets.TF_DB_PASSWORD }}" -var="db_name=${{ secrets.TF_DB_NAME }}"
         working-directory: ./terraform/ec2
-

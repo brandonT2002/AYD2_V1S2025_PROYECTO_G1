@@ -1,0 +1,25 @@
+name: Pytest pruebas unitarias
+on: 
+  workflow_dispatch:  
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3  
+
+      - name: Set up Python
+        uses: actions/setup-python@v4 
+        with:
+          python-version: '3.13'  
+
+      - name: Install dependencies
+        run: |
+          cd backend 
+          pip install -r requirements.txt 
+
+      - name: Run tests
+        run: |
+          pytest -v /home/runner/work/AYD2_V1S2025_PROYECTO_G1/AYD2_V1S2025_PROYECTO_G1/backend/tests_imporcomgua/test_imporcomgua.py 
