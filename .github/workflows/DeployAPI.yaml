@@ -12,31 +12,28 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code (opcional, solo para logs)
+      - name: Checkout code
         uses: actions/checkout@v3
-
-      - name: Setup SSH key
-        uses: webfactory/ssh-agent@v0.5.4
-        with:
-          ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
 
       - name: Deploy backend on EC2 via SSH
         uses: appleboy/ssh-action@v0.1.7
         with:
           host: ${{ secrets.EC2_PUBLIC_IP }}
-          username: ${{ secrets.EC2_SSH_USER }}
+          username: ubuntu
+          key: ${{ secrets.EC2_SSH_KEY }}
           port: 22
           script: |
-            echo "Pull latest changes"
+            echo ">>> Accediendo al proyecto"
             cd /home/ubuntu/AYD2_V1S2025_PROYECTO_G1
-            git reset --hard origin/main
+            echo ">>> Reseteando y haciendo pull del repositorio"
+            git reset --hard
             git pull origin main
 
-            echo "Build new docker image"
+            echo ">>> Construyendo imagen Docker actualizada"
             cd backend
             docker build -t api-ayd2 .
 
-            echo "Restart api-docker service"
+            echo ">>> Reiniciando servicio Docker"
             sudo systemctl restart api-docker.service
 
-            echo "Deployment finished"
+            echo "Despliegue completado exitosamente"
