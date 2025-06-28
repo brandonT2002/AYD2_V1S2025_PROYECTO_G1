@@ -12,7 +12,6 @@ class DatabaseConnection(Singleton):
     
     def connect(self):
         """Establece la conexión a la base de datos"""
-        print("estas son las env",host:=Config.DB_HOST, port:=Config.DB_PORT, user:=Config.DB_USER, password:=Config.DB_PASSWORD, database:=Config.DB_NAME)
         try:
             self.connection = mysql.connector.connect(
                 host=Config.DB_HOST,
