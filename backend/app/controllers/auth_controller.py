@@ -9,7 +9,7 @@ class AuthController:
         self.auth_service.setup()
 
     def login(self):
-        """Maneja el inicio de sesión de un usuario"""
+        """Maneja el inicio de sesión de un usuario """
         try:
             data = request.get_json()
             email = data.get('email')
