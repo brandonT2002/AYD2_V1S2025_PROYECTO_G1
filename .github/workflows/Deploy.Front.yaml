@@ -6,6 +6,10 @@ on:
       - main
     paths:
       - 'frontend/**'
+  pull_request:
+    types: [closed]
+    branches:
+      - main
 
 jobs:
   deploy:

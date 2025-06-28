@@ -6,6 +6,10 @@ on:
       - main
     paths:
       - 'backend/**'
+  pull_request:
+    types: [closed]
+    branches:
+      - main
 
 jobs:
   deploy:
