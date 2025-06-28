@@ -27,6 +27,7 @@ function App() {
                 navigationItems={navigationItemsbyRole}
             />
             <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-4 py-2">
+                {/* Funciona */}
                 <Routes>
                     <Route path="/" element={<LoginPage />} />
                     <Route element={<ProtectedRoutes rolesPermitidos={[1]} />}>

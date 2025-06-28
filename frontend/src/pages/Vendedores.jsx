@@ -25,7 +25,7 @@ export default function Vendedores() {
 
   const fetchVendedores = async () => {
     try {
-      const res = await axios.get("http://127.0.0.1:5000/api/GetAllVendedores");
+      const res = await axios.get("http://3.95.223.10:5000/api/GetAllVendedores");
       const transformados = res.data.map((v) => ({
         ...v,
         comision: v.Comision || "0%"
@@ -53,11 +53,11 @@ export default function Vendedores() {
     try {
       if (form.id) {
         await axios.put(
-          `http://127.0.0.1:5000/api/ActualizarVendedor/${form.id}`,
+          `http://3.95.223.10:5000/api/ActualizarVendedor/${form.id}`,
           payload
         );
       } else {
-        await axios.post("http://127.0.0.1:5000/api/InsertarVendedor", payload);
+        await axios.post("http://3.95.223.10:5000/api/InsertarVendedor", payload);
       }
       fetchVendedores();
       setForm({ id: null, nombre: "", apellido: "", telefono: "", direccion: "", comision: "" });
@@ -70,7 +70,7 @@ export default function Vendedores() {
   const handleDelete = async (id) => {
     if (!confirm("¿Estás seguro de eliminar este vendedor?")) return;
     try {
-      await axios.delete(`http://127.0.0.1:5000/api/EliminarVendedor/${id}`);
+      await axios.delete(`http://3.95.223.10:5000/api/EliminarVendedor/${id}`);
       fetchVendedores();
       toast.success("Vendedor eliminado exitosamente");
     } catch (error) {

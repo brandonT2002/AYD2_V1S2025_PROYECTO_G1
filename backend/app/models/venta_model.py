@@ -13,7 +13,7 @@ class VentaModel(BaseModel):
                    vend.nombre as vendedor_nombre, vend.apellido as vendedor_apellido
             FROM ventas v
             JOIN clientes c ON v.cliente_id = c.id
-            JOIN Vendedores vend ON v.vendedor_id = vend.id
+            JOIN vendedores vend ON v.vendedor_id = vend.id
             WHERE v.numero_envio LIKE %s
             AND v.estado_venta = 'Vigente'
             ORDER BY v.fecha_venta DESC
@@ -44,7 +44,7 @@ class VentaModel(BaseModel):
                    vend.nombre as vendedor_nombre, vend.apellido as vendedor_apellido
             FROM ventas v
             JOIN clientes c ON v.cliente_id = c.id
-            JOIN Vendedores vend ON v.vendedor_id = vend.id
+            JOIN vendedores vend ON v.vendedor_id = vend.id
             WHERE (c.nombre_contacto LIKE %s OR c.nombre_negocio LIKE %s)
             AND v.estado_venta = 'Vigente'
             ORDER BY v.fecha_venta DESC
@@ -78,7 +78,7 @@ class VentaModel(BaseModel):
                    (vd.cantidad_unidades * p.precio_unidad) as total_producto
             FROM ventas v
             JOIN clientes c ON v.cliente_id = c.id
-            JOIN Vendedores vend ON v.vendedor_id = vend.id
+            JOIN vendedores vend ON v.vendedor_id = vend.id
             LEFT JOIN venta_detalle vd ON v.id = vd.ventas_id
             LEFT JOIN productos p ON vd.producto_id = p.id
             WHERE v.id = %s
