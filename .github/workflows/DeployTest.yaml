@@ -1,22 +1,25 @@
 name: Deploy Test 
-on:
-  push:
-    branches:
-      - main
-    paths:
-      - 'backend**'
+# on:
+#   push:
+#     branches:
+#       - main
+#     paths:
+#       - 'backend**'
+
+on: 
+  workflow_dispatch:
+  
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Deploy Backend via SSH
-        uses: appleboy/ssh-action@v0.1.7
-        with:
-          host: ${{ secrets.EC2_PUBLIC_IP }}
-          username: ubuntu
-          key: ${{ secrets.EC2_SSH_KEY }}
-          port: 22
-          script: |
-            pytest -v
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Set up Python
+        run: ls
+        run: cd/backend
+        run: pytest -v
+      
+
