@@ -20,17 +20,18 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           port: 22
           script: |
-            echo ">>> Entrando al directorio del proyecto"
-            cd ~/AYD2_V1S2025_PROYECTO_G1/backend
+            echo ">>> Entrando al directorio del backend"
+            cd /home/ubuntu/AYD2_V1S2025_PROYECTO_G1
 
-            echo ">>> Reseteando y actualizando código"
-            git fetch origin main
-            git reset --hard origin/main
+            echo ">>> Reseteando y actualizando desde main"
+            git reset --hard
+            git pull origin main
 
-            echo ">>> Construyendo nueva imagen Docker"
+            echo ">>> Construyendo imagen Docker"
+            cd backend
             docker build -t api-ayd2 .
 
-            echo ">>> Reiniciando servicio Docker"
+            echo ">>> Reiniciando el servicio Docker"
             sudo systemctl restart api-docker.service
 
-            echo "✅ Despliegue completado"
+            echo "Despliegue completado correctamente"
