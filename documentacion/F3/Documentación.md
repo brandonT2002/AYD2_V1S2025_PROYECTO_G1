@@ -77,7 +77,7 @@ IMPORCOMGUA busca digitalizar de extremo a extremo sus procesos, inventario, com
 
 ### B.2 Diagrama de CDU Primera descomposición
 
-![alt text](image-3.png)
+![alt text](image-4.png)
 
 ### B. 4 Identificación de Stakeholders
 
@@ -507,8 +507,214 @@ IMPORCOMGUA busca digitalizar de extremo a extremo sus procesos, inventario, com
 
 # Documentación fase 3
 
+### 1. Gestionar Inventario (CUN 100)
+
+- **RF-101 Registrar Salida de Bodega**  
+  - Registrar salida de mercancía de la bodega.
+
+- **RF-102 Actualizar Inventario**  
+  - Actualizar cantidades y registros del inventario.
+
+- **RF-103 Gestionar Inventario**  
+  - Administrar movimientos e ingresos de inventario.
+
+- **RF-104 Gestiones Aduana (DUCA)**  
+  - Tramitar y gestionar el DUCA con la Aduana.
+
+- **RF-105 Gestionar Stock Bajo**  
+  - Detectar niveles bajos de inventario y notificar.
+
+---
+
+### 2. Gestionar Datos (CUN 200)
+
+- **RF-205 Registrar Nuevo Cliente**  
+  - Registrar un nuevo cliente en el sistema.
+
+- **RF-206 Consultar Clientes**  
+  - Buscar y mostrar información de clientes.
+
+- **RF-207 Actualizar Datos de Cliente**  
+  - Modificar información de un cliente existente.
+
+- **RF-208 Dar de Baja Cliente**  
+  - Desactivar o eliminar un cliente.
+
+- **RF-209 Registrar Producto**  
+  - Registrar un nuevo producto en el catálogo.
+
+- **RF-210 Consultar Producto**  
+  - Buscar y mostrar información de productos.
+
+- **RF-211 Actualizar Datos de Producto**  
+  - Modificar información de un producto existente.
+
+- **RF-212 Retirar Producto de Catálogo**  
+  - Eliminar o desactivar un producto.
+
+- **RF-213 Registrar Vendedor**  
+  - Registrar un nuevo vendedor en el sistema.
+
+- **RF-214 Consultar Vendedor**  
+  - Buscar y mostrar información de vendedores.
+
+- **RF-215 Actualizar Datos de Vendedor**  
+  - Modificar información de un vendedor existente.
+
+- **RF-216 Dar de Baja Vendedor**  
+  - Desactivar o eliminar un vendedor.
+
+- **RF-218 Registrar Usuarios**  
+  - Registrar un nuevo usuario del sistema.
+
+- **RF-219 Actualizar Datos de Usuario**  
+  - Modificar información de un usuario existente.
+
+- **RF-220 Consultar Usuarios**  
+  - Buscar y mostrar información de usuarios.
+
+- **RF-221 Dar de Baja Usuario**  
+  - Desactivar o eliminar un usuario.
+
+---
+
+### 3. Gestionar Ventas (CUN 300)
+
+- **RF-301 Registrar Venta**  
+  - Registrar una venta con cliente, productos, forma de pago y vendedor.
+
+- **RF-302 Consultar Cliente**  
+  - Buscar detalles de un cliente.
+
+- **RF-303 Consultar Productos**  
+  - Buscar detalles de un producto.
+
+- **RF-304 Consultar Vendedores**  
+  - Buscar detalles de un vendedor.
+
+- **RF-305 Consultar Venta**  
+  - Buscar y mostrar el detalle de una venta.
+
+---
+
+### 4. Manejar Pagos (CUN 400)
+
+- **RF-401 Consultar Información de Ventas**  
+  - Obtener listado y estado de ventas.
+
+- **RF-402 Registrar Pago**  
+  - Registrar el pago de una o varias ventas.
+
+- **RF-403 Gestionar Saldo de Cliente**  
+  - Actualizar saldo pendiente de un cliente.
+
+- **RF-404 Revisar Saldo de Cliente**  
+  - Mostrar el saldo actual pendiente de cobro.
+
+---
+
+### 5. Validación de Identidad (CUN 500)
+
+- **RF-501 Validación de datos de Usuario**  
+  - Solicitar usuario y contraseña; verificar identidad y rol.
+
+- **RF-502 Datos Gerencia General**  
+  - Consultar y actualizar datos de la Gerencia General.
+
+- **RF-503 Datos Gerencia de Ventas y Finanzas**  
+  - Consultar y actualizar datos del Gerente de Ventas y Finanzas.
+
+- **RF-504 Datos Gerencia de Inventario**  
+  - Consultar y actualizar datos del Gerente de Inventario.
 
 
+## B. Requerimientos no funcionales
+
+### 2.1 Rendimiento y capacidad
+- Las operaciones de alta — ventas, abonos y recepciones de inventario— deben finalizar en **≤ 5 s** con hasta **200 transacciones concurrentes**.  
+- Para lograrlo se emplearán índices en las tablas principales y consultas paginadas; si el volumen crece, bastará optimizar los índices o mover la base a un servidor con más recursos, sin tocar el código.
+
+### 2.2 Escalabilidad
+- El sistema se construirá con **capas separadas (presentación, lógica y datos)** y variables de entorno para las conexiones; así, en el futuro podrá trasladarse a un servidor con mayor CPU/RAM o duplicarse en otra instancia **sin reescribir la aplicación**.  
+
+### 2.3 Disponibilidad
+- Se exige una disponibilidad práctica de **≥ 95 %** en horario laboral.  
+- Una única instancia con reinicios automáticos ante fallo.
+
+### 2.4 Seguridad y cumplimiento
+- Contraseñas almacenadas con **SHA-256**.  
+- Acceso cifrado vía **HTTPS (TLS 1.2 o superior)**.  
+- Control de acceso por roles (Administrador, Vendedor, Bodeguero, Cobranza, Cliente).  
+- Se registrará en bitácora la creación, edición o eliminación de ventas, pagos e inventario para auditoría.
+
+### 2.5 Usabilidad
+- Interfaz web **responsiva** con validación en línea para minimizar errores de captura.  
+- Usuarios operativos (bodega y cobranza) deberán dominar sus tareas habituales tras **dos sesiones de práctica** como máximo.
+
+### 2.6 Mantenibilidad
+- Repositorio Git con código comentado y un **README** de instalación.  
+- Al menos **una prueba automática** por módulo crítico (Inventario, Ventas, Pagos).  
+
+### 2.7 Portabilidad / despliegue
+- La aplicación debe poder ejecutarse localmente (ambiente de desarrollo) y, en su entrega final, **deploy** a una instancia **AWS EC2**.
+- La misma versión de código debe correr sin cambios entre ambos entornos.
+
+
+## C. Requerimientos de Restricción
+
+### R-01: Restricción Temporal
+**Descripción:** El proyecto debe completarse en el transcurso de un mes, dividido en tres fases específicas con entregables definidos.
+
+**Justificación:** La empresa IMPORCOMGUA requiere una implementación rápida debido a las ineficiencias operativas actuales que están impactando la productividad y capacidad de respuesta hacia clientes.
+
+**Impacto en la arquitectura:**
+- Necesidad de implementar una arquitectura modular que permita desarrollo incremental
+- Priorización de funcionalidades críticas para el MVP (Fase 2)
+- Selección de tecnologías maduras y bien documentadas para reducir curva de aprendizaje
+- Reutilización de componentes y patrones de diseño establecidos
+
+### R-02: Restricción de Recursos Humanos
+**Descripción:** El desarrollo debe ser realizado por un equipo de tamaño limitado (grupo de 7 personas) con roles específicos y participación validada de todos los integrantes.
+
+**Justificación:** Todos los integrantes deben estar presentes en la calificación y tener commits sustanciales a lo largo del desarrollo.
+
+**Impacto en la arquitectura:**
+- Diseño de arquitectura simple y comprensible para facilitar el trabajo colaborativo
+- Implementación de patrones de diseño conocidos para reducir complejidad
+- Documentación exhaustiva para facilitar la colaboración del equipo
+- División clara de responsabilidades entre módulos del sistema
+
+### R-03: Restricción de Plataforma Web
+**Descripción:** La solución debe ser una aplicación web que permita automatizar y optimizar los procesos clave del negocio.
+
+**Justificación:** IMPORCOMGUA requiere una solución tecnológica web accesible desde diferentes ubicaciones y dispositivos.
+
+**Impacto en la arquitectura:**
+- Implementación de protocolos web estándar (HTTP/HTTPS)
+- Consideración de navegadores web como plataforma de ejecución
+- Diseño de interfaces adaptables a diferentes dispositivos
+
+### R-04: Restricción de Despliegue en la Nube
+**Descripción:** El sistema final debe ser desplegado en un entorno en la nube, preparado para el entorno operativo de IMPORCOMGUA.
+
+**Justificación:** Necesidad de escalabilidad, disponibilidad y mantenimiento eficiente del sistema.
+
+**Impacto en la arquitectura:**
+- Arquitectura compatible con servicios de nube
+- Implementación de patrones cloud-native
+- Configuración para ambientes distribuidos
+
+### R-05: Restricción de Metodología Ágil
+**Descripción:** El desarrollo debe seguir una metodología ágil con iteraciones rápidas, validación continua y entrega incremental de funcionalidades.
+
+**Justificación:** Necesidad de gestión eficiente del tiempo, colaboración continua y alineación con prioridades del cliente.
+
+**Impacto en la arquitectura:**
+- Arquitectura modular que permita desarrollo e integración incremental
+- Diseño de componentes independientes para facilitar iteraciones
+- Implementación de interfaces bien definidas entre módulos
+
+---
 
 
 
@@ -1138,6 +1344,88 @@ IMPORCOMGUA busca digitalizar de extremo a extremo sus procesos, inventario, com
 | **Resumen**                | Este caso de uso se centra en el manejo de los pagos. El **Administrador** puede registrar pagos y gestionar los saldos de los clientes, mientras que los **Clientes** pueden consultar su saldo y realizar pagos.                                                                                                                                                                                                                                                                                     |
 | **Flujo de trabajo**       | **Flujo Básico (Normal):** <br> 1. El **Administrador** consulta la información de la venta (RF401). <br> 2. El **Administrador** registra un pago (RF402). <br> 3. El **Administrador** gestiona el saldo de los clientes (RF403). <br> 4. El **Cliente** revisa su saldo (RF404). <br>                                                                                                                                                                                                                                                                                                                     |
 | **Mejoras**                | Integración con un sistema de pagos en línea y notificaciones automáticas de saldos y pagos realizados para mejorar la experiencia del cliente.                                                                                                                                                                                                                                                                                                                                                        |
+
+
+# Documentación Fase 3
+
+
+
+## 3. Diagramas CDU Expandidos
+
+### 3.1. CDU 100 Gestionar Inventario
+![alt text](image-5.png)
+
+#### 3.1.1 Descripción de CDU 100 Gestionar Inventario
+| **Campo**                  | **Descripción**                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| -------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Nombre del caso de uso** | **CUN 100 Gestionar Inventario**                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| **Actores**                | - **Gerencia General**: Encargado de la gestión del inventario. <br> - **Proveedores**: Involucrados en el proceso de abastecimiento. <br> - **Aduana**: Maneja los procesos aduaneros relacionados con los productos.       <br> - **Proveedres**: Entrega el producto.      <br> - **Gerente de Invenario**: Maneja el stock de los productos. <br> - **Proveedores de Email**: Envia la alerta de stock bajo.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| **Propósito**              | Gestionar las entradas, salidas y actualización del inventario, asegurando que todos los productos estén correctamente registrados y disponibles en el sistema.                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| **Resumen**                | El caso de uso **Gestionar Inventario** incluye el registro de productos que entran y salen del inventario, la actualización del mismo y las gestiones relacionadas con la aduana. Los actores realizan tareas específicas como registrar productos y gestionar el cumplimiento de las normativas aduaneras.                                                                                                                                                                                                                                                                                                                      |
+| **Flujo de trabajo**       | **Flujo Básico (Normal):** <br> 1. El **Gerente General** registra la salida de productos de la bodega (**RF101 Registrar Salida de Bodega**). <br> 2. El sistema actualiza el inventario (**RF102 Actualizar Inventario**). <br> 3. El inventario es gestionado (**RF103 Gestionar Inventario**). <br> 4. La **Aduana** realiza gestiones aduaneras (**RF104 Gestiones Aduana (DUCA)**).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| **Mejoras**                | Integración con sistemas de trazabilidad en tiempo real para un mejor seguimiento de los productos.                                                                                                                                                                                                                                                                    |
+
+
+
+### 3.2. CDU 200 Gestionar Datos
+
+![alt text](image-6.png)
+![alt text](image-7.png)
+#### 3.2.1 Descripción de CDU 200 Gestionar Datos
+
+| **Campo**                  | **Descripción**                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Nombre del caso de uso** | **CUN 200 Gestionar Datos**                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| **Actores**                | - **Gerente General**: Encargado de gestionar los datos (clientes, productos, vendedores). <br> - **Cliente**: Interactúa con el sistema para registrar y consultar sus datos. <br> - **Proveedor**: Se encarga del registro de productos y actualización de su información. <br> - **Vendedor**: Registra y actualiza datos de los vendedores y consulta la información.     **Gerente de Inventario**: Maneja todos los productos de IMPORCOMGUA                                                                                                                  |
+| **Propósito**              | Gestionar la información de clientes, productos y vendedores, permitiendo su registro, actualización y consulta de manera eficiente y organizada.                                                                                                                                                                                                                                                                                                                                                |
+| **Resumen**                | El caso de uso **Gestionar Datos** se centra en tres áreas principales: <br> 1. **Clientes**: Involucra su registro, actualización y consulta. <br> 2. **Productos**: Gestión de los productos a través del registro, actualización y retiro. <br> 3. **Vendedores**: Registro de vendedores, actualización y gestión de bajas.                                                                                                                                                                  |
+| **Flujo de trabajo**       | **Flujo Básico (Normal):** <br> 1. **Administrador** registra un nuevo **Cliente** (RF205). <br> 2. El **Administrador** actualiza la información del cliente (RF206). <br> 3. Se consulta el **Cliente** (RF207). <br> 4. El **Administrador** gestiona **Productos** (RF209) y **Vendedores** (RF213).  |
+| **Prioridad**              | Alta, ya que gestionar los datos correctamente es crucial para el funcionamiento eficiente del sistema de gestión.                                                                                                                                                                                                                                                                                                                                                                               |
+| **Mejoras**                | Integración con un sistema automatizado para la validación de datos y mejorar la interacción con el cliente en tiempo real.                                                                                                                                                                                                                                                                                                                                                                      |
+
+
+
+
+### 3.3. CDU 300 Gestionar Ventas
+![alt text](image-8.png)
+
+#### 3.3.1 Descripción de CDU 300 Gestionar Ventas
+| **Campo**                  | **Descripción**                                                                                                                                                                                                                                                                                                                                                                                              |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Nombre del caso de uso** | **CUN 300 Gestionar Ventas**                                                                                                                                                                                                                                                                                                                                                                                 |
+| **Actores**                | - **Gerente General**: Encargado de registrar y consultar las ventas.    <br>         -**Gerente de Ventas y finanzas**: Registra ventas                                                                                                                                                                                                                                                                                                                                                                                               |
+| **Propósito**              | Registrar, consultar y gestionar las ventas dentro del sistema, interactuando con los datos de clientes, productos y vendedores.                                                                                                                                                                                                                                                                             |
+| **Resumen**                | El caso de uso **Gestionar Ventas** cubre el proceso de registrar una venta, consultar los clientes, productos y vendedores asociados a cada transacción.                                                                                                                                                                                                                                                    |
+| **Flujo de trabajo**       | **Flujo Básico (Normal):** <br> 1. El **Gerente General** registra una venta (RF301). <br> 2. El **Administrador** consulta los **clientes** (RF302). <br> 3. El **Gerente General** consulta los **productos** involucrados en la venta (RF303). <br> 4. El **Administrador** consulta los **vendedores** relacionados con la venta (RF304). <br> 5. El **Administrador** consulta la venta registrada (RF305). |
+| **Prioridad**              | Alta, ya que el proceso de ventas es crucial para la operación del negocio.                                                                                                                                                                                                                                                                                                                                  |
+| **Mejoras**                | Se podría integrar un sistema automatizado para recomendaciones de productos basados en ventas previas y optimización del proceso de facturación.                                                                                                                                                                                                                                                            |
+
+### 3.4. CDU 400 Manejar Pagos
+![alt text](image-9.png)
+
+#### 3.4.1 Descripción de CDU 400 Manejar Pagos
+
+| **Campo**                  | **Descripción**                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Nombre del caso de uso** | **CUN 400 Manejar Pagos**                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| **Actores**                | - **Gerente General**: Encargado de registrar pagos, consultar ventas y gestionar saldos de clientes. <br> - **Cliente**: Revisa su saldo y realiza pagos.             <br> - **Gerente de Ventas y Finanzas **: Registra los pagos.                                                                                                                                                                                                                                                                                                                                     |
+| **Propósito**              | Gestionar el proceso de pagos, permitiendo el registro de pagos, consulta de ventas y gestión de saldos de los clientes.                                                                                                                                                                                                                                                                                                                                                                               |
+| **Resumen**                | Este caso de uso se centra en el manejo de los pagos. El **Gerente de ventas y Fianzas** puede registrar pagos y gestionar los saldos de los clientes, mientras que los **Clientes** pueden consultar su saldo y realizar pagos.                                                                                                                                                                                                                                                                                     |
+| **Flujo de trabajo**       | **Flujo Básico (Normal):** <br> 1. El **Gerente de ventas y Fianzas** consulta la información de la venta (RF401). <br> 2. El **Administrador** registra un pago (RF402). <br> 3. El **Gerente General** gestiona el saldo de los clientes (RF403). <br> 4. El **Cliente** revisa su saldo (RF404). <br>                                                                                                                                                                                                                                                                                                                     |
+| **Mejoras**                | Integración con un sistema de pagos en línea y notificaciones automáticas de saldos y pagos realizados para mejorar la experiencia del cliente.                                                                                                                                                                                                                                                                                                                                                        |
+
+
+![alt text](image-10.png)
+
+| **Nombre del caso de uso** | **CUN 500 Validación de Identidad**                                                                                   |
+|----------------------------|------------------------------------------------------------------------------------------------------------------------|
+| **Actores**                | - **Gerencia General** <br> - **Gerente de Ventas y Finanzas** <br> - **Gerente de Inventario**                         |
+| **Propósito**              | Verificar la identidad del usuario y determinar su rol para habilitar el acceso a los datos correspondientes.          |
+| **Resumen**                | El usuario ingresa sus credenciales (RF-501), el sistema valida su identidad y, según su rol, incluye RF-502, RF-503 o RF-504. |
+| **Flujo de trabajo**       | **Flujo Básico:** <br> 1. El usuario introduce usuario y contraseña (RF-501). <br> 2. El sistema valida credenciales. <br> 3. Si es **Gerencia General**, carga RF-502; si es **Ventas y Finanzas**, carga RF-503; si es **Inventario**, carga RF-504. <br> 4. El usuario accede con los permisos adecuados. |
+| **Mejoras**                | - Autenticación multifactor (2FA) <br> - Integración con un directorio corporativo (LDAP/AD)                             |
+
+
 
 
 # Documentación Fase 1
