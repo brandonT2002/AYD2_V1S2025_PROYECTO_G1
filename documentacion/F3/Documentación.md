@@ -2212,7 +2212,171 @@ https://trello.com/b/JeWJP5vb/fase-iii-grupo-1-sprint-24-6-27-6
 | **Node.js**    | Backend (intermediario fronted)                                                                  | Potente para aplicaciones en tiempo real y con alta concurrencia, ideal para manejar múltiples conexiones simultáneas. |
 
 
+# 12. Pruebas Unitarias
+## Pruebas Unitarias
 
+Las pruebas unitarias son fragmentos de código que verifican que funciones o métodos específicos del sistema funcionen correctamente de forma aislada. Su objetivo es asegurar que cada unidad mínima de funcionalidad (por ejemplo, una función) cumpla con los requisitos esperados.
 
+**Importancia de las pruebas unitarias:**
+- Permiten detectar errores de manera temprana, antes de que el software llegue a producción.
+- Facilitan el mantenimiento, ya que al modificar el código, las pruebas ayudan a comprobar que no se haya roto ninguna funcionalidad existente.
+- Documentan el comportamiento esperado de cada parte del sistema.
 
+**¿Cómo funcionan?**
+Cada función de prueba utiliza `assert` para comparar el resultado real de una función con el resultado esperado. Si la condición no se cumple, la prueba falla y muestra un mensaje de error.
 
+**Ejemplos de pruebas implementadas:**
+- `test_nit_exacto_7_digitos`: Verifica que el NIT tenga exactamente 7 dígitos.
+- `test_telefono_exacto_8_digitos` y `test_telefono_exacto_8_digitos_funcion`: Comprueban que el teléfono tenga exactamente 8 dígitos.
+- `test_fecha_formato_correcto`: Valida que la fecha tenga el formato correcto (YYYY-MM-DD, 10 caracteres).
+- `test_contenedor_es_numero`: Verifica que el número de contenedor sea numérico.
+
+Estas pruebas ayudan a garantizar que los datos ingresados cumplen con los requisitos del sistema y permiten detectar automáticamente cualquier validación que falle.
+
+# 13. Pruebas de Integración
+
+Las pruebas de integración son un nivel de prueba que se centra en la interacción entre diferentes módulos o componentes del sistema. Su objetivo es identificar problemas en la comunicación y el intercambio de datos entre estas partes.
+
+**Importancia de las pruebas de integración:**
+- Detectan errores que pueden surgir cuando los módulos interactúan entre sí, lo que no se puede capturar en pruebas unitarias.
+- Aseguran que los flujos de trabajo completos funcionen como se espera, desde el inicio hasta el final.
+- Validan que las interfaces entre componentes sean correctas y que los datos se transfieran adecuadamente.
+
+**¿Cómo funcionan?**
+Las pruebas de integración suelen implicar la configuración de un entorno de prueba que simula el entorno de producción. Esto puede incluir bases de datos, servicios externos y otros componentes del sistema. Las pruebas se ejecutan para verificar que los módulos interactúan correctamente y que el sistema en su conjunto cumple con los requisitos.
+
+Estas pruebas de integración verifican cómo interactúan diferentes partes de tu aplicación (por ejemplo, rutas, servicios y respuestas HTTP) al trabajar juntas. Aquí tienes una explicación de cada prueba:
+
+---
+
+### 1. `test_create_producto_success`
+- **Propósito:** Verifica que la API puede crear un producto correctamente.
+- **Cómo funciona:** 
+  - Usa `patch` para simular el método `create` del servicio de productos, devolviendo un producto ficticio.
+  - Envía una petición POST a `/api/InsertarProducto` con datos de ejemplo.
+  - Comprueba que la respuesta es 200 (éxito) y que el nombre del producto en la respuesta es correcto.
+
+---
+
+### 2. `test_get_producto_found`
+- **Propósito:** Comprueba que la API devuelve un producto existente.
+- **Cómo funciona:**
+  - Simula el método `get_producto` para devolver un producto ficticio.
+  - Envía una petición GET a `/api/GetProducto/1`.
+  - Verifica que la respuesta es 200 y que el ID del producto es el esperado.
+
+---
+
+### 3. `test_get_producto_not_found`
+- **Propósito:** Asegura que la API responde correctamente cuando el producto no existe.
+- **Cómo funciona:**
+  - Simula que `get_producto` devuelve `None` (producto no encontrado).
+  - Envía una petición GET a `/api/GetProducto/999`.
+  - Verifica que la respuesta es 404 y que el mensaje de error es el adecuado.
+
+---
+
+**Puntos clave:**
+- Estas pruebas usan mocks para aislar la lógica de negocio y evitar dependencias externas (como bases de datos reales).
+- Evalúan la integración entre las rutas de la API y los servicios, asegurando que la aplicación responde correctamente ante diferentes escenarios.
+- Son útiles para detectar errores en la comunicación entre componentes, que no se ven en pruebas unitarias.
+
+# 14. Pruebas de Aceptación
+Las pruebas de aceptación son un tipo de prueba que se centra en validar si el sistema cumple con los requisitos y expectativas del cliente o usuario final. Estas pruebas se realizan generalmente al final del ciclo de desarrollo y tienen como objetivo asegurar que el software es apto para su uso.
+
+**Importancia de las pruebas de aceptación:**
+- Validan que el sistema cumple con los requisitos funcionales y no funcionales especificados.
+- Aseguran que el software es usable y cumple con las expectativas del usuario final.
+- Proporcionan una última línea de defensa antes de que el software se entregue al cliente o se implemente en producción.
+
+**¿Cómo funcionan?**
+Las pruebas de aceptación suelen implicar la ejecución de casos de prueba que simulan escenarios del mundo real. Estas pruebas pueden ser manuales o automatizadas y se centran en verificar que el sistema funciona como se espera en situaciones reales de uso.
+
+### Ejemplo de pruebas de aceptación
+
+A continuación se presenta una prueba de aceptación automatizada que valida el flujo completo de autenticación de usuarios en el sistema IMPORCOMGUA:
+
+```python
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+import time
+
+# Ruta al ChromeDriver
+PATH = '/Users/sebas/Documents/Vacas de junio/AYD2_V1S2025_PROYECTO_G1/backend/tests_imporcomgua/chromedriver'
+service = Service(PATH)
+driver = webdriver.Chrome(service=service)
+
+# Abre la página de login
+driver.get("http://localhost:5173/")
+
+# Esperar a que se renderice la página (puedes mejorar esto con WebDriverWait)
+time.sleep(2)
+
+# Encontrar campo de correo por el atributo 'placeholder'
+email_input = driver.find_element(By.XPATH, "//input[@placeholder='usuario@correo.com']")
+email_input.clear()
+email_input.send_keys("admin@gmail.com")
+
+# Encontrar campo de contraseña por el atributo 'placeholder'
+password_input = driver.find_element(By.XPATH, "//input[@placeholder='********']")
+password_input.clear()
+password_input.send_keys("admin123")
+
+# Enviar el formulario simulando Enter o dando clic al botón
+password_input.send_keys(Keys.ENTER)
+
+# Esperar un momento para ver el resultado
+time.sleep(5)
+
+# Validar si redirigió a la ruta esperada (ej. /inventario para admin)
+assert "/inventario" in driver.current_url or "/ventas" in driver.current_url, "Login falló o no redirigió correctamente"
+
+print("Login exitoso y redirección correcta")
+
+# Cierra el navegador
+driver.quit()
+```
+
+### Explicación de la prueba de aceptación:
+
+**Objetivo:** Validar que un usuario administrador puede iniciar sesión correctamente en el sistema y ser redirigido a la página apropiada según su rol.
+
+**Flujo de la prueba:**
+
+1. **Configuración del entorno:**
+   - Inicializa el navegador Chrome con ChromeDriver
+   - Navega a la página principal del sistema (http://localhost:5173/)
+
+2. **Interacción con la interfaz de usuario:**
+   - Localiza el campo de correo electrónico usando su placeholder "usuario@correo.com"
+   - Ingresa las credenciales de administrador: "admin@gmail.com"
+   - Localiza el campo de contraseña usando su placeholder "********"
+   - Ingresa la contraseña: "admin123"
+
+3. **Ejecución de la acción:**
+   - Envía el formulario presionando la tecla Enter
+   - Simula el comportamiento real de un usuario
+
+4. **Validación del resultado:**
+   - Verifica que la URL actual contenga "/inventario" o "/ventas"
+   - Confirma que la redirección se realizó correctamente según el rol del usuario
+   - Utiliza assertion para garantizar que el login fue exitoso
+
+5. **Limpieza:**
+   - Cierra el navegador automáticamente
+
+**Criterios de aceptación validados:**
+- El sistema acepta credenciales válidas
+- La autenticación funciona correctamente  
+- La redirección se realiza según el rol del usuario (administrador → inventario/ventas)
+- La interfaz de usuario responde adecuadamente a las interacciones
+
+**Importancia de esta prueba:**
+- Valida el flujo crítico de autenticación del sistema
+- Simula el comportamiento real de un usuario final
+- Verifica la integración completa entre frontend, backend y base de datos
+- Asegura que los roles y permisos funcionan correctamente
+
+Esta prueba representa un escenario de uso real donde un administrador accede al sistema para realizar sus tareas diarias de gestión de inventario o ventas.

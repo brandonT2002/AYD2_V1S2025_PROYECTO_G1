@@ -1,16 +1,16 @@
 [Grabación - Daily 27 de Junio](https://drive.google.com/file/d/1-_mGP0cuPe4uZPAOUI2k2aACiunrz70L/view?usp=sharing)
 
-Brandon: ayer empezo a crear diferentes instancias con terraform, hoy comenzara la parte del despliegue y ci/cd, no cuenta con problemas
+**Brandon:** Ayer empezó a crear diferentes instancias con Terraform. Hoy comenzará la parte de despliegue y CI/CD. No presenta problemas.
 
-Joab: ayer logro terminar el frontend con conexiones, hoy se dedicara a arreglar la documentacion con el feedback de las fases pasadas, no cuenta con inconvenientes.
+**Joab:** Ayer logró terminar el frontend con conexiones. Hoy se dedicará a arreglar la documentación según el feedback de fases pasadas. Sin inconvenientes.
 
-Luis: ayer completo pruebas unitarias de su lado, hoy actualizara la documentacion de la fase 3, no cuenta con problemas
+**Luis:** Ayer completó pruebas unitarias. Hoy actualizará la documentación de la fase 3. No presenta problemas.
 
-Jose: ayer continuo con dockerizacion, hoy trabajara con Brandon la parte de ci/cd, no cuenta con impedimentos.
+**Jose:** Ayer continuó con la dockerización. Hoy trabajará junto a Brandon en la parte de CI/CD. Sin impedimentos.
 
-Willy: ayer implemento el envio de correo dentro del backend de manera exitosa, hoy hara matrices de trazabilidad corregidas, no cuenta con problemas
+**Willy:** Ayer implementó exitosamente el envío de correos en el backend. Hoy corregirá las matrices de trazabilidad. No presenta problemas.
 
-Sebas: ayer logre decidir cual seria la ultima prueba unitara, y hoy arregle ciertas pruebas unitarias, al igual que realizar la prueba de aceptacion, no hay impedimentos
+**Sebas:** Ayer decidió cuál sería la última prueba unitaria. Hoy arregló ciertas pruebas unitarias y realizó la prueba de aceptación. Sin impedimentos.
 
 
 
