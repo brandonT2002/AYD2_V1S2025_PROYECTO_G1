@@ -1,7 +1,9 @@
 #!/bin/bash
 sudo apt-get update
 
-sudo apt-get install -y git apt-transport-https ca-certificates curl software-properties-common
+sudo apt-get install -y git apt-transport-https ca-certificates curl software-properties-common python3-pip
+
+pip3 install flask flask_cors python-dotenv mysql-connector-python
 
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
 
@@ -16,8 +18,6 @@ sudo usermod -aG docker ubuntu
 
 cd /home/ubuntu
 git clone https://${github_token}@github.com/sebastian-godoy/AYD2_V1S2025_PROYECTO_G1.git
-
-cd AYD2_V1S2025_PROYECTO_G1/backend
 
 cat <<EOF > /home/ubuntu/AYD2_V1S2025_PROYECTO_G1/backend/app/config/.env
 DB_HOST=${db_host}
