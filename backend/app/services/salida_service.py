@@ -2,6 +2,7 @@ from app.services.base_service import BaseService
 from app.models.venta_model import VentaModel
 from app.models.Inventario_model import InventarioModel
 from app.models.Cliente import Cliente
+from app.models.auth_model import AuthModel
 from datetime import datetime
 from app.mail.notif_email import enviar_correo
 import os
@@ -16,6 +17,7 @@ class SalidaService(BaseService):
         self.venta_model = VentaModel()
         self.inventario_model = InventarioModel()
         self.Cliente = Cliente()
+        self.auth_model = AuthModel()
     
     def buscar_ventas(self, criterio, valor):
         """Busca ventas según el criterio especificado"""
@@ -84,23 +86,39 @@ class SalidaService(BaseService):
         print(f"\n📋 RESUMEN DE SALIDA:")
         print(f"   Total productos procesados: {len(venta)}")
         print(f"   Productos con stock bajo: {len(productos_con_stock_bajo)}")
+
+        # unimos por comas los ids de los productos con stock bajo
+        id_productos_stock_bajo = ", ".join([str(p['producto_id']) for p in productos_con_stock_bajo])
         
         if productos_con_stock_bajo:
+            fecha = datetime.now().strftime('%d/%m/%Y a las %I:%M %p')
+            print("Esta es la fecha:", fecha)
+            
+            # Obtener usuarios con rol_id 1 (Gerencia General) o 3 (Gerente de Inventario)
+            usuarios_notificar = self.auth_model.obtener_usuarios_por_roles([1, 3])
+            
+            if usuarios_notificar:
+                print(f"📧 Enviando notificaciones a {len(usuarios_notificar)} usuarios...")
+                for usuario in usuarios_notificar:
+                    try:
+                        enviar_correo(
+                            destinatario=usuario['correo'],
+                            nombre=usuario['nombre'],
+                            fecha=fecha,
+                            id_productos_stock_bajo=id_productos_stock_bajo
+                        )
+                        print(f"   ✅ Correo enviado a {usuario['nombre']} ({usuario['correo']})")
+                    except Exception as e:
+                        print(f"   ❌ Error enviando correo a {usuario['nombre']}: {str(e)}")
+            else:
+                print("⚠️  No se encontraron usuarios para notificar")
+            
             print(f"\n🚨 ALERTA - PRODUCTOS CON STOCK BAJO:")
             for producto in productos_con_stock_bajo:
                 print(f"   ⚠️  {producto['producto_nombre']}: {producto['unidades_restantes']} unidades ({producto['porcentaje_actual']}%)")
         else:
             print(f"\n✅ TODOS LOS PRODUCTOS MANTIENEN STOCK ADECUADO")
 
-
-        # unimos por comas los ids de los productos con stock bajo
-        id_productos_stock_bajo = ", ".join([str(p['producto_id']) for p in productos_con_stock_bajo])
-
-        # Enviar correo de notificación si hay productos con stock bajo
-        if productos_con_stock_bajo:
-            fecha=datetime.now().strftime('%d/%m/%Y a las %I:%M %p')
-            print("Esta es la fecha:", fecha)
-            enviar_correo(EMAIL_NOTIFICATIONS,"Administrador",fecha, id_productos_stock_bajo)
         
         print("=" * 60)
         

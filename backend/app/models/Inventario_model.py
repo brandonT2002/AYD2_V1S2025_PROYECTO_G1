@@ -139,4 +139,5 @@ class InventarioModel(BaseModel):
             'unidades_restantes': stock_actual,
             'porcentaje_actual': round(porcentaje_actual, 2),
             'porcentaje_minimo': porcentaje_minimo,
+            'cumple_minimo': cumple_minimo
         }
