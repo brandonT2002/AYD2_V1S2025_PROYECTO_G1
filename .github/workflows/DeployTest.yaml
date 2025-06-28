@@ -17,8 +17,9 @@ jobs:
       - name: Install dependencies
         run: |
           pip install pytest
+          pip install flask
 
       - name: Run tests
         run: |
-          cd backend  
+          cd /home/runner/work/AYD2_V1S2025_PROYECTO_G1/AYD2_V1S2025_PROYECTO_G1/backend/  
           pytest -v  
