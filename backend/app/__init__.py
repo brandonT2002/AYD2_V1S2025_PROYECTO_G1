@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, jsonify
 from flask_cors import CORS
 from app.config.settings import Config
 from app.routes.routes import api_bp
@@ -14,4 +14,9 @@ def create_app():
     # Registrar blueprints
     app.register_blueprint(api_bp)
     
+    # Endpoint raíz
+    @app.route('/')
+    def root():
+        return "<h1>Ya salió AYD2!</h1>"
+
     return app
