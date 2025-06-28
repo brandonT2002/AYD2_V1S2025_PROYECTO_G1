@@ -1,5 +1,4 @@
-name: Deploy S3 Bucket imporcomgua
-
+name: Deploy S3
 on:
   workflow_dispatch:
 
