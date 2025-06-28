@@ -17,6 +17,6 @@ def create_app():
     # Endpoint raíz
     @app.route('/')
     def root():
-        return "<h1>Con esto sale AYD2...?</h1>"
+        return "<h1>Con esto sale AYD2?</h1>"
 
     return app
