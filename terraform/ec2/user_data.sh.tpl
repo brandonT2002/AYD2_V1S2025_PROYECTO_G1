@@ -19,7 +19,9 @@ git clone https://${github_token}@github.com/sebastian-godoy/AYD2_V1S2025_PROYEC
 
 cd AYD2_V1S2025_PROYECTO_G1/backend
 
-cat <<EOF > .env
+mkdir -p config
+
+cat <<EOF > config/.env
 DB_HOST=${db_host}
 DB_USER=${db_user}
 DB_PASS=${db_password}
@@ -39,7 +41,7 @@ Requires=docker.service
 Restart=always
 User=ubuntu
 WorkingDirectory=/home/ubuntu/AYD2_V1S2025_PROYECTO_G1/backend
-ExecStart=/usr/bin/docker run --rm -p 5000:5000 --env-file /home/ubuntu/AYD2_V1S2025_PROYECTO_G1/backend/.env --name api-ayd2 api-ayd2
+ExecStart=/usr/bin/docker run --rm -p 5000:5000 --env-file /home/ubuntu/AYD2_V1S2025_PROYECTO_G1/backend/config/.env --name api-ayd2 api-ayd2
 ExecStop=/usr/bin/docker stop api-ayd2
 
 [Install]
