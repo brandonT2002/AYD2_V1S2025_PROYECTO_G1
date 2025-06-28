@@ -16,7 +16,7 @@ jobs:
           node-version: '18'
 
       - name: Install dependencies and build React app
-        working-directory: Frontend
+        working-directory: frontend
         run: |
           npm install
           npm run build
@@ -46,4 +46,4 @@ jobs:
           aws-region: us-east-1
 
       - name: Sync build folder to S3 bucket
-        run: aws s3 sync Frontend/dist s3://imporcomgua --delete
+        run: aws s3 sync frontend/dist s3://imporcomgua --delete
