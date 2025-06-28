@@ -1,14 +1,5 @@
-name: Deploy Test 
-# on:
-#   push:
-#     branches:
-#       - main
-#     paths:
-#       - 'backend**'
-
 on: 
-  workflow_dispatch:
-  
+  workflow_dispatch:  
 
 jobs:
   deploy:
@@ -16,10 +7,18 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
-      - name: Set up Python
-        run: ls
-        run: cd/backend
-        run: pytest -v
-      
+        uses: actions/checkout@v3  
 
+      - name: Set up Python
+        uses: actions/setup-python@v4 
+        with:
+          python-version: '3.8'  
+
+      - name: Install dependencies
+        run: |
+          pip install pytest
+
+      - name: Run tests
+        run: |
+          cd backend  
+          pytest -v  
