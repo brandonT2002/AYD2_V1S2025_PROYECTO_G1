@@ -2,7 +2,6 @@
 apt-get update
 apt-get install -y git apt-transport-https ca-certificates curl software-properties-common
 
-# Instalación de Docker
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
 echo \
     "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
@@ -45,7 +44,6 @@ ExecStop=/usr/bin/docker stop api-ayd2
 WantedBy=multi-user.target
 EOL
 
-# Correr el servicio (Qué dolor de cabeza es esto)
 systemctl daemon-reload
 systemctl enable api-docker.service
 systemctl start api-docker.service
