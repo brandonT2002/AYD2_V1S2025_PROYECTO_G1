@@ -10,9 +10,6 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: AYD2_V1S2025_PROYECTO_G1/backend
 
     steps:
       - name: Checkout repository
@@ -25,11 +22,14 @@ jobs:
 
       - name: Install dependencies
         run: |
+          cd AYD2_V1S2025_PROYECTO_G1/backend
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
       - name: Run Pytest
-        run: pytest -v
+        run: |
+          cd AYD2_V1S2025_PROYECTO_G1/backend
+          pytest -v
 
   deploy:
     runs-on: ubuntu-latest
