@@ -55,7 +55,7 @@ function LoginPage() {
                     onSubmit={onSubmit}
                 >
                     <h2 className="text-2xl font-bold w-full text-center">
-                        ¡Bienvenido!
+                        ¡Bienvenido de nuevo!
                     </h2>
                     <p className="text-sm text-gray-500 mb-6 text-center">
                         Ingresa a tu cuenta para continuar
