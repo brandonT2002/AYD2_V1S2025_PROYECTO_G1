@@ -1,4 +1,4 @@
-name: Deploy React to S3 on main branch
+name: Deploy React (S3)
 
 on:
   push:
