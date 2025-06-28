@@ -93,7 +93,7 @@ function LoginPage() {
                             <input
                                 type="password"
                                 name="password"
-                                placeholder="********"
+                                placeholder="**********"
                                 className="w-full p-2 outline-none"
                                 required
                                 {...register("password", {
