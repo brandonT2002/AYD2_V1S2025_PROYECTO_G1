@@ -56,3 +56,15 @@ class AuthModel(BaseModel):
             ORDER BY u.id
         """
         return self.execute_query(query)
+    
+    def obtener_usuarios_por_roles(self, roles_ids):
+        """Obtiene usuarios filtrados por roles específicos"""
+        placeholders = ','.join(['%s'] * len(roles_ids))
+        query = f"""
+            SELECT u.id, u.nombre, u.correo, u.rol_id, r.nombre AS rol
+            FROM usuarios u
+            JOIN roles r ON u.rol_id = r.id
+            WHERE u.rol_id IN ({placeholders})
+            ORDER BY u.id
+        """
+        return self.execute_query(query, tuple(roles_ids))
