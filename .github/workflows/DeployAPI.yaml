@@ -1,4 +1,4 @@
-name: Deploy Backend (EC2)
+name: Deploy Backend on EC2
 
 on:
   push:
@@ -21,7 +21,12 @@ jobs:
           port: 22
           script: |
             set -e
-            cd ~/AYD2_1S2025_PRAC_G1/Backend
+
+            if [ ! -d "/home/ubuntu/AYD2_V1S2025_PROYECTO_G1" ]; then
+              git clone https://github.com/sebastian-godoy/AYD2_V1S2025_PROYECTO_G1.git /home/ubuntu/AYD2_V1S2025_PROYECTO_G1
+            fi
+
+            cd /home/ubuntu/AYD2_V1S2025_PROYECTO_G1/backend
             git reset --hard
             git pull origin main
 
