@@ -1,7 +1,6 @@
 from app.models.base_model import BaseModel
 class InventarioModel(BaseModel):
     def buscar_si_existe_inventario(self, producto_id, duca_id):
-        """Busca si existe un inventario para un producto y Duca específicos"""
         query = """
             SELECT COUNT(*) as count
             FROM inventario_movimientos
@@ -26,7 +25,6 @@ class InventarioModel(BaseModel):
         return duca_id
 
     def insertar_inventario(self, tipo, cantidad_fardos, unidades_totales,  producto_id, duca_id, observaciones=None):
-        """Inserta un nuevo movimiento de inventario"""
         query = """
             INSERT INTO inventario_movimientos (tipo, cantidad_fardos, unidades_totales,  productos_id, duca_id, comentario)
             VALUES (%s, %s, %s, %s, %s, %s)
@@ -34,7 +32,6 @@ class InventarioModel(BaseModel):
         return self.returning_id(query, (tipo, cantidad_fardos, unidades_totales,  producto_id, duca_id, observaciones))
     
     def salida_inventario(self, tipo, cantidad_fardos, unidades_totales, salida_bodega ,producto_id):
-        """Inserta un nuevo movimiento de salida de inventario"""
         query = """
             INSERT INTO inventario_movimientos (tipo, cantidad_fardos, unidades_totales, salida_bodega,  productos_id)
             VALUES (%s, %s, %s, %s, %s)
@@ -42,7 +39,6 @@ class InventarioModel(BaseModel):
         return self.returning_id(query, (tipo, cantidad_fardos, unidades_totales, salida_bodega, producto_id))
     
     def update_created_at(self, inventario_id, fecha):
-        """Actualiza el campo created_at de un movimiento de inventario"""
         query = """
             UPDATE inventario_movimientos
             SET created_at = %s
@@ -52,7 +48,6 @@ class InventarioModel(BaseModel):
         return
     
     def update_stock_intentario(self, product_id, total):
-        """Actualiza el stock de un producto en inventario"""
         query = """
             UPDATE inventario
             SET stock_unidades = stock_unidades + %s
@@ -73,7 +68,6 @@ class InventarioModel(BaseModel):
     
     def get_stock_info(self, producto_id):
         """Obtiene información completa del stock de un producto"""
-        # Obtener stock actual y datos del producto
         query_actual = """
             SELECT i.stock_unidades, p.nombre, p.codigo
             FROM inventario i
@@ -85,7 +79,7 @@ class InventarioModel(BaseModel):
         if not stock_actual_info:
             return None
         
-        # Obtener stock inicial basado en cantidad_fardos de ingresos (que es el total en unidades)
+
         query_inicial = """
             SELECT COALESCE(SUM(cantidad_fardos), 0) as stock_inicial_unidades
             FROM inventario_movimientos
@@ -118,7 +112,7 @@ class InventarioModel(BaseModel):
             porcentaje_actual = (stock_actual / stock_inicial) * 100
         
         stock_minimo_requerido = (stock_inicial * porcentaje_minimo) / 100
-        cumple_minimo = stock_actual > stock_minimo_requerido  # Cambié >= por > para que exactamente 10% sea considerado stock bajo
+        cumple_minimo = stock_actual > stock_minimo_requerido  
         
         print(f"📊 VERIFICACIÓN DE STOCK:")
         print(f"   Producto: {stock_info['producto_nombre']} (ID: {producto_id})")
@@ -136,5 +130,4 @@ class InventarioModel(BaseModel):
             'unidades_restantes': stock_actual,
             'porcentaje_actual': round(porcentaje_actual, 2),
             'porcentaje_minimo': porcentaje_minimo,
-            'cumple_minimo': cumple_minimo
         }

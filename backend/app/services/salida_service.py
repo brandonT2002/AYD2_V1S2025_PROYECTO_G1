@@ -4,6 +4,10 @@ from app.models.Inventario_model import InventarioModel
 from app.models.Cliente import Cliente
 from datetime import datetime
 from app.mail.notif_email import enviar_correo
+import os
+from dotenv import load_dotenv
+load_dotenv()
+EMAIL_NOTIFICATIONS = os.getenv('EMAIL_NOTIFICATIONS')
 
 class SalidaService(BaseService):
     """Servicio para manejar la lógica de salidas de bodega"""
@@ -94,7 +98,9 @@ class SalidaService(BaseService):
 
         # Enviar correo de notificación si hay productos con stock bajo
         if productos_con_stock_bajo:
-            enviar_correo("wmazariegos@fegora.net","Administrador",datetime.datetime.now().strftime('%d/%m/%Y a las %I:%M %p')+'- Id de productos con stock bajo:'+id_productos_stock_bajo)
+            fecha=datetime.now().strftime('%d/%m/%Y a las %I:%M %p')
+            print("Esta es la fecha:", fecha)
+            enviar_correo(EMAIL_NOTIFICATIONS,"Administrador",fecha, id_productos_stock_bajo)
         
         print("=" * 60)
         
