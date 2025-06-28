@@ -2265,130 +2265,110 @@ IMPORCOMGUA busca digitalizar de extremo a extremo sus procesos, inventario, com
 | **Flujo de trabajo**       | **Flujo Básico (Normal):** <br> 1. El **Administrador** consulta la información de la venta (RF401). <br> 2. El **Administrador** registra un pago (RF402). <br> 3. El **Administrador** gestiona el saldo de los clientes (RF403). <br> 4. El **Cliente** revisa su saldo (RF404). <br>                                                                                                                                                                                                                                                                                                                     |
 | **Mejoras**                | Integración con un sistema de pagos en línea y notificaciones automáticas de saldos y pagos realizados para mejorar la experiencia del cliente.                                                                                                                                                                                                                                                                                                                                                        |
 
+# Documentación Fase 3
 
 ## 4. Matrices de Trazabilidad
 
-> [!NOTE]
->
-> Los nombres de los casos de uso se encuentran en el diagrama CDU expandido.
-
 ### A. Stakeholders vs Requerimientos
-|Requerimiento|Administrador|Vendedor|Cliente|
-|:-:|:-:|:-:|:-:|
-|RF 101|✅|||
-|RF 102|✅|||
-|RF 103||✅|✅|
-|RF 104|✅|||
-|RF 105|✅|||
-|RF 106|✅|||
-|RF 107|✅|||
-|RF 108|✅|||
-|RF 109|✅|||
-|RF 201|✅||✅|
-|RF 202|✅|✅||
-|RF 203|✅|✅||
-|RF 204|✅|||
-|RF 205|✅|✅||
-|RF 206|✅|✅||
-|RF 207|✅|✅||
-|RF 208|✅|||
-|RF 209|✅|✅||
-|RF 210|✅|✅||
-|RF 211|✅|||
-|RF 212|✅|||
-|RF 301|✅|✅||
-|RF 302|✅|||
-|RF 303|✅|||
-|RF 304|✅|||
-|RF 305|✅|||
-|RF 306|✅|||
-|RF 401||✅||
-|RF 402||✅||
-|RF 403||✅||
-|RF 404||✅||
-|RF 405||✅||
-|RF 406|||✅|
+
+| Requerimiento  | Cliente | Vendedor | Proveedores | Proveedor de email | Gerente de Inventario | Gerencia General | Encargado de Bodega | Aduana | Gerente de Ventas y Finanzas |
+|----------------|---------|----------|-------------|---------------------|-----------------------|------------------|---------------------|--------|-----------------------------|
+| RF101          |         |          |             |                     | ✅                    | ✅                  | ✅                   |        |                             |
+| RF102          |         |          |             |                     | ✅                    |                      |                     |        |                             |
+| RF103          |         |          | ✅          |                     | ✅                    | ✅                  |                     |        |                             |
+| RF104          |         |          |             |                     |                       |                     |                     | ✅     |                             |
+| RF105          |         |          |             | ✅                  | ✅                    |                     |                     |        |                             |
+| RF201          |         |          |             |                     |                       | ✅                  |                     |        |                             |
+| RF202          | ✅      |          |             |                     |                       | ✅                  |                     |        |                             |
+| RF203          |         |          | ✅          |                     |                       |                     |                     |        |                             |
+| RF204          |         | ✅       |             |                     |                       |                     |                     |        |                             |
+| RF205          | ✅      |          |             |                     |                       | ✅                |                     |        | ✅                           |
+| RF206          | ✅      |          |             |                     |                       | ✅                |                     |        |                             |
+| RF207          | ✅      |          |             |                     |                       | ✅                |                     |        |                             |
+| RF208          | ✅      |          |             |                     |                       | ✅                |                     |        |                             |
+| RF209          |         |          | ✅          |                     |                       |                       |                     |        |                             |
+| RF210          |         |          | ✅          |                     |                       |                       |                     |        |                             |
+| RF211          |         |          | ✅          |                     |                       |                       |                     |        |                             |
+| RF212          |         |          | ✅          |                     |                       |                       |                     |        |                             |
+| RF213          |         | ✅       |             |                     |                       |    ✅                   |                     |        |                             |
+| RF214          |         | ✅       |             |                     |                       |                       |                     |        |                             |
+| RF215          |         | ✅       |             |                     |                       |                       |                     |        |                             |
+| RF216          |         | ✅       |             |                     |                       |                       |                     |        |                             |
+| RF217          |         |          |             |                     |                       |                     | ✅                   |        |                             |
+| RF218          |         |  ✅        |             |                     |                       | ✅                |                   |        |                             |
+| RF219          |         |          |             |                     |                       | ✅                |                   |        |                             |
+| RF220          |         |          |             |                     |                       | ✅                |                  |        |                             |
+| RF221          |         |          |             |                     |                       | ✅                |                  |        |                             |
+| RF301          |         |          |             |                     |                       |                     |                     |        | ✅                          |
+| RF302          | ✅      |          |             |                     |                       | ✅                  |                     |        | ✅                          |
+| RF303          |         |          | ✅          |                     |                       |                     |                     |        | ✅                          |
+| RF304          |         | ✅       |             |                     |                       |                     |                     |        | ✅                          |
+| RF305          |         |          |             |                     |                       | ✅                  |                     |        |                             |
+| RF401          |         |          |             |                     |                       | ✅                  |                     |        |                             |
+| RF402          |         |          |             |                     |                       |                     |                     |        | ✅                          |
+| RF403          |         |          |             |                     |                       | ✅                  |                     |        |                             |
+| RF404          | ✅      |          |             |                     |                       | ✅                  |                     |        |                             |
+| RF500          |         |          |             |                     |                       | ✅                  |                     |        |                             |
+| RF501          |         |          |             |                     | ✅                    | ✅                  |                     |        | ✅                          |
+| RF502          |         |          |             |                     |                       | ✅                  |                     |        |                             |
+| RF503          |         |          |             |                     |                       |                     |                     |        | ✅                          |
+| RF504          |         |          |             |                     | ✅                    |                     |                     |        |                             |
+
 
 ### B. Stakeholders vs Casos de Uso
-|CDU/Stakeholders|Administrador|
-|:-:|:-:|
-|RF 101|✅|
-|RF 102|✅|
-|RF 103|✅|
-|RF 104|✅|
-|RF 105|✅|
-|RF 106|✅|
-|RF 107|✅|
-|RF 108|✅|
-|RF 109|✅|
-|RF 201||
-|RF 202||
-|RF 203||
-|RF 204||
-|RF 205|✅|
-|RF 206||
-|RF 207|✅|
-|RF 208|✅|
-|RF 209|✅|
-|RF 210|✅|
-|RF 211|✅|
-|RF 212|✅|
-|RF 213|✅|
-|RF 214|✅|
-|RF 215|✅|
-|RF 216|✅|
-|RF 301|✅|
-|RF 302|✅|
-|RF 303|✅|
-|RF 304|✅|
-|RF 305|✅|
-|RF 306|✅|
-|RF 307|✅|
-|RF 308|✅|
-|RF 309|✅|
-|RF 401|✅|
-|RF 402|✅|
-|RF 403|✅|
-|RF 404|✅|
-|RF 405|✅|
-|RF 406|✅|
+
+| Casos de usoah | Cliente | Vendedor | Proveedores | Proveedor de email | Gerente de Inventario | Gerencia General | Encargado de Bodega | Aduana | Gerente de Ventas y Finanzas |
+|------------------|---------|----------|-------------|---------------------|-----------------------|------------------|---------------------|--------|-----------------------------|
+| CUN 100 Gestionar Inventario |         |          |             | ✅                  | ✅                    | ✅               |                     | ✅     | ✅                          |
+| CUN 200 Gestionar Datos      | ✅      | ✅       |             |                     | ✅                    | ✅               |                     |        | ✅                          |
+| CUN 300 Gestionar Ventas     |         | ✅       |             |                     |                       | ✅               |                     |        | ✅                          |
+| CUN 400 Manejar Pagos        | ✅      |          |             |                     |                       | ✅               |                     |        | ✅                          |
+| CUN 500 Validación de Identidad |      |          |             |                     | ✅                    | ✅               |                     |        | ✅                          |
 
 ### C. Requerimientos vs Casos de uso
-|Requerimiento/CDUs|CDU 1.0|CDU 2.1|CDU 2.2|CDU 2.3|CDU 3.0|CDU 4.0|
-|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
-|RF 101|✅|
-|RF 102|✅|
-|RF 103|✅|
-|RF 104|✅|
-|RF 105|✅|
-|RF 106|✅|
-|RF 107|✅|
-|RF 108|✅|
-|RF 109|✅|
-|RF 201||✅|||
-|RF 202||✅|||
-|RF 203||✅|||
-|RF 204||✅|||
-|RF 205|||✅||
-|RF 206|||✅||
-|RF 207|||✅||
-|RF 208|||✅||
-|RF 209||||✅|
-|RF 210||||✅|
-|RF 211||||✅|
-|RF 212||||✅|
-|RF 301|||||✅|
-|RF 302|||||✅|
-|RF 303|||||✅|
-|RF 304|||||✅|
-|RF 305|||||✅|
-|RF 306|||||✅|
-|RF 401||||||✅|
-|RF 402||||||✅|
-|RF 403||||||✅|
-|RF 404||||||✅|
-|RF 405||||||✅|
-|RF 406||||||✅|
+
+| Requerimiento/CDUs | CUN 100 Gestionar Inventario | CUN 200 Gestionar Datos | CUN 300 Gestionar Ventas | CUN 400 Manejar Pagos | CUN 500 Validación de Identidad |
+|:------------------:|:-----------------------------:|:------------------------:|:-------------------------:|:----------------------:|:--------------------------------:|
+| RF101              | ✅                            |                          |                           |                        |                                  |
+| RF102              | ✅                            |                          |                           |                        |                                  |
+| RF103              | ✅                            |                          |                           |                        |                                  |
+| RF104              | ✅                            |                          |                           |                        |                                  |
+| RF105              | ✅                            |                          |                           |                        |                                  |
+| RF201              |                               | ✅                       |                           |                        |                                  |
+| RF202              |                               | ✅                       |                           |                        |                                  |
+| RF203              |                               | ✅                       |                           |                        |                                  |
+| RF204              |                               | ✅                       |                           |                        |                                  |
+| RF205              |                               | ✅                       |                           |                        |                                  |
+| RF206              |                               | ✅                       |                           |                        |                                  |
+| RF207              |                               | ✅                       |                           |                        |                                  |
+| RF208              |                               | ✅                       |                           |                        |                                  |
+| RF209              |                               | ✅                       |                           |                        |                                  |
+| RF210              |                               | ✅                       |                           |                        |                                  |
+| RF211              |                               | ✅                       |                           |                        |                                  |
+| RF212              |                               | ✅                       |                           |                        |                                  |
+| RF213              |                               | ✅                       |                           |                        |                                  |
+| RF214              |                               | ✅                       |                           |                        |                                  |
+| RF215              |                               | ✅                       |                           |                        |                                  |
+| RF216              |                               | ✅                       |                           |                        |                                  |
+| RF217              |                               | ✅                       |                           |                        |                                  |
+| RF218              |                               | ✅                       |                           |                        |                                  |
+| RF219              |                               | ✅                       |                           |                        |                                  |
+| RF220              |                               | ✅                       |                           |                        |                                  |
+| RF221              |                               | ✅                       |                           |                        |                                  |
+| RF301              |                               |                          | ✅                        |                        |                                  |
+| RF302              |                               |                          | ✅                        |                        |                                  |
+| RF303              |                               |                          | ✅                        |                        |                                  |
+| RF304              |                               |                          | ✅                        |                        |                                  |
+| RF305              |                               |                          | ✅                        |                        |                                  |
+| RF401              |                               |                          |                           | ✅                     |                                  |
+| RF402              |                               |                          |                           | ✅                     |                                  |
+| RF403              |                               |                          |                           | ✅                     |                                  |
+| RF404              |                               |                          |                           | ✅                     |                                  |
+| RF500              |                               |                          |                           |                        | ✅                               |
+| RF501              |                               |                          |                           |                        | ✅                               |
+| RF502              |                               |                          |                           |                        | ✅                               |
+| RF503              |                               |                          |                           |                        | ✅                               |
+| RF504              |                               |                          |                           |                        | ✅                               |
 
 > [!NOTE]
 >
