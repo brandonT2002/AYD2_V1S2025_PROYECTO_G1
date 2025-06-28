@@ -28,31 +28,4 @@ DB_PORT=3306
 EOF
 
 sudo docker build -t api-ayd2 .
-
-sudo docker rm -f api-container || true
-
-sudo docker run -d -p 5000:5000 --name api-container --env-file /home/ubuntu/AYD2_V1S2025_PROYECTO_G1/backend/app/config/.env api-ayd2
-
-sudo tee /etc/systemd/system/api-docker.service > /dev/null <<EOL
-[Unit]
-Description=API Flask AYD2 Docker Container
-After=network.target docker.service
-Requires=docker.service
-
-[Service]
-Restart=always
-User=ubuntu
-WorkingDirectory=/home/ubuntu/AYD2_V1S2025_PROYECTO_G1/backend
-
-ExecStartPre=/usr/bin/docker rm -f api-container || true
-ExecStart=/usr/bin/docker run -d -p 5000:5000 --name api-container --env-file /home/ubuntu/AYD2_V1S2025_PROYECTO_G1/backend/app/config/.env api-ayd2
-ExecStop=/usr/bin/docker stop api-container
-ExecStopPost=/usr/bin/docker rm api-container
-
-[Install]
-WantedBy=multi-user.target
-EOL
-
-sudo systemctl daemon-reload
-sudo systemctl enable api-docker.service
-sudo systemctl start api-docker.service
+docker run -d -p 5000:5000 --name api-container api-ayd2
