@@ -1944,7 +1944,8 @@ https://trello.com/invite/b/6848d8b34f62ec9b0b2df06d/ATTI486dda9bfe069d4d8850c3d
 
 
 
-# NO TOCAR FASE 3
+# Documentación Fase 3
+
 ## 1. Core de Negocio
 ### A. Descripción
 
@@ -1955,7 +1956,7 @@ IMPORCOMGUA busca digitalizar de extremo a extremo sus procesos, inventario, com
 
 ### B.1 Diagrama de CDU de Alto nivel
 
-![alt text](image-1.png)
+![alt text](image-11.png)
 
 ### B.2 Diagrama de CDU Primera descomposición
 
