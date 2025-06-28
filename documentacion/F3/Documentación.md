@@ -2380,3 +2380,7 @@ driver.quit()
 - Asegura que los roles y permisos funcionan correctamente
 
 Esta prueba representa un escenario de uso real donde un administrador accede al sistema para realizar sus tareas diarias de gestión de inventario o ventas.
+
+
+## video deploy
+https://drive.google.com/file/d/1X2mNq7nW-It04ZQCRsr2YDSZ2Ie0ZAtf/view?usp=sharing
