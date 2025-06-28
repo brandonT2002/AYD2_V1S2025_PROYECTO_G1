@@ -107,7 +107,7 @@ COLLATE = utf8mb4_unicode_ci;
 -- -----------------------------------------------------
 -- Table `imporcomgua`.`Vendedores`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `imporcomgua`.`Vendedores` (
+CREATE TABLE IF NOT EXISTS `imporcomgua`.`vendedores` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,  -- Asegúrate de que sea INT UNSIGNED
   `apellido` VARCHAR(100) NOT NULL,
   `nombre` VARCHAR(100) NULL DEFAULT NULL,
@@ -151,7 +151,7 @@ CREATE TABLE IF NOT EXISTS `imporcomgua`.`ventas` (
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_ventas_Vendedores1`
     FOREIGN KEY (`vendedor_id`)
-    REFERENCES `imporcomgua`.`Vendedores` (`id`)
+    REFERENCES `imporcomgua`.`vendedores` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION
 ) ENGINE = InnoDB
@@ -262,7 +262,7 @@ VALUES
 
 -- vendedores 
 
-INSERT INTO `imporcomgua`.`Vendedores` (apellido, nombre, telefono, direccion, Comision)
+INSERT INTO `imporcomgua`.`vendedores` (apellido, nombre, telefono, direccion, Comision)
 VALUES
 ('López', 'Carlos', '5559999', 'Zona 10', 'Comisión por ventas'),
 ('Martínez', 'Juan', '5558888', 'Zona 2', 'Comisión por ventas');
