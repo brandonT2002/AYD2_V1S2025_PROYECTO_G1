@@ -1,0 +1,35 @@
+name: Deploy Backend (EC2)
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'backend/**'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy Backend via SSH
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: ${{ secrets.EC2_PUBLIC_IP }}
+          username: ubuntu
+          key: ${{ secrets.EC2_SSH_KEY }}
+          port: 22
+          script: |
+            set -e
+            cd ~/AYD2_1S2025_PRAC_G1/Backend
+            git reset --hard
+            git pull origin main
+
+            sudo docker build -t api-ayd2 .
+
+            if sudo docker ps -q -f name=api-container; then
+              sudo docker stop api-container
+              sudo docker rm api-container
+            fi
+
+            sudo docker run -d -p 5000:5000 --name api-container api-ayd2
