@@ -10,7 +10,7 @@ service = Service(PATH)
 driver = webdriver.Chrome(service=service)
 
 # Abre la página de login
-driver.get("http://localhost:5173/")
+driver.get("http://imporcomgua.s3-website-us-east-1.amazonaws.com/")
 
 # Esperar a que se renderice la página (puedes mejorar esto con WebDriverWait)
 time.sleep(2)
@@ -18,10 +18,10 @@ time.sleep(2)
 # Encontrar campo de correo por el atributo 'placeholder'
 email_input = driver.find_element(By.XPATH, "//input[@placeholder='usuario@correo.com']")
 email_input.clear()
-email_input.send_keys("admin@gmail.com")
+email_input.send_keys("meso.israelajsivinac@gmail.com")
 
 # Encontrar campo de contraseña por el atributo 'placeholder'
-password_input = driver.find_element(By.XPATH, "//input[@placeholder='********']")
+password_input = driver.find_element(By.XPATH, "//input[@placeholder='**********']")
 password_input.clear()
 password_input.send_keys("admin123")
 
