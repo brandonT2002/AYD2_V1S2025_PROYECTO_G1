@@ -22,13 +22,13 @@ jobs:
 
       - name: Install dependencies
         run: |
-          cd AYD2_V1S2025_PROYECTO_G1/backend
+          cd backend
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
       - name: Run Pytest
         run: |
-          cd AYD2_V1S2025_PROYECTO_G1/backend
+          cd backend
           pytest -v
 
   deploy:
