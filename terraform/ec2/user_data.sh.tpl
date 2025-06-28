@@ -22,7 +22,7 @@ cd AYD2_V1S2025_PROYECTO_G1/backend
 cat <<EOF > /home/ubuntu/AYD2_V1S2025_PROYECTO_G1/backend/app/config/.env
 DB_HOST=${db_host}
 DB_USER=${db_user}
-DB_PASS=${db_password}
+DB_PASSWORD=${db_password}
 DB_NAME=${db_name}
 DB_PORT=3306
 EOF
