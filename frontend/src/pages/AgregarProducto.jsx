@@ -19,7 +19,7 @@ export default function AgregarProducto() {
   const [productos, setProductos] = useState([]);
   const [busqueda, setBusqueda] = useState("");
 
-  const API = "http://localhost:5000/api";
+  const API = "http://3.95.223.10:5000/api";
 
   useEffect(() => {
     axios.get(`${API}/GetAllProductos`)

@@ -39,7 +39,7 @@ const MUNICIPIOS = {
 };
 
 export default function ClientePage() {
-  const api = "http://localhost:5000/api";
+  const api = "http://3.95.223.10:5000/api";
   const [form, setForm] = useState({
     id: null,
     nombre_negocio: "",
