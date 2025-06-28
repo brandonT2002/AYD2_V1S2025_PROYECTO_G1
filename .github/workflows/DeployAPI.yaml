@@ -20,25 +20,8 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           port: 22
           script: |
-            set -e
-
-            if [ ! -d "/home/ubuntu/AYD2_V1S2025_PROYECTO_G1" ]; then
-              git clone https://github.com/sebastian-godoy/AYD2_V1S2025_PROYECTO_G1.git /home/ubuntu/AYD2_V1S2025_PROYECTO_G1
-            fi
-
-            cd /home/ubuntu/AYD2_V1S2025_PROYECTO_G1
-
-            git config --global --add safe.directory /home/ubuntu/AYD2_V1S2025_PROYECTO_G1
-
-            cd backend
+            cd ~/AYD2_V1S2025_PROYECTO_G1/backend
             git reset --hard
             git pull origin main
-
-            sudo docker build -t api-ayd2 .
-
-            if sudo docker ps -q -f name=api-container; then
-              sudo docker stop api-container
-              sudo docker rm api-container
-            fi
-
-            sudo docker run -d -p 5000:5000 --name api-container api-ayd2
+            docker build -t api-ayd2 .
+            sudo systemctl restart api-docker.service
