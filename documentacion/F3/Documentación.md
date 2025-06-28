@@ -1943,6 +1943,8 @@ https://trello.com/invite/b/6848d8b34f62ec9b0b2df06d/ATTI486dda9bfe069d4d8850c3d
 
 
 
+## ESTO SE TIENE QUE ELIMINAR NO SIRVE DE NADA SOLO ES COMO BASE POR EL MOMENTO----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 
 # Documentación Fase 3
 
