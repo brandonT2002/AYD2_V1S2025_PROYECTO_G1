@@ -1,4 +1,4 @@
-name: Deploy Backend on EC2
+name: Deploy Backend (EC2)
 
 on:
   push:
@@ -26,7 +26,11 @@ jobs:
               git clone https://github.com/sebastian-godoy/AYD2_V1S2025_PROYECTO_G1.git /home/ubuntu/AYD2_V1S2025_PROYECTO_G1
             fi
 
-            cd /home/ubuntu/AYD2_V1S2025_PROYECTO_G1/backend
+            cd /home/ubuntu/AYD2_V1S2025_PROYECTO_G1
+
+            git config --global --add safe.directory /home/ubuntu/AYD2_V1S2025_PROYECTO_G1
+
+            cd backend
             git reset --hard
             git pull origin main
 
