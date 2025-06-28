@@ -27,5 +27,7 @@ DB_NAME=${db_name}
 DB_PORT=3306
 EOF
 
+cd /home/ubuntu/AYD2_V1S2025_PROYECTO_G1/backend
+
 sudo docker build -t api-ayd2 .
-docker run -d -p 5000:5000 --name api-container api-ayd2
+sudo docker run -d -p 5000:5000 --name api-container api-ayd2
