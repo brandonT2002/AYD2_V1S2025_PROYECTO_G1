@@ -1,18 +1,20 @@
 #!/bin/bash
-apt-get update
-apt-get install -y git apt-transport-https ca-certificates curl software-properties-common
+sudo apt-get update
 
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+sudo apt-get install -y git apt-transport-https ca-certificates curl software-properties-common
+
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+
 echo \
-    "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
-    $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
-apt-get update
-apt-get install -y docker-ce docker-ce-cli containerd.io
+  "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
+  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
-usermod -aG docker ubuntu
+sudo apt-get update
+sudo apt-get install -y docker-ce docker-ce-cli containerd.io
+
+sudo usermod -aG docker ubuntu
 
 cd /home/ubuntu
-
 git clone https://${github_token}@github.com/sebastian-godoy/AYD2_V1S2025_PROYECTO_G1.git
 
 cd AYD2_V1S2025_PROYECTO_G1/backend
@@ -25,9 +27,9 @@ DB_NAME=${db_name}
 DB_PORT=3306
 EOF
 
-docker build -t api-ayd2 .
+sudo docker build -t api-ayd2 .
 
-cat <<EOL > /etc/systemd/system/api-docker.service
+sudo tee /etc/systemd/system/api-docker.service > /dev/null <<EOL
 [Unit]
 Description=API Flask AYD2 Docker Container
 After=network.target docker.service
@@ -44,6 +46,6 @@ ExecStop=/usr/bin/docker stop api-ayd2
 WantedBy=multi-user.target
 EOL
 
-systemctl daemon-reload
-systemctl enable api-docker.service
-systemctl start api-docker.service
+sudo systemctl daemon-reload
+sudo systemctl enable api-docker.service
+sudo systemctl start api-docker.service
