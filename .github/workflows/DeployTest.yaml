@@ -22,4 +22,4 @@ jobs:
 
       - name: Run tests
         run: |
-          ~/.local/bin/pytest -v /home/ubuntu/AYD2_V1S2025_PROYECTO_G1/backend/tests_imporcomgua/test_imporcomgua.py 
+          pytest -v /home/runner/work/AYD2_V1S2025_PROYECTO_G1/AYD2_V1S2025_PROYECTO_G1/backend/tests_imporcomgua/test_imporcomgua.py 
